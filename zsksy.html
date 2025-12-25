@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学习知识库 - 贵州联合纪委工作办公室</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;
+            --tech-blue: #1E3A8A;
+            --bg-light: #F8FAFC;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 侧边导航激活状态 */
+        .nav-link.active {
+            background-color: #FEF2F2; /* red-50 */
+            color: var(--primary-red);
+            border-right: 4px solid var(--primary-red);
+            font-weight: 700;
+        }
+
+        /* 知识卡片样式 */
+        .folder-card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid #E2E8F0;
+        }
+
+        .folder-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: var(--tech-blue);
+        }
+
+        /* 文件夹顶部的小标签装饰 */
+        .folder-tab {
+            width: 40px;
+            height: 12px;
+            background-color: #E2E8F0;
+            border-radius: 4px 4px 0 0;
+            margin-bottom: -1px;
+            position: relative;
+            z-index: 10;
+        }
+        .folder-card:hover .folder-tab {
+            background-color: #DBEAFE; /* blue-100 */
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 顶部导航栏 (保持与首页一致) -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <div class="w-10 h-10 bg-red-900 rounded-full flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-star text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">贵州联合纪委</h1>
+                        <p class="text-xs text-gray-500 tracking-wider">工作办公室 · 学习交流平台</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-red-900 font-medium transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> 返回首页
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 页面主体布局 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- 面包屑导航 -->
+        <nav class="flex mb-8 text-sm text-gray-500" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="index.html" class="hover:text-red-800">首页</a>
+                </li>
+                <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
+                <li class="font-medium text-gray-800">学习知识库</li>
+            </ol>
+        </nav>
+
+        <div class="flex flex-col md:flex-row gap-8">
+            
+            <!-- 左侧：悬浮菜单 -->
+            <aside class="w-full md:w-64 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-100">
+                        <h3 class="font-bold text-gray-800"><i class="fa-solid fa-list-ul mr-2 text-red-800"></i>知识库目录</h3>
+                    </div>
+                    <nav class="flex flex-col">
+                        <a href="#section-jijian" class="nav-link active px-6 py-4 text-gray-700 hover:bg-gray-50 transition border-r-4 border-transparent flex items-center justify-between group">
+                            <span>纪检知识库</span>
+                            <i class="fa-solid fa-scale-balanced text-gray-300 group-hover:text-red-800"></i>
+                        </a>
+                        <a href="#section-xuncha" class="nav-link px-6 py-4 text-gray-700 hover:bg-gray-50 transition border-r-4 border-transparent flex items-center justify-between group">
+                            <span>巡察知识库</span>
+                            <i class="fa-solid fa-magnifying-glass-location text-gray-300 group-hover:text-blue-800"></i>
+                        </a>
+                        <a href="#section-yingzhi" class="nav-link px-6 py-4 text-gray-700 hover:bg-gray-50 transition border-r-4 border-transparent flex items-center justify-between group">
+                            <span>应知应会</span>
+                            <i class="fa-solid fa-book-open-reader text-gray-300 group-hover:text-amber-600"></i>
+                        </a>
+                        <a href="#section-zhidu" class="nav-link px-6 py-4 text-gray-700 hover:bg-gray-50 transition border-r-4 border-transparent flex items-center justify-between group">
+                            <span>制度学习</span>
+                            <i class="fa-solid fa-folder-tree text-gray-300 group-hover:text-teal-700"></i>
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- 右侧：内容区域 -->
+            <main class="flex-1 space-y-12">
+
+                <!-- 1. 纪检知识库 Section -->
+                <section id="section-jijian" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900">纪检知识库</h2>
+                        <span class="ml-3 px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded font-medium">核心业务</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <!-- 生成10个卡片 -->
+                        <!-- 卡片 1 -->
+                        <a href="jijian_01.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-gavel"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">党章党规</h4>
+                                <p class="text-xs text-gray-400">Total: 128篇</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 2 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-scale-unbalanced"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">法律法规</h4>
+                                <p class="text-xs text-gray-400">Total: 342篇</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 3 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-eye"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">监督执纪</h4>
+                                <p class="text-xs text-gray-400">实务操作指南</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 4 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">审查调查</h4>
+                                <p class="text-xs text-gray-400">取证与谈话</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 5 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-file-contract"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">案件审理</h4>
+                                <p class="text-xs text-gray-400">定性量纪</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 6 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-regular fa-envelope"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">信访举报</h4>
+                                <p class="text-xs text-gray-400">受理与办理</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 7 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-wind"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">党风政风</h4>
+                                <p class="text-xs text-gray-400">纠治"四风"</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 8 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">典型案例</h4>
+                                <p class="text-xs text-gray-400">警示教育</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 9 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-regular fa-circle-question"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">业务问答</h4>
+                                <p class="text-xs text-gray-400">疑难解析</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 10 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-regular fa-file-word"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">常用文书</h4>
+                                <p class="text-xs text-gray-400">模板下载</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 2. 巡察知识库 Section -->
+                <section id="section-xuncha" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-blue-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900">巡察知识库</h2>
+                        <span class="ml-3 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded font-medium">利剑作用</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <!-- 10个栏目 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-quote-left"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">巡视巡察论述</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-sitemap"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">巡察制度体系</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-list-check"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">工作流程指引</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-crosshairs"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">巡察监督重点</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">发现问题技巧</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-rotate"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">巡察整改</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-file-pen"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">巡察报告撰写</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-users-gear"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">队伍建设</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-laptop-code"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">信息化建设</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-comments"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">经验交流</h4>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 3. 应知应会知识库 Section -->
+                <section id="section-yingzhi" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-amber-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900">应知应会知识库</h2>
+                        <span class="ml-3 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded font-medium">综合素质</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                         <!-- 10个栏目 -->
+                         <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-landmark"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">政治理论</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-microphone-lines"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">重要讲话</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-handshake"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">会议精神</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">历史沿革</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-map-location-dot"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">贵州省情</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-user-secret"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">保密知识</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-pen-nib"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">公文写作</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">机关党建</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-briefcase"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">综合业务</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-clipboard-question"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">每周一测</h4>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 4. 制度学习知识库 Section (新增) -->
+                <section id="section-zhidu" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-teal-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900">制度学习</h2>
+                        <span class="ml-3 px-2 py-0.5 bg-teal-100 text-teal-800 text-xs rounded font-medium">规范管理</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <!-- 1. 三重一大 -->
+                        <a href="https://www.ericmm.com/kwsanzhongyida.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-users-viewfinder"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">三重一大</h4>
+                            </div>
+                        </a>
+                        <!-- 2. 五责联动 -->
+                        <a href="http://www.ericmm.com/wzld.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-network-wired"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">五责联动</h4>
+                            </div>
+                        </a>
+                        <!-- 3. 财务管理 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-calculator"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">财务管理</h4>
+                            </div>
+                        </a>
+                        <!-- 4. 人事管理 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-id-card"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">人事管理</h4>
+                            </div>
+                        </a>
+                        <!-- 5. 考勤制度 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">考勤制度</h4>
+                            </div>
+                        </a>
+                        <!-- 6. 会议制度 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-handshake-simple"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">会议制度</h4>
+                            </div>
+                        </a>
+                        <!-- 7. 档案管理 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-box-archive"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">档案管理</h4>
+                            </div>
+                        </a>
+                        <!-- 8. 资产管理 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-laptop"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">资产管理</h4>
+                            </div>
+                        </a>
+                        <!-- 9. 印章管理 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-stamp"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">印章管理</h4>
+                            </div>
+                        </a>
+                        <!-- 10. 公务用车 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-car-side"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">公务用车</h4>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <div class="text-center text-gray-400 text-sm pt-8 pb-12">
+                    <p>— 已经到底了 —</p>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <script>
+        // 简单的脚本：滚动时更新左侧导航的激活状态
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
