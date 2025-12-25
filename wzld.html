@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保利久联全面从严治党“五责联动”责任体系学习系统</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 React 和 ReactDOM -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- 引入 Babel 用于在浏览器中编译 JSX -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        /* 基础动画 */
+        .fade-in { animation: fadeIn 0.5s ease-in; }
+        .zoom-in { animation: zoomIn 0.3s ease-out; }
+        .slide-up { animation: slideUp 0.4s ease-out; }
+        
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes zoomIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* 体系图动画 */
+        .animate-pulse-slow { animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes spin-slow-reverse { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+        
+        body { font-family: "Microsoft YaHei", "SimHei", sans-serif; }
+        
+        /* 表格样式优化 */
+        .table-row-hover:hover td { background-color: #eff6ff; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useMemo } = React;
+
+        // --- 图标组件库 ---
+        const Icons = {
+            Users: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+            Shield: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>,
+            UserCheck: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><polyline points="16 11 18 13 22 9"/></svg>,
+            Briefcase: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="14" x="2" y="7" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>,
+            User: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>,
+            BookOpen: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>,
+            Layers: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>,
+            Target: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>,
+            CheckSquare: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>,
+            Search: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/></svg>,
+            ChevronRight: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>,
+            ChevronLeft: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>,
+            Filter: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+            FileText: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>,
+            Star: (props) => <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        };
+
+        const Icon = ({ name, size = 18, className }) => {
+            const IconComp = Icons[name];
+            return IconComp ? <IconComp width={size} height={size} className={className} /> : null;
+        };
+
+        // --- 主程序 ---
+        const GovernanceLearningMap = () => {
+          const [activeTab, setActiveTab] = useState('system'); // 默认为体系图
+          const [activeRole, setActiveRole] = useState('party'); 
+          const [searchTerm, setSearchTerm] = useState('');
+          const [filterCategory, setFilterCategory] = useState('all'); // 新增：类别筛选
+          const [currentPage, setCurrentPage] = useState(1);
+          const itemsPerPage = 10;
+
+          // ==========================
+          // 全量数据 (80+条)
+          // ==========================
+          const allData = [
+                // 1. 党委主体责任 (附件1)
+                { role: 'party', cat: '一、坚持党的全面领导', sub: '加强组织领导', detail: '党建工作领导小组每年至少召开1次会议，加强对公司总部、子企业全面从严治党工作的领导。', dept: '党群工作中心' },
+                { role: 'party', cat: '一、坚持党的全面领导', sub: '落实决策部署', detail: '完善党中央重大决策部署落实机制，健全推进政治监督具体化、精准化、常态化的机制。', dept: '党群工作中心' },
+                { role: 'party', cat: '一、坚持党的全面领导', sub: '请示报告制度', detail: '每年年初制定任务安排并向集团党委书面报告；每半年至少召开1次党委会专题研究全面从严治党工作。', dept: '党群工作中心' },
+                { role: 'party', cat: '二、把政治建设摆在首位', sub: '严肃政治生活', detail: '高质量开好民主生活会、组织生活会；严明党的政治纪律和政治规矩。', dept: '党群工作中心' },
+                { role: 'party', cat: '二、把政治建设摆在首位', sub: '落实“第一议题”', detail: '严格落实《“第一议题”制度实施办法》，建立贯彻落实台账，定期开展“回头看”。', dept: '党群工作中心' },
+                { role: 'party', cat: '三、强化党的思想建设', sub: '理论武装', detail: '党委理论学习中心组制定年度计划，全年开展集中学习研讨不少于4次。', dept: '党群工作中心' },
+                { role: 'party', cat: '三、强化党的思想建设', sub: '意识形态工作', detail: '每半年至少研究1次意识形态工作，每年通报1次意识形态领域情况。', dept: '党群工作中心' },
+                { role: 'party', cat: '四、贯彻新时代组织路线', sub: '班子建设', detail: '动态调整优化子公司领导班子结构，增强整体功能。', dept: '人力资源管理中心' },
+                { role: 'party', cat: '四、贯彻新时代组织路线', sub: '干部选育管用', detail: '健全年轻干部常态化工作机制；实施管理人员竞争上岗、末等调整和不胜任退出。', dept: '人力资源管理中心' },
+                { role: 'party', cat: '四、贯彻新时代组织路线', sub: '容错纠错', detail: '深化“六能”机制建设，落实“三个区分开来”。', dept: '人力资源管理中心' },
+                { role: 'party', cat: '四、贯彻新时代组织路线', sub: '干部监督', detail: '严格履行“凡提四必”，常态化做好领导人员因私出国（境）、兼职管理。', dept: '人力资源管理中心' },
+                { role: 'party', cat: '五、持续推进党的建设', sub: '精益党建', detail: '细化落实“125625”精益党建体系；年初制定要点，年底书面报告。', dept: '党群工作中心' },
+                { role: 'party', cat: '五、持续推进党的建设', sub: '基层组织', detail: '落实“四对接、四同步”，动态优化组织设置；建立换届台账，指导按期换届。', dept: '党群工作中心' },
+                { role: 'party', cat: '五、持续推进党的建设', sub: '党员队伍', detail: '用好“智慧党建”平台，抓实党员队伍建设，做好发展党员工作。', dept: '党群工作中心' },
+                { role: 'party', cat: '六、深化作风建设', sub: '纠四风树新风', detail: '不定期开展总部作风专项检查，落实基层减负长效机制，精文减会。', dept: '纪委工作办公室' },
+                { role: 'party', cat: '六、深化作风建设', sub: '警示教育', detail: '加强警示教育，每年至少开展1次警示教育活动。', dept: '纪委工作办公室' },
+                { role: 'party', cat: '七、加强纪律建设', sub: '支持纪委', detail: '定期听取纪委汇报；每半年与纪委开展1次全面从严治党专题会商。', dept: '纪委工作办公室' },
+                { role: 'party', cat: '七、加强纪律建设', sub: '纪律教育', detail: '开展党章党规党纪学习，教育引导党员干部知敬畏、存戒惧、守底线。', dept: '纪委工作办公室' },
+                { role: 'party', cat: '八、推进反腐败斗争', sub: '三不腐', detail: '一体推进不敢腐、不能腐、不想腐；加强新时代廉洁文化建设。', dept: '纪委工作办公室' },
+                { role: 'party', cat: '九、落实制度治党', sub: '制度体系', detail: '全方位开展党内法规制度清理、修订；加强合规管理体系建设。', dept: '党群/纪委/行政' },
+
+                // 2. 纪委监督责任 (附件2)
+                { role: 'discipline', cat: '一、强化组织协调', sub: '协助党委', detail: '协助制定计划、目标、措施；协助召开年度党风廉政会议，组织签订《责任书》。', dept: '党群工作中心' },
+                { role: 'discipline', cat: '一、强化组织协调', sub: '协同会商', detail: '落实每半年1次的全面从严治党专题会议；落实至少每年4次的纪委与党委沟通会商机制。', dept: '党群工作中心' },
+                { role: 'discipline', cat: '一、强化组织协调', sub: '推动一岗双责', detail: '不定期向班子成员通报分管领域廉洁情况，推动其抓好分管领域工作。', dept: '党群工作中心' },
+                { role: 'discipline', cat: '一、强化组织协调', sub: '协助谈话', detail: '协助党委书记每年至少与下级“一把手”开展1次监督谈话。', dept: '人力资源管理中心' },
+                { role: 'discipline', cat: '一、强化组织协调', sub: '任前谈话', detail: '纪委书记每年至少与下级“一把手”开展1次监督谈话，对新任干部开展任前廉洁谈话。', dept: '人力资源管理中心' },
+                { role: 'discipline', cat: '二、强化监督检查', sub: '政治监督', detail: '建立政治监督台账，监督习近平总书记重要指示批示精神落实情况。', dept: '党群工作中心' },
+                { role: 'discipline', cat: '二、强化监督检查', sub: '日常监督', detail: '加强对“一把手”和领导班子监督；严把选人用人关，规范回复党风廉政意见。', dept: '人力资源管理中心' },
+                { role: 'discipline', cat: '三、强化作风建设', sub: '专项整治', detail: '开展违规吃喝、违规快递收送礼品礼金等专项整治；查处享乐主义、奢靡之风。', dept: '行政/财务中心' },
+                { role: 'discipline', cat: '四、强化纪律建设', sub: '执纪问责', detail: '精准运用“四种形态”，抓早抓小；严格执行纪律规定，严肃查处违纪问题。', dept: '人力资源管理中心' },
+                { role: 'discipline', cat: '四、强化纪律建设', sub: '一案双查', detail: '对发生重大腐败案件或不正之风蔓延的，既追究当事人责任，也倒查领导责任。', dept: '党群/人力' },
+                { role: 'discipline', cat: '四、强化纪律建设', sub: '以案促改', detail: '加强类案分析，规范用好《纪律检查建议书》。', dept: '相关业务部门' },
+                { role: 'discipline', cat: '五、加强自我监督', sub: '请示报告', detail: '严格执行请示报告制度，定期报送线索处置、案件查办情况。', dept: '上级纪委' },
+                { role: 'discipline', cat: '五、加强自我监督', sub: '队伍建设', detail: '每年组织开展一次纪检巡察干部培训。', dept: '人力资源管理中心' },
+
+                // 3. 党委书记第一责任 (附件3)
+                { role: 'secretary', cat: '一、加强组织推动', sub: '四个亲自', detail: '重要工作亲自部署、重大问题亲自过问、重点环节亲自协调、重要案件亲自督办。', dept: '党委办公室' },
+                { role: 'secretary', cat: '一、加强组织推动', sub: '主持会议', detail: '主持召开党委会、党建工作会、党风廉政会；定期听取汇报，分析研判形势。', dept: '党委办公室' },
+                { role: 'secretary', cat: '一、加强组织推动', sub: '党业融合', detail: '坚持党建与业务同谋划、同部署、同落实、同检查。', dept: '战略/经营中心' },
+                { role: 'secretary', cat: '二、抓好督促落实', sub: '层层压实', detail: '督促班子成员和子公司书记履职；将监督下级一把手情况纳入本人述职报告。', dept: '党群/纪委' },
+                { role: 'secretary', cat: '二、抓好督促落实', sub: '支持纪委', detail: '主动接受监督，支持纪委查处问题，巩固完善定期会商机制。', dept: '纪委工作办公室' },
+                { role: 'secretary', cat: '三、管住“关键少数”', sub: '严管班子', detail: '定期与班子成员谈心谈话，发现并纠正苗头性问题。', dept: '党委办公室' },
+                { role: 'secretary', cat: '三、管住“关键少数”', sub: '材料审阅', detail: '亲自审阅班子成员民主生活会对照检查材料，督促履行“一岗双责”。', dept: '党委办公室' },
+                { role: 'secretary', cat: '三、管住“关键少数”', sub: '监督谈话', detail: '每年至少与下级“一把手”开展1次“一对一”监督谈话。', dept: '纪委/人力' },
+                { role: 'secretary', cat: '四、发挥表率作用', sub: '政治表率', detail: '带头增强“四个意识”、坚定“四个自信”、做到“两个维护”。', dept: '本人' },
+                { role: 'secretary', cat: '四、发挥表率作用', sub: '严格自律', detail: '带头执行“三重一大”制度，如实报告个人事项，自觉接受监督。', dept: '人力资源管理中心' },
+
+                // 4. 班子成员一岗双责 (附件4)
+                { role: 'team', cat: '一、协助落实主体责任', sub: '协助履职', detail: '协助抓好全面从严治党工作，参与、执行、落实党委集体决策。', dept: '分管部门' },
+                { role: 'team', cat: '一、协助落实主体责任', sub: '述责报告', detail: '每年向党委书记报告分管领域全面从严治党工作。', dept: '党委办公室' },
+                { role: 'team', cat: '一、协助落实主体责任', sub: '支持监督', detail: '主动揭露分管范围内违纪问题，支持党委纪委履职，对苗头性问题早提醒。', dept: '纪委工作办公室' },
+                { role: 'team', cat: '二、组织落实分管责任', sub: '领导督促', detail: '每半年听取1次分管部门落实情况汇报，每半年至少研究1次党建工作。', dept: '分管部门' },
+                { role: 'team', cat: '二、组织落实分管责任', sub: '贯彻部署', detail: '结合分管工作研究提出贯彻落实中央决策的方案，定期听取汇报。', dept: '分管部门' },
+                { role: 'team', cat: '二、组织落实分管责任', sub: '推动整改', detail: '督促分管部门落实上级党建考核、巡视巡察、审计发现问题的整改任务。', dept: '分管部门' },
+                { role: 'team', cat: '二、组织落实分管责任', sub: '廉洁教育', detail: '每年至少为分管部门/联系点讲授1次专题党课。', dept: '分管部门' },
+                { role: 'team', cat: '二、组织落实分管责任', sub: '廉洁谈话', detail: '每年至少与分管部门负责人开展1次廉洁谈话。', dept: '分管部门' },
+                { role: 'team', cat: '三、严格自律', sub: '个人守纪', detail: '严格执行“三重一大”，如实报告个人事项，管好配偶、子女及身边工作人员。', dept: '人力资源管理中心' },
+                { role: 'team', cat: '三、严格自律', sub: '接受监督', detail: '在民主生活会上报告履行“一岗双责”情况并接受批评。', dept: '党委办公室' },
+
+                // 5. 党员干部具体责任 (附件5)
+                { role: 'member', cat: '一、带头加强理论学习', sub: '理论武装', detail: '学深悟透习近平新时代中国特色社会主义思想，增强“四个意识”、做到“两个维护”。', dept: '所在党支部' },
+                { role: 'member', cat: '二、带头参加组织生活', sub: '三会一课', detail: '按时参加支部党员大会、党课、主题党日、集中培训；参加组织生活会和民主评议。', dept: '所在党支部' },
+                { role: 'member', cat: '三、带头遵守纪律规矩', sub: '遵规守纪', detail: '严守政治纪律，严格落实中央八项规定精神，秉公办事、廉洁用权。', dept: '所在党支部' },
+                { role: 'member', cat: '三、带头遵守纪律规矩', sub: '保守秘密', detail: '模范遵守法律法规，严格保守党的秘密，服从组织分配。', dept: '所在部门' },
+                { role: 'member', cat: '四、带头发挥模范作用', sub: '履职尽责', detail: '立足岗位，主动承担急难险重任务；密切联系群众，服务群众。', dept: '所在部门' },
+                { role: 'member', cat: '五、带头树立良好家风', sub: '家风建设', detail: '廉洁修身、廉洁齐家，管好亲属和身边工作人员，净化朋友圈。', dept: '家庭/社区' },
+          ];
+
+          // 角色定义
+          const roles = [
+            { id: 'party', label: '党委主体责任', icon: 'Users', color: 'red', desc: '全面领导、整体把控' },
+            { id: 'discipline', label: '纪委监督责任', icon: 'Shield', color: 'blue', desc: '协助职责、监督专责' },
+            { id: 'secretary', label: '书记第一责任', icon: 'UserCheck', color: 'purple', desc: '亲自部署、亲自督办' },
+            { id: 'team', label: '班子一岗双责', icon: 'Briefcase', color: 'orange', desc: '分管领域、双重责任' },
+            { id: 'member', label: '党员干部具体责任', icon: 'User', color: 'green', desc: '遵规守纪、模范带头' },
+          ];
+
+          // 动态计算当前角色的所有类别，用于下拉筛选
+          const categories = useMemo(() => {
+             const currentRoleItems = allData.filter(item => item.role === activeRole);
+             const cats = [...new Set(currentRoleItems.map(item => item.cat))];
+             return cats;
+          }, [activeRole]);
+
+          // 筛选逻辑
+          const filteredList = useMemo(() => {
+            return allData.filter(item => {
+              const matchRole = item.role === activeRole;
+              const matchCat = filterCategory === 'all' || item.cat === filterCategory;
+              const matchSearch = item.detail.includes(searchTerm) || item.sub.includes(searchTerm);
+              return matchRole && matchCat && matchSearch;
+            });
+          }, [activeRole, searchTerm, filterCategory]);
+
+          // 分页逻辑
+          const totalPages = Math.ceil(filteredList.length / itemsPerPage);
+          const currentData = filteredList.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+          return (
+            <div className="min-h-screen bg-slate-50 font-sans text-slate-800 pb-12">
+              {/* Header */}
+              <div className="bg-gradient-to-r from-red-900 to-red-800 text-white p-8 pb-20 relative overflow-hidden">
+                <div className="absolute top-0 right-0 p-8 opacity-10">
+                   <Icon name="Star" size={200} />
+                </div>
+                <div className="max-w-5xl mx-auto text-center relative z-10">
+                  <div className="inline-flex items-center gap-2 bg-yellow-500/20 text-yellow-300 px-4 py-1 rounded-full text-sm font-bold mb-4 border border-yellow-500/40">
+                    <Icon name="Shield" size={16} /> 2025年最新版
+                  </div>
+                  <h1 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight leading-tight">
+                    全面从严治党“五责联动”责任体系
+                  </h1>
+                  <p className="text-red-100 max-w-2xl mx-auto text-lg opacity-90">
+                    构建“明责、履责、督责、考责、问责”闭环体系，推动管党治党责任层层压实。
+                  </p>
+                </div>
+              </div>
+
+              {/* Main Content */}
+              <div className="max-w-6xl mx-auto px-4 -mt-12 relative z-10">
+                
+                {/* Navigation Tabs */}
+                <div className="bg-white rounded-xl shadow-lg p-2 mb-8 flex flex-wrap justify-center gap-2 border border-gray-100">
+                  {[
+                    { id: 'system', label: '① 五责联动体系图', icon: 'Layers' },
+                    { id: 'lists', label: '② 责任清单速查', icon: 'CheckSquare' },
+                    { id: 'implementation', label: '③ 五大体系建设', icon: 'Target' },
+                  ].map((tab) => (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex items-center gap-2 px-6 py-3 rounded-lg font-bold transition-all ${
+                        activeTab === tab.id 
+                          ? 'bg-red-50 text-red-700 ring-1 ring-red-200 shadow-sm' 
+                          : 'text-gray-500 hover:bg-gray-50'
+                      }`}
+                    >
+                      <Icon name={tab.icon} size={18} />
+                      {tab.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* --- TAB 1: SYSTEM OVERVIEW (体系图) --- */}
+                {activeTab === 'system' && (
+                  <div className="space-y-6 animate-in fade-in zoom-in duration-300">
+                     <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                        <div className="text-center mb-10">
+                          <h2 className="text-2xl font-bold text-gray-800">“五责联动”责任运行机制</h2>
+                          <p className="text-gray-500 mt-2">横向协同、纵向贯通，形成齐抓共管合力</p>
+                        </div>
+
+                        <div className="relative max-w-4xl mx-auto min-h-[400px] flex flex-col items-center justify-center">
+                           {/* Central Core */}
+                           <div className="relative z-20 bg-red-600 text-white w-48 h-48 rounded-full flex flex-col items-center justify-center shadow-xl border-4 border-red-100 animate-pulse-slow">
+                              <Icon name="Users" size={48} className="mb-2" />
+                              <div className="font-bold text-xl">党委主体责任</div>
+                              <div className="text-xs opacity-80 mt-1">全面领导 整体把控</div>
+                           </div>
+
+                           {/* Satellites */}
+                           <div className="absolute w-full h-full max-w-lg animate-spin-slow-reverse">
+                              {/* Top Left - Secretary */}
+                              <div className="absolute top-0 left-0 bg-white p-4 rounded-xl shadow-lg border-l-4 border-purple-600 w-48 hover:scale-105 transition-transform">
+                                 <div className="flex items-center gap-2 text-purple-700 font-bold mb-1">
+                                    <Icon name="UserCheck" size={20}/> 书记第一责任
+                                 </div>
+                                 <p className="text-xs text-gray-600">既挂帅又出征，管好班子带好队伍</p>
+                              </div>
+
+                              {/* Top Right - DIC */}
+                              <div className="absolute top-0 right-0 bg-white p-4 rounded-xl shadow-lg border-l-4 border-blue-600 w-48 hover:scale-105 transition-transform">
+                                 <div className="flex items-center gap-2 text-blue-700 font-bold mb-1">
+                                    <Icon name="Shield" size={20}/> 纪委监督责任
+                                 </div>
+                                 <p className="text-xs text-gray-600">协助党委推进，强化监督执纪问责</p>
+                              </div>
+
+                              {/* Bottom Left - Team */}
+                              <div className="absolute bottom-10 left-0 bg-white p-4 rounded-xl shadow-lg border-l-4 border-orange-500 w-48 hover:scale-105 transition-transform">
+                                 <div className="flex items-center gap-2 text-orange-600 font-bold mb-1">
+                                    <Icon name="Briefcase" size={20}/> 班子一岗双责
+                                 </div>
+                                 <p className="text-xs text-gray-600">管业务必须管党建，管廉洁，管风险</p>
+                              </div>
+
+                              {/* Bottom Right - Member */}
+                              <div className="absolute bottom-10 right-0 bg-white p-4 rounded-xl shadow-lg border-l-4 border-green-600 w-48 hover:scale-105 transition-transform">
+                                 <div className="flex items-center gap-2 text-green-700 font-bold mb-1">
+                                    <Icon name="User" size={20}/> 党员具体责任
+                                 </div>
+                                 <p className="text-xs text-gray-600">立足岗位，遵规守纪，发挥先锋模范作用</p>
+                              </div>
+                           </div>
+
+                           {/* Connecting Lines (Visual Decor) */}
+                           <div className="absolute z-0 w-80 h-80 border-2 border-dashed border-gray-200 rounded-full"></div>
+                           <div className="absolute z-0 w-[500px] h-[500px] border border-gray-100 rounded-full"></div>
+                        </div>
+
+                        <div className="mt-8 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                           <h3 className="font-bold text-gray-800 mb-3 flex items-center gap-2">
+                             <Icon name="Star" className="text-yellow-500" fill="currentColor" size={18}/> 联动机制核心：
+                           </h3>
+                           <div className="grid md:grid-cols-3 gap-4 text-sm">
+                              <div className="bg-white p-3 rounded shadow-sm">
+                                 <strong className="block text-gray-900 mb-1">协同会商</strong>
+                                 党委与纪委每半年会商1次，分析研判政治生态。
+                              </div>
+                              <div className="bg-white p-3 rounded shadow-sm">
+                                 <strong className="block text-gray-900 mb-1">述职考评</strong>
+                                 将履责情况纳入年度考核，述职必述责。
+                              </div>
+                              <div className="bg-white p-3 rounded shadow-sm">
+                                 <strong className="block text-gray-900 mb-1">责任传导</strong>
+                                 通过谈心谈话、检查督导，将压力传导至基层。
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                )}
+
+                {/* --- TAB 2: LISTS (责任清单速查 - 核心升级点) --- */}
+                {activeTab === 'lists' && (
+                  <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+                    
+                    {/* Role Filter Buttons */}
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
+                       {roles.map(role => (
+                         <button
+                           key={role.id}
+                           onClick={() => { setActiveRole(role.id); setFilterCategory('all'); setCurrentPage(1); setSearchTerm(''); }}
+                           className={`p-4 rounded-xl border-2 transition-all flex flex-col items-center gap-2 relative overflow-hidden ${
+                             activeRole === role.id 
+                               ? `border-${role.color}-500 bg-white text-${role.color}-700 shadow-md ring-1 ring-${role.color}-500` 
+                               : 'border-transparent bg-white hover:bg-gray-50 text-gray-500 shadow-sm'
+                           }`}
+                         >
+                            <div className={`absolute top-0 right-0 p-1 bg-${role.color}-100 rounded-bl-lg`}>
+                                <Icon name={role.icon} size={14} className={`text-${role.color}-600`} />
+                            </div>
+                            <span className="font-bold text-sm mt-2">{role.label}</span>
+                         </button>
+                       ))}
+                    </div>
+
+                    {/* Quick Reference Table Container */}
+                    <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden min-h-[600px] flex flex-col">
+                       
+                       {/* Toolbar */}
+                       <div className="p-4 border-b border-gray-100 bg-gray-50/50 flex flex-col md:flex-row justify-between items-center gap-4">
+                          <div className="flex items-center gap-3">
+                             <div className={`p-2 rounded-lg bg-${roles.find(r=>r.id===activeRole).color}-100 text-${roles.find(r=>r.id===activeRole).color}-700`}>
+                                <Icon name="CheckSquare" size={20}/>
+                             </div>
+                             <div>
+                                <h3 className="font-bold text-gray-800 text-lg">{roles.find(r=>r.id===activeRole).label}速查</h3>
+                                <p className="text-xs text-gray-500">共 {filteredList.length} 条</p>
+                             </div>
+                          </div>
+                          
+                          <div className="flex gap-2 w-full md:w-auto">
+                            {/* Category Filter */}
+                            <div className="relative">
+                                <select 
+                                    className="appearance-none pl-8 pr-8 py-2 border border-gray-300 rounded-lg text-sm bg-white focus:outline-none focus:ring-2 focus:ring-red-500 h-full w-full md:w-40 cursor-pointer"
+                                    value={filterCategory}
+                                    onChange={(e) => {setFilterCategory(e.target.value); setCurrentPage(1);}}
+                                >
+                                    <option value="all">所有责任类别</option>
+                                    {categories.map((cat, idx) => (
+                                        <option key={idx} value={cat}>{cat}</option>
+                                    ))}
+                                </select>
+                                <Icon name="Filter" className="absolute left-2.5 top-1/2 -translate-y-1/2 text-gray-400" size={14}/>
+                            </div>
+
+                            {/* Search Input */}
+                            <div className="relative flex-grow">
+                                <Icon name="Search" className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
+                                <input 
+                                  type="text" 
+                                  placeholder="搜索具体要求..." 
+                                  value={searchTerm}
+                                  className="pl-9 pr-4 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-500 w-full md:w-56"
+                                  onChange={(e) => {setSearchTerm(e.target.value); setCurrentPage(1);}}
+                                />
+                            </div>
+                          </div>
+                       </div>
+
+                       {/* Table Header */}
+                       <div className="hidden md:grid grid-cols-12 bg-gray-100 text-gray-600 font-bold text-xs uppercase py-3 px-6 border-b border-gray-200">
+                          <div className="col-span-2">一级责任类别</div>
+                          <div className="col-span-2">二级具体任务</div>
+                          <div className="col-span-6">具体工作要求 (考核重点)</div>
+                          <div className="col-span-2 text-right">责任/协助部门</div>
+                       </div>
+
+                       {/* Table Body */}
+                       <div className="flex-grow overflow-y-auto">
+                          {currentData.length > 0 ? (
+                            currentData.map((item, idx) => (
+                               <div key={idx} className="grid grid-cols-1 md:grid-cols-12 py-4 px-6 border-b border-gray-100 hover:bg-blue-50/30 transition-colors items-start text-sm group table-row-hover">
+                                  <div className="col-span-1 md:col-span-2 font-medium text-gray-900 pr-2 mb-1 md:mb-0">
+                                     <span className="md:hidden text-xs text-gray-400 mr-2">类别:</span>
+                                     {item.cat}
+                                  </div>
+                                  <div className="col-span-1 md:col-span-2 text-gray-600 pr-2 flex items-center gap-2 mb-1 md:mb-0">
+                                     <span className="md:hidden text-xs text-gray-400 mr-2">任务:</span>
+                                     <div className="hidden md:block w-1.5 h-1.5 rounded-full bg-gray-300 group-hover:bg-red-400"></div>
+                                     {item.sub}
+                                  </div>
+                                  <div className="col-span-1 md:col-span-6 text-gray-700 leading-relaxed pr-4 mb-2 md:mb-0">
+                                     <span className="md:hidden text-xs text-gray-400 mr-2 block mb-1">要求:</span>
+                                     {item.detail}
+                                  </div>
+                                  <div className="col-span-1 md:col-span-2 md:text-right">
+                                     <span className={`inline-block px-2 py-1 rounded text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200`}>
+                                        {item.dept}
+                                     </span>
+                                  </div>
+                               </div>
+                            ))
+                          ) : (
+                            <div className="p-12 text-center text-gray-400 flex flex-col items-center">
+                               <Icon name="Search" size={48} className="mb-4 opacity-20"/>
+                               <p>未找到匹配内容</p>
+                            </div>
+                          )}
+                       </div>
+
+                       {/* Pagination */}
+                       <div className="p-4 border-t border-gray-100 flex justify-between items-center bg-gray-50">
+                          <span className="text-xs text-gray-500">
+                             显示 {((currentPage - 1) * itemsPerPage) + 1} - {Math.min(currentPage * itemsPerPage, filteredList.length)} 条
+                          </span>
+                          <div className="flex gap-1">
+                            <button 
+                              onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
+                              disabled={currentPage === 1}
+                              className="p-1.5 rounded hover:bg-white border border-transparent hover:border-gray-200 disabled:opacity-30"
+                            >
+                              <Icon name="ChevronLeft" size={16}/>
+                            </button>
+                            <span className="px-3 py-1 bg-white border border-gray-200 rounded text-sm font-medium text-gray-700">
+                               {currentPage} / {totalPages}
+                            </span>
+                            <button 
+                              onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
+                              disabled={currentPage === totalPages}
+                              className="p-1.5 rounded hover:bg-white border border-transparent hover:border-gray-200 disabled:opacity-30"
+                            >
+                              <Icon name="ChevronRight" size={16}/>
+                            </button>
+                          </div>
+                       </div>
+                    </div>
+                    
+                    <div className="bg-blue-50 border border-blue-100 p-4 rounded-lg flex gap-3 text-sm text-blue-800">
+                        <Icon name="Star" className="shrink-0 mt-0.5 text-blue-500" size={16}/>
+                        <div>
+                           <strong>责任落实提示：</strong> “牵头/协助部门”一栏标明了具体的责任归属。对于“协助部门”，意味着虽然不是主责，但必须配合牵头部门提供资料、参与会商或执行具体任务。
+                        </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* --- TAB 3: IMPLEMENTATION (五大体系建设) --- */}
+                {activeTab === 'implementation' && (
+                  <div className="space-y-6 animate-in fade-in zoom-in duration-300">
+                     <div className="bg-white p-10 rounded-2xl shadow-sm border border-gray-200 text-center">
+                        <h2 className="text-2xl font-bold text-gray-800 mb-2">五责联动 · 体系架构</h2>
+                        <p className="text-gray-500 mb-10">基于“五大体系”建设实施意见</p>
+                        
+                        <div className="grid md:grid-cols-5 gap-4">
+                           {[
+                             { title: "组织体系", icon: "Users", items: ["上下贯通", "执行有力"] },
+                             { title: "教育体系", icon: "Star", items: ["固本培元", "凝心铸魂"] },
+                             { title: "监管体系", icon: "Shield", items: ["全方位", "全过程"] },
+                             { title: "制度体系", icon: "FileText", items: ["科学完备", "有效管用"] },
+                             { title: "责任体系", icon: "CheckSquare", items: ["主体明确", "要求清晰"] },
+                           ].map((sys, idx) => (
+                              <div key={idx} className="p-6 rounded-xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all">
+                                 <div className="inline-flex p-3 bg-white rounded-full shadow-sm mb-4 text-red-600">
+                                    <Icon name={sys.icon} size={24}/>
+                                 </div>
+                                 <h3 className="font-bold text-gray-900 mb-2">{sys.title}</h3>
+                                 <div className="text-xs text-gray-500 space-y-1">
+                                    {sys.items.map(i => <div key={i}>{i}</div>)}
+                                 </div>
+                              </div>
+                           ))}
+                        </div>
+                        
+                        <div className="mt-10 pt-10 border-t border-gray-100">
+                           <div className="flex items-center justify-center gap-4 text-gray-400 text-sm">
+                              <span>通过“明责、履责、督责、考责、问责”闭环，推动管党治党责任落实</span>
+                           </div>
+                        </div>
+                     </div>
+
+                     <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-200">
+                        <h2 className="text-xl font-bold text-gray-800 mb-6 border-l-4 border-red-600 pl-4">实施意见核心机制</h2>
+                        <div className="space-y-4">
+                           <div className="flex gap-4 p-4 bg-gray-50 rounded-lg">
+                              <div className="shrink-0 font-bold text-red-600 bg-red-100 w-8 h-8 flex items-center justify-center rounded-full">1</div>
+                              <div>
+                                 <h3 className="font-bold text-gray-900">定期会商沟通机制</h3>
+                                 <p className="text-sm text-gray-600 mt-1">党委、纪委定期会商沟通，分析研判公司政治生态情况；纪委定期向党委汇报党风廉政建设和反腐败工作。</p>
+                              </div>
+                           </div>
+                           <div className="flex gap-4 p-4 bg-gray-50 rounded-lg">
+                              <div className="shrink-0 font-bold text-red-600 bg-red-100 w-8 h-8 flex items-center justify-center rounded-full">2</div>
+                              <div>
+                                 <h3 className="font-bold text-gray-900">科学述职考评机制</h3>
+                                 <p className="text-sm text-gray-600 mt-1">将全面从严治党推进情况纳入年度党建考核和领导干部考核评价体系。述职必述责。</p>
+                              </div>
+                           </div>
+                           <div className="flex gap-4 p-4 bg-gray-50 rounded-lg">
+                              <div className="shrink-0 font-bold text-red-600 bg-red-100 w-8 h-8 flex items-center justify-center rounded-full">3</div>
+                              <div>
+                                 <h3 className="font-bold text-gray-900">督促检查和责任追究</h3>
+                                 <p className="text-sm text-gray-600 mt-1">对落实不力、失职失责的，严肃追究主体责任、监督责任和领导责任。</p>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+                )}
+
+              </div>
+              
+              <div className="mt-12 text-center text-gray-400 text-sm">
+                贵州联合纪委工作办内部学习使用
+              </div>
+            </div>
+          );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<GovernanceLearningMap />);
+    </script>
+</body>
+</html>
