@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>常用文书模版下载 - 贵州联合纪委工作办公室</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;
+            --primary-red-hover: #701616;
+            --tech-blue: #1E3A8A;
+            --bg-light: #F8FAFC;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            color: #334155;
+        }
+
+        /* 搜索框聚焦特效 */
+        .search-input:focus {
+            box-shadow: 0 0 0 3px rgba(139, 28, 28, 0.1);
+            border-color: var(--primary-red);
+        }
+
+        /* 文书卡片交互 */
+        .doc-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-left: 4px solid transparent;
+        }
+
+        .doc-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-left-color: var(--primary-red);
+        }
+
+        /* 简单的进入动画 */
+        .fade-in-up {
+            animation: fadeInUp 0.5s ease-out forwards;
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        
+        @keyframes fadeInUp {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 模拟上传区域样式 */
+        .upload-zone {
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%23CBD5E1FF' stroke-width='2' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+            transition: all 0.3s;
+        }
+        .upload-zone:hover {
+            background-color: #F8FAFC;
+            background-image: url("data:image/svg+xml,%3csvg width='100%25' height='100%25' xmlns='http://www.w3.org/2000/svg'%3e%3crect width='100%25' height='100%25' fill='none' rx='12' ry='12' stroke='%238B1C1CFF' stroke-width='2' stroke-dasharray='6%2c 14' stroke-dashoffset='0' stroke-linecap='square'/%3e%3c/svg%3e");
+        }
+        
+        /* 滚动条隐藏 */
+        .category-scroll::-webkit-scrollbar { display: none; }
+        .category-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- 左侧：返回与标题 -->
+                <div class="flex items-center gap-6">
+                    <button onclick="window.history.back()" class="group flex items-center text-gray-500 hover:text-red-900 transition-colors">
+                        <div class="w-10 h-10 rounded-full bg-gray-50 group-hover:bg-red-50 flex items-center justify-center border border-gray-200 group-hover:border-red-100">
+                            <i class="fa-solid fa-arrow-left text-lg"></i>
+                        </div>
+                    </button>
+                    
+                    <div class="h-8 w-px bg-gray-200 hidden md:block"></div>
+
+                    <div class="flex items-center space-x-3">
+                        <div class="w-10 h-10 bg-red-900 rounded-full flex items-center justify-center text-white shadow-md">
+                            <i class="fa-solid fa-folder-open text-sm"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">监督执纪常用文书模版</h1>
+                            <p class="text-xs text-gray-500 tracking-wider">规范化 · 标准化 · 程序化</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：上传按钮 -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openUploadModal()" class="hidden md:flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors shadow-sm">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <span>管理员上传</span>
+                    </button>
+                    <a href="index.html" class="text-sm font-medium text-gray-500 hover:text-red-900 transition px-3">
+                        <i class="fa-solid fa-house"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 搜索与筛选区域 -->
+    <div class="bg-white border-b border-gray-100 py-6 sticky top-20 z-30 shadow-[0_4px_6px_-1px_rgba(0,0,0,0.05)]">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="relative mb-4">
+                <input type="text" id="searchInput" placeholder="查找文书：如“谈话笔录”、“立案”、“函询”..." 
+                    class="search-input w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 text-gray-700 placeholder-gray-400 bg-gray-50 outline-none transition-all shadow-sm">
+                <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+            </div>
+            <div class="flex gap-2 overflow-x-auto category-scroll pb-2" id="categoryContainer"></div>
+        </div>
+    </div>
+
+    <!-- 文书列表区域 -->
+    <main class="flex-grow max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full bg-slate-50">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-bold text-gray-800 border-l-4 border-red-800 pl-3">模版列表</h2>
+            <span class="text-xs text-gray-400" id="resultCount">加载中...</span>
+        </div>
+        <div class="grid gap-4" id="documentList"></div>
+    </main>
+
+    <!-- 上传模态框 -->
+    <div id="uploadModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center backdrop-blur-sm opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-2xl w-full max-w-lg mx-4 shadow-2xl transform scale-95 transition-transform duration-300" id="uploadModalContent">
+            <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+                <h3 class="text-lg font-bold text-gray-800">上传新文书</h3>
+                <button onclick="closeUploadModal()" class="text-gray-400 hover:text-gray-600 transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-4">
+                <div class="upload-zone h-40 rounded-xl flex flex-col items-center justify-center cursor-pointer group" onclick="document.getElementById('fileInput').click()">
+                    <div class="w-12 h-12 bg-slate-50 rounded-full flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-cloud-arrow-up text-slate-400 text-xl group-hover:text-red-800 transition-colors"></i>
+                    </div>
+                    <p class="text-sm font-medium text-gray-600 group-hover:text-red-800">点击或拖拽文件至此</p>
+                    <p class="text-xs text-gray-400 mt-1">支持 DOCX, PDF, XLSX (最大 10MB)</p>
+                    <input type="file" id="fileInput" class="hidden" onchange="handleFileSelect(this)">
+                </div>
+
+                <div id="selectedFileInfo" class="hidden bg-slate-50 p-3 rounded-lg flex items-center justify-between border border-slate-200">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-regular fa-file-word text-blue-600 text-lg"></i>
+                        <div class="text-sm">
+                            <p class="font-bold text-gray-800 line-clamp-1" id="fileNameDisplay">文件名.docx</p>
+                            <p class="text-xs text-gray-500" id="fileSizeDisplay">0 KB</p>
+                        </div>
+                    </div>
+                    <button onclick="clearFile()" class="text-gray-400 hover:text-red-500"><i class="fa-solid fa-trash"></i></button>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-bold text-gray-500 mb-1">文书标题</label>
+                        <input type="text" id="uploadTitle" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-red-800/20 focus:border-red-800 outline-none" placeholder="请输入显示的标题">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">所属分类</label>
+                        <select id="uploadCategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white outline-none">
+                            <!-- JS填充 -->
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 mb-1">文件类型</label>
+                        <select id="uploadType" class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm bg-white outline-none">
+                            <option value="DOCX">Word 文档</option>
+                            <option value="PDF">PDF 文档</option>
+                            <option value="XLSX">Excel 表格</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="uploadProgress" class="hidden">
+                    <div class="flex justify-between text-xs text-gray-500 mb-1">
+                        <span>上传中...</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-1.5">
+                        <div class="bg-red-800 h-1.5 rounded-full transition-all duration-300" style="width: 0%" id="progressBar"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl flex justify-end gap-3">
+                <button onclick="closeUploadModal()" class="px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-200 rounded-lg transition-colors">取消</button>
+                <button onclick="startUpload()" id="btnConfirmUpload" class="px-6 py-2 text-sm font-medium text-white bg-red-900 hover:bg-red-800 rounded-lg shadow-md transition-all disabled:opacity-50 disabled:cursor-not-allowed">确认上传</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p class="mb-1">贵州联合纪委工作办公室 · 内部资料</p>
+            <p>&copy; 2025 All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Toast 提示框 -->
+    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-4 rounded-lg shadow-2xl opacity-0 transition-all duration-300 pointer-events-none z-[60] flex items-center gap-3 translate-y-4">
+        <div class="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" id="toast-spinner"></div>
+        <i class="fa-solid fa-circle-check text-green-400 text-xl hidden" id="toast-icon"></i>
+        <div>
+            <h4 class="font-bold text-sm" id="toast-title">正在请求...</h4>
+            <p class="text-xs text-gray-400" id="toast-msg">请稍候</p>
+        </div>
+    </div>
+
+    <script>
+        // --- 核心升级：文书内容生成器 (支持 A4 竖版 + 公文格式) ---
+        const TemplateEngine = {
+            getTemplate: (title, type) => {
+                // 公文标题样式：方正小标宋简体/黑体，二号字
+                const header = `
+                    <div style="text-align: center; margin-bottom: 40px;">
+                        <h1 style="font-family: 'SimHei', 'Heiti SC', sans-serif; font-size: 22pt; font-weight: normal; margin: 0; line-height: 1.5;">
+                            ${title}
+                        </h1>
+                    </div>
+                `;
+                
+                let content = "";
+                
+                // 正文通用样式：仿宋_GB2312/仿宋，三号字(16pt)，行距28磅
+                const pStyle = "font-family: 'FangSong_GB2312', 'FangSong', 'STFangsong', serif; font-size: 16pt; line-height: 28pt; text-indent: 2em; margin: 0;";
+                const rightStyle = "font-family: 'FangSong_GB2312', 'FangSong', 'STFangsong', serif; font-size: 16pt; line-height: 28pt; text-align: right; margin: 0;";
+                const boldPStyle = "font-family: 'FangSong_GB2312', 'FangSong', 'STFangsong', serif; font-size: 16pt; line-height: 28pt; font-weight: bold; margin: 0;";
+
+                // 根据标题生成内容
+                if (title.includes("谈话笔录")) {
+                    content = `
+                        <p style="${pStyle}">时间：____年__月__日__时__分至__时__分</p>
+                        <p style="${pStyle}">地点：______________________________</p>
+                        <p style="${pStyle}">谈话人：__________________ 记录人：__________________</p>
+                        <p style="${pStyle}">被谈话人：________ 性别：__ 职务：__________ 政治面貌：________</p>
+                        <hr style="border-top: 2px solid #000; margin: 20px 0;"/>
+                        <p style="${boldPStyle} text-indent: 0;">问：我们是XXX纪委的工作人员（出示证件），现就有关问题向你了解情况，请你实事求是地作出回答。</p>
+                        <p style="${pStyle} text-indent: 0;">答：听清楚了。我保证实事求是回答问题。</p>
+                        <br/>
+                        <p style="${boldPStyle} text-indent: 0;">问：[请在此处输入具体问题]</p>
+                        <p style="${pStyle} text-indent: 0;">答：</p>
+                        <br/><br/><br/>
+                        <p style="${rightStyle}">被谈话人（签字）：__________</p>
+                        <p style="${rightStyle}">____年__月__日</p>
+                    `;
+                } else if (title.includes("立案决定书")) {
+                    content = `
+                        <p style="${rightStyle}">XX纪立〔202X〕X号</p>
+                        <br/>
+                        <p style="${boldPStyle} text-indent: 0;">XXX同志：</p>
+                        <p style="${pStyle}">
+                            根据《中国共产党纪律检查机关监督执纪工作规则》等有关规定，经XXX纪委常委会会议研究决定，对你涉嫌违纪问题立案审查。
+                        </p>
+                        <br/><br/><br/><br/>
+                        <p style="${rightStyle}">中共XXX公司纪律检查委员会</p>
+                        <p style="${rightStyle}">____年__月__日</p>
+                    `;
+                } else if (title.includes("函询")) {
+                    content = `
+                        <p style="${rightStyle}">XX纪函〔202X〕X号</p>
+                        <br/>
+                        <p style="${boldPStyle} text-indent: 0;">XXX同志：</p>
+                        <p style="${pStyle}">
+                            近期，我们收到关于反映你的有关问题线索（附后）。根据《中国共产党纪律检查机关监督执纪工作规则》有关规定，现向你进行函询。
+                        </p>
+                        <p style="${pStyle}">
+                            请你对反映的问题作出书面说明，经所在单位党组织主要负责人签字后，于__月__日前报送XXX纪委。
+                        </p>
+                        <br/><br/><br/>
+                        <p style="${rightStyle}">中共XXX公司纪律检查委员会</p>
+                        <p style="${rightStyle}">____年__月__日</p>
+                    `;
+                } else {
+                    content = `
+                        <p style="${pStyle}">
+                            这里是${title}的标准文书内容。请根据实际情况进行编辑。
+                        </p>
+                        <p style="${pStyle}">
+                            （此处为正文内容占位符，正式使用时请替换为规范文本）
+                        </p>
+                        <br/><br/><br/>
+                        <p style="${rightStyle}">XXX单位（印章）</p>
+                        <p style="${rightStyle}">____年__月__日</p>
+                    `;
+                }
+
+                return `
+                    <html xmlns:o='urn:schemas-microsoft-com:office:office' 
+                          xmlns:w='urn:schemas-microsoft-com:office:word' 
+                          xmlns='http://www.w3.org/TR/REC-html40'>
+                    <head>
+                        <meta charset='utf-8'>
+                        <title>${title}</title>
+                        <!-- Word 视图配置 -->
+                        <!--[if gte mso 9]>
+                        <xml>
+                            <w:WordDocument>
+                                <w:View>Print</w:View>
+                                <w:Zoom>100</w:Zoom>
+                                <w:DoNotOptimizeForBrowser/>
+                            </w:WordDocument>
+                        </xml>
+                        <![endif]-->
+                        <style>
+                            /* A4 页面设置 (竖向 Portrait) */
+                            @page Section1 {
+                                size: 21cm 29.7cm;  /* A4 尺寸 */
+                                margin: 3.7cm 2.8cm 3.5cm 2.6cm; /* 上下左右页边距，仿公文标准 */
+                                mso-header-margin: 35.4pt;
+                                mso-footer-margin: 35.4pt;
+                                mso-paper-source: 0;
+                            }
+                            div.Section1 {
+                                page: Section1;
+                            }
+                            /* 全局字体兜底 */
+                            body {
+                                font-family: 'FangSong_GB2312', 'FangSong', 'SimSun', serif;
+                            }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="Section1">
+                            ${header}
+                            ${content}
+                        </div>
+                    </body>
+                    </html>
+                `;
+            }
+        };
+
+        const generateId = () => 'doc_' + Math.random().toString(36).substr(2, 9);
+
+        // --- 1. 数据配置 ---
+        const categories = [
+            { id: 'all', name: '全部' },
+            { id: 'jiandu', name: '监督检查' },
+            { id: 'xiansuo', name: '线索处置' },
+            { id: 'tanhua', name: '谈话函询' },
+            { id: 'chuhe', name: '初步核实' },
+            { id: 'lian', name: '立案审查' },
+            { id: 'shenli', name: '案件审理' },
+            { id: 'caiwu', name: '财物处置' },
+            { id: 'guanli', name: '监督管理' }
+        ];
+
+        let documents = [
+            // 监督检查
+            { title: "出具廉洁从业意见申请单", category: "jiandu", type: "DOCX", desc: "用于征求对相关人员廉洁从业情况的意见。" },
+            { title: "关于XXX同志廉洁从业结论性意见", category: "jiandu", type: "DOCX", desc: "结论性回复模版。" },
+            { title: "领导干部廉政档案（目录及表格）", category: "jiandu", type: "DOCX", desc: "廉政情况表、干部任免审批表等。" },
+            { title: "领导干部谈话记录表", category: "jiandu", type: "DOCX", desc: "约谈提醒、批评教育记录。" },
+            { title: "纪律检查建议书", category: "jiandu", type: "DOCX", desc: "整改建议正式文书。" },
+            // 线索处置
+            { title: "问题线索收文单", category: "xiansuo", type: "DOCX", desc: "记录问题线索来源及批示。" },
+            { title: "问题线索处置呈批表", category: "xiansuo", type: "DOCX", desc: "线索处置方式内部审批表。" },
+            { title: "问题线索转办单", category: "xiansuo", type: "DOCX", desc: "线索流转单据。" },
+            { title: "问题线索移送函", category: "xiansuo", type: "DOCX", desc: "移送其他机构的公函。" },
+            { title: "问题线索登记台账", category: "xiansuo", type: "XLSX", desc: "统计管理问题线索。" },
+            // 谈话函询
+            { title: "开展“走读式”谈话安全预案", category: "tanhua", type: "DOCX", desc: "安全风险评估表。" },
+            { title: "谈话笔录（通用模板）", category: "tanhua", type: "DOCX", desc: "标准谈话笔录格式。" },
+            { title: "委托谈话通知书", category: "tanhua", type: "DOCX", desc: "委托下级谈话通知。" },
+            { title: "函询通知书", category: "tanhua", type: "DOCX", desc: "含回复模板。" },
+            { title: "关于对XXX同志函询情况的报告", category: "tanhua", type: "DOCX", desc: "函询回复研判报告。" },
+            { title: "函询了结告知书", category: "tanhua", type: "DOCX", desc: "予以了结正式文书。" },
+            // 初步核实
+            { title: "初步核实工作方案", category: "chuhe", type: "DOCX", desc: "拟定初核对象及步骤。" },
+            { title: "委托调查函", category: "chuhe", type: "DOCX", desc: "委托协作单位公函。" },
+            { title: "商请协助采取措施/核查信息函", category: "chuhe", type: "DOCX", desc: "商请协助核查文书。" },
+            { title: "初步核实谈话工作方案及提纲", category: "chuhe", type: "DOCX", desc: "初核谈话安排。" },
+            { title: "初步核实情况报告", category: "chuhe", type: "DOCX", desc: "初核总结及建议。" },
+            // 立案审查
+            { title: "立案审查呈批报告及呈批表", category: "lian", type: "DOCX", desc: "立案审查请示报告。" },
+            { title: "立案审查工作方案", category: "lian", type: "DOCX", desc: "审查架构及步骤。" },
+            { title: "立案决定书（套）", category: "lian", type: "DOCX", desc: "正式立案法律文书。" },
+            { title: "立案通知书（套）", category: "lian", type: "DOCX", desc: "通知相关方文书。" },
+            { title: "立案审查谈话笔录", category: "lian", type: "DOCX", desc: "强调审查纪律的笔录。" },
+            { title: "撤销案件决定书", category: "lian", type: "DOCX", desc: "撤销案件文书。" },
+            { title: "违纪事实见面材料", category: "lian", type: "DOCX", desc: "违纪事实核对材料。" },
+            { title: "立案审查情况报告", category: "lian", type: "DOCX", desc: "全案综合报告。" },
+            // 案件审理
+            { title: "商请提前介入审理审批表", category: "shenli", type: "DOCX", desc: "提前介入审批单。" },
+            { title: "移送审理案件形式审核表", category: "shenli", type: "DOCX", desc: "材料交接清单。" },
+            { title: "审理谈话笔录", category: "shenli", type: "DOCX", desc: "审理期间谈话笔录。" },
+            { title: "案件审理报告", category: "shenli", type: "DOCX", desc: "审核认定及处理建议。" },
+            { title: "关于给予相应处分的建议/决定", category: "shenli", type: "DOCX", desc: "处分建议及决定书。" },
+            { title: "诫勉谈话记录表及诫勉书", category: "shenli", type: "DOCX", desc: "轻微违纪处理文书。" },
+            // 财物处置
+            { title: "暂予扣留、封存涉案款物登记表", category: "caiwu", type: "DOCX", desc: "暂扣款物清单。" },
+            { title: "解除暂予扣留、封存涉案款物清单", category: "caiwu", type: "DOCX", desc: "退还款物清单。" },
+            { title: "责令退赔违纪所得决定书及清单", category: "caiwu", type: "DOCX", desc: "退赔决定文书。" },
+            { title: "上交礼品礼金登记表", category: "caiwu", type: "DOCX", desc: "主动上交登记。" },
+            // 监督管理
+            { title: "案卷封面及目录", category: "guanli", type: "DOCX", desc: "案卷归档材料。" },
+            { title: "打听、干预监督执纪工作报告备案表", category: "guanli", type: "DOCX", desc: "违规干预备案。" },
+            { title: "保密承诺书（在岗/离岗）", category: "guanli", type: "DOCX", desc: "纪检干部保密承诺。" }
+        ];
+
+        // 初始化时赋予 ID
+        documents.forEach(doc => {
+            if(!doc.id) doc.id = generateId();
+        });
+
+        // --- 2. 初始化与渲染 ---
+        const categoryContainer = document.getElementById('categoryContainer');
+        const documentList = document.getElementById('documentList');
+        const resultCount = document.getElementById('resultCount');
+        const searchInput = document.getElementById('searchInput');
+        let currentFilter = 'all';
+
+        function initCategories() {
+            categoryContainer.innerHTML = categories.map(cat => `
+                <button 
+                    onclick="filterCategory('${cat.id}')" 
+                    class="category-btn whitespace-nowrap px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 border ${cat.id === 'all' ? 'bg-red-800 text-white border-red-800 shadow-md' : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50'}"
+                    data-id="${cat.id}"
+                >
+                    ${cat.name}
+                </button>
+            `).join('');
+            
+            const uploadSelect = document.getElementById('uploadCategory');
+            uploadSelect.innerHTML = categories.filter(c => c.id !== 'all').map(c => `
+                <option value="${c.id}">${c.name}</option>
+            `).join('');
+        }
+
+        function renderDocuments(docs) {
+            if (docs.length === 0) {
+                documentList.innerHTML = `
+                    <div class="text-center py-12 text-gray-400">
+                        <i class="fa-regular fa-folder-open text-4xl mb-3 opacity-50"></i>
+                        <p>未找到相关文书</p>
+                    </div>
+                `;
+                resultCount.innerText = "暂无结果";
+                return;
+            }
+
+            documentList.innerHTML = docs.map((doc, index) => {
+                let iconClass = "text-blue-600 bg-blue-50";
+                if(doc.type === 'XLSX') iconClass = "text-green-600 bg-green-50";
+                if(doc.type === 'PDF') iconClass = "text-red-600 bg-red-50";
+
+                const catName = categories.find(c => c.id === doc.category)?.name || '通用';
+
+                return `
+                <div class="doc-card bg-white p-5 rounded-xl shadow-sm border border-gray-100 flex items-start gap-4 group relative" style="animation-delay: ${index * 0.05}s">
+                    <div class="flex-shrink-0 w-12 h-12 rounded-lg ${iconClass} flex flex-col items-center justify-center border border-opacity-20 border-gray-300">
+                        <i class="fa-regular ${doc.type === 'XLSX' ? 'fa-file-excel' : (doc.type === 'PDF' ? 'fa-file-pdf' : 'fa-file-word')} text-xl"></i>
+                        <span class="text-[9px] font-bold mt-0.5">${doc.type}</span>
+                    </div>
+                    
+                    <div class="flex-grow min-w-0">
+                        <div class="flex items-center gap-2 mb-1 flex-wrap">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-100 text-slate-600 border border-slate-200">${catName}</span>
+                            <h3 class="text-base font-bold text-gray-800 group-hover:text-red-800 transition-colors truncate w-full md:w-auto" title="${doc.title}">${doc.title}</h3>
+                        </div>
+                        <p class="text-xs text-gray-500 leading-relaxed line-clamp-2 md:line-clamp-1">${doc.desc}</p>
+                    </div>
+
+                    <div class="flex-shrink-0 ml-2 flex items-center gap-2">
+                        <!-- 注意：这里传递的是 id 和 title，用于生成 -->
+                        <button onclick="downloadDocument('${doc.title}', '${doc.type}', '${doc.fileUrl || ''}')" class="btn-download bg-white hover:bg-blue-50 text-gray-600 hover:text-blue-700 border border-gray-200 hover:border-blue-200 w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-sm group-hover:border-blue-300" title="下载">
+                            <i class="fa-solid fa-download text-sm"></i>
+                        </button>
+                        <button onclick="deleteDocument('${doc.id}')" class="btn-download bg-white hover:bg-red-50 text-gray-400 hover:text-red-700 border border-gray-200 hover:border-red-200 w-9 h-9 rounded-full flex items-center justify-center transition-all shadow-sm group-hover:border-red-300" title="删除">
+                            <i class="fa-solid fa-trash-can text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+                `;
+            }).join('');
+
+            document.querySelectorAll('.doc-card').forEach(card => card.classList.add('fade-in-up'));
+            resultCount.innerText = `共 ${docs.length} 个模版`;
+        }
+
+        function applyFilters() {
+            const query = searchInput.value.toLowerCase().trim();
+            const filtered = documents.filter(doc => {
+                const matchCat = currentFilter === 'all' || doc.category === currentFilter;
+                const matchSearch = doc.title.toLowerCase().includes(query) || doc.desc.toLowerCase().includes(query);
+                return matchCat && matchSearch;
+            });
+            renderDocuments(filtered);
+        }
+
+        window.filterCategory = function(id) {
+            currentFilter = id;
+            document.querySelectorAll('.category-btn').forEach(btn => {
+                const btnId = btn.getAttribute('data-id');
+                if (btnId === id) {
+                    btn.classList.remove('bg-white', 'text-gray-600', 'border-gray-200', 'hover:bg-gray-50');
+                    btn.classList.add('bg-red-800', 'text-white', 'border-red-800', 'shadow-md');
+                } else {
+                    btn.classList.add('bg-white', 'text-gray-600', 'border-gray-200', 'hover:bg-gray-50');
+                    btn.classList.remove('bg-red-800', 'text-white', 'border-red-800', 'shadow-md');
+                }
+            });
+            applyFilters();
+        };
+
+        window.deleteDocument = function(id) {
+            if(confirm("确定要删除这个文书模版吗？此操作不可撤销。")) {
+                documents = documents.filter(doc => doc.id !== id);
+                applyFilters();
+                
+                const toast = document.getElementById('toast');
+                const icon = document.getElementById('toast-icon');
+                const title = document.getElementById('toast-title');
+                const msg = document.getElementById('toast-msg');
+                const spinner = document.getElementById('toast-spinner');
+                
+                toast.classList.remove('opacity-0', 'translate-y-4');
+                spinner.classList.add('hidden');
+                icon.classList.remove('hidden');
+                icon.className = "fa-solid fa-trash-can text-red-500 text-xl";
+                title.innerText = "删除成功";
+                msg.innerText = "模版已从列表中移除";
+                
+                setTimeout(() => toast.classList.add('opacity-0', 'translate-y-4'), 2000);
+            }
+        };
+
+        // --- 核心：下载处理 ---
+        window.downloadDocument = function(title, type, existingUrl) {
+            // 如果有上传生成的 URL，优先使用
+            if (existingUrl && existingUrl.startsWith('blob:')) {
+                const link = document.createElement('a');
+                link.href = existingUrl;
+                link.download = `${title}.${type.toLowerCase()}`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                return;
+            }
+
+            // 否则，实时生成文件
+            const toast = document.getElementById('toast');
+            const spinner = document.getElementById('toast-spinner');
+            const icon = document.getElementById('toast-icon');
+            const toastTitle = document.getElementById('toast-title');
+            const msg = document.getElementById('toast-msg');
+
+            toast.classList.remove('opacity-0', 'translate-y-4');
+            spinner.classList.remove('hidden');
+            icon.classList.add('hidden');
+            toastTitle.innerText = "正在生成文书...";
+            msg.innerText = "根据标准模版合成文件中";
+
+            setTimeout(() => {
+                try {
+                    // 获取生成的内容
+                    const content = TemplateEngine.getTemplate(title, type);
+                    
+                    // 创建 Blob (MIME 类型设为 Word)
+                    const blob = new Blob([content], { type: 'application/msword;charset=utf-8' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    // 触发下载
+                    const link = document.createElement('a');
+                    link.href = url;
+                    link.download = `${title}.doc`; // 导出为 doc 格式，兼容性最好
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                    
+                    // 成功提示
+                    spinner.classList.add('hidden');
+                    icon.classList.remove('hidden');
+                    icon.className = "fa-solid fa-circle-check text-green-400 text-xl"; 
+                    toastTitle.innerText = "下载成功";
+                    msg.innerText = "文件已保存到本地";
+                } catch (e) {
+                    console.error(e);
+                    toastTitle.innerText = "下载失败";
+                    msg.innerText = "生成文件时出错";
+                }
+
+                setTimeout(() => toast.classList.add('opacity-0', 'translate-y-4'), 2000);
+            }, 800);
+        };
+
+        // --- 4. 上传模态框逻辑 ---
+        const modal = document.getElementById('uploadModal');
+        const modalContent = document.getElementById('uploadModalContent');
+        let selectedFile = null;
+
+        window.openUploadModal = function() {
+            modal.classList.remove('hidden');
+            requestAnimationFrame(() => {
+                modal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            });
+        }
+
+        window.closeUploadModal = function() {
+            modal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                clearFile(); 
+            }, 300);
+        }
+
+        window.handleFileSelect = function(input) {
+            if (input.files && input.files[0]) {
+                const file = input.files[0];
+                selectedFile = file;
+                
+                document.getElementById('fileNameDisplay').innerText = file.name;
+                document.getElementById('fileSizeDisplay').innerText = (file.size / 1024).toFixed(1) + ' KB';
+                document.getElementById('uploadTitle').value = file.name.split('.')[0];
+                
+                const ext = file.name.split('.').pop().toLowerCase();
+                if(ext.includes('doc')) document.getElementById('uploadType').value = 'DOCX';
+                if(ext.includes('pdf')) document.getElementById('uploadType').value = 'PDF';
+                if(ext.includes('xls')) document.getElementById('uploadType').value = 'XLSX';
+
+                document.querySelector('.upload-zone').classList.add('hidden');
+                document.getElementById('selectedFileInfo').classList.remove('hidden');
+                document.getElementById('btnConfirmUpload').disabled = false;
+            }
+        }
+
+        window.clearFile = function() {
+            selectedFile = null;
+            document.getElementById('fileInput').value = '';
+            document.querySelector('.upload-zone').classList.remove('hidden');
+            document.getElementById('selectedFileInfo').classList.add('hidden');
+            document.getElementById('uploadProgress').classList.add('hidden');
+            document.getElementById('btnConfirmUpload').disabled = true;
+            document.getElementById('uploadTitle').value = '';
+        }
+
+        window.startUpload = function() {
+            if (!selectedFile) return;
+
+            const progressBar = document.getElementById('progressBar');
+            const progressPercent = document.getElementById('progressPercent');
+            const progressDiv = document.getElementById('uploadProgress');
+            const btn = document.getElementById('btnConfirmUpload');
+
+            progressDiv.classList.remove('hidden');
+            btn.disabled = true;
+            btn.innerText = "上传中...";
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 20;
+                if (progress > 100) progress = 100;
+                
+                progressBar.style.width = `${progress}%`;
+                progressPercent.innerText = `${Math.floor(progress)}%`;
+
+                if (progress === 100) {
+                    clearInterval(interval);
+                    
+                    const fakeUrl = URL.createObjectURL(selectedFile);
+                    
+                    const newDoc = {
+                        id: generateId(),
+                        title: document.getElementById('uploadTitle').value,
+                        category: document.getElementById('uploadCategory').value,
+                        type: document.getElementById('uploadType').value,
+                        fileUrl: fakeUrl, // 记录这个 URL
+                        desc: "管理员刚刚上传的最新文书。",
+                    };
+                    
+                    documents.unshift(newDoc);
+                    applyFilters();
+
+                    setTimeout(() => {
+                        closeUploadModal();
+                        const toast = document.getElementById('toast');
+                        const icon = document.getElementById('toast-icon');
+                        const title = document.getElementById('toast-title');
+                        const msg = document.getElementById('toast-msg');
+                        const spinner = document.getElementById('toast-spinner');
+                        
+                        toast.classList.remove('opacity-0', 'translate-y-4');
+                        spinner.classList.add('hidden');
+                        icon.classList.remove('hidden');
+                        icon.className = "fa-solid fa-circle-check text-green-400 text-xl";
+                        title.innerText = "上传成功";
+                        msg.innerText = "文档已添加到列表顶部";
+                        
+                        setTimeout(() => toast.classList.add('opacity-0', 'translate-y-4'), 2000);
+                        
+                        btn.innerText = "确认上传";
+                    }, 500);
+                }
+            }, 200);
+        }
+
+        searchInput.addEventListener('input', applyFilters);
+
+        document.addEventListener("DOMContentLoaded", function() {
+            initCategories();
+            renderDocuments(documents);
+        });
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中国保利集团有限公司纪委监督执纪工作实施细则（试行） - 学习资料库</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="zsksy.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-file-shield text-red-800"></i> 监督执纪工作实施细则
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">保集党纪字[2022]10号 · 内部试行</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字搜索细则内容..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 头部标题区 -->
+                <div class="text-center border-b-2 border-red-800/10 pb-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-red-900 mb-4 serif-font">中国保利集团有限公司<br>纪委监督执纪工作实施细则（试行）</h2>
+                    <div class="text-sm text-gray-500 space-y-2">
+                        <p>保集党纪字[2022]10号</p>
+                    </div>
+                </div>
+
+                <!-- 正文内容 (Prose) -->
+                <div class="prose prose-slate max-w-none text-justify space-y-6 leading-relaxed text-gray-800">
+                    
+                    <div class="bg-gray-50 p-4 rounded-lg text-sm text-gray-600 mb-6">
+                        <p><strong>前言：</strong>为进一步提升中国保利集团有限公司（以下简称“集团公司”）各级纪委监督执纪水平，细化各项工作流程，加强内控机制，根据《中国共产党章程》、《中国共产党纪律检查委员会工作条例》、《中国共产党纪律检查机关监督执纪工作规则》等党内法规以及党中央、中央纪委国家监委的相关精神，结合工作实际，制定本实施细则。</p>
+                    </div>
+
+                    <!-- 第一章 监督检查 -->
+                    <section id="chapter-1" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4">第一章 监督检查</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第一条</strong> 集团公司各级纪委对本级及所属企业履行党内监督责任，结合纪律监督、综合监督、巡视巡察监督等，重点检查遵守、执行党章党规党纪和宪法法律法规，坚定理想信念，树牢“四个意识”，坚定“四个自信”，做到“两个维护”，贯彻执行党和国家的路线方针政策以及重大决策部署，坚持主动作为、真抓实干，落实全面从严治党责任、民主集中制原则、选人用人规定以及中央八项规定精神，巡视巡察整改，依法履职、秉公用权、廉洁从政从业以及恪守社会道德规范等情况。对发现的问题分类处置、督促整改。</p>
+                            <p><strong class="text-red-800">第二条</strong> 各级纪委及时向同级党委报告日常监督中发现的普遍性问题或者突出问题，经常与党委书记就作风建设、廉洁风险、问题线索等交换意见，提出监督建议，向同级党委报告全面从严治党、党风廉政建设和反腐败工作，综合分析全系统政治生态情况，提出加强和改进的意见以及措施，并抓好组织实施和督促检查。</p>
+                            <p><strong class="text-red-800">第三条</strong> 各级纪委相关职能部门应当结合被监督对象的职责，加强对行使权力情况的日常监督，通过多种方式了解被监督对象的思想、工作、作风、生活情况，发现苗头性、倾向性问题或者轻微违纪问题，应当及时约谈提醒、批评教育、责令检查、诫勉谈话，提高监督的针对性和实效性。</p>
+                            <p><strong class="text-red-800">第四条</strong> 信访案管部门应当畅通来信、来访、来电和网络等举报渠道，及时受理检举控告，准确填报纪检监察机关案件监督管理系统，发挥党员和群众的监督作用。</p>
+                            <p><strong class="text-red-800">第五条</strong> 信访案管部门应当建立健全同级党委管理在职干部的廉政档案，指定专人负责管理并动态更新。</p>
+                            <p><strong class="text-red-800">第六条</strong> 信访案管部门根据掌握的情况及时回复党风廉政意见，对反映被征求对象的问题线索进行认真核查，综合运用好巡视巡察等其他监督成果，严把选人用人政治关、品行关、作风关、廉洁关。</p>
+                            <p><strong class="text-red-800">第七条</strong> 各级纪委相关职能部门对监督中发现的突出问题，应当经纪委书记批准后，向有关党组织或者单位提出纪律检查建议，通过督促召开专题民主生活会、组织开展专项检查等方式，督查督办，推动整改。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第二章 线索处置 -->
+                    <section id="chapter-2" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第二章 线索处置</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第八条</strong> 信访案管部门归口受理同级党委管理的党组织和党员、干部职工涉嫌违纪或者职务违法、职务犯罪问题的信访举报，统一接收有关纪检监察机关以及其它单位移交的相关信访举报，深入分析信访形势，及时反映损害群众最关心、最直接、最现实的利益问题。<br>负责统一接收上级纪委转办交办、本级其他职能部门移送、地方纪委监委转来、下级纪委报送以及巡视巡察工作机构和审计机关、行政执法机关、司法机关等单位移交的涉嫌违纪问题线索。<br>对于反映内容不属于纪检受理范围的，及时转交相关职能部门处理。</p>
+                            <p><strong class="text-red-800">第九条</strong> 信访案管部门指定专人对问题线索统收统管，逐件编号登记，动态更新、定期汇总核对，应当建立健全问题线索台账，登记做到内容完整、信息准确，一般应在当月内在案件监督管理系统完成录入和报送。</p>
+                            <p><strong class="text-red-800">第十条</strong> 信访案管部门收到问题线索后，应当及时填写问题线索收文单，先报纪委书记阅批。根据领导批示和管理权限、来源、性质、可查性、可能性及以往查办情况，及时提出处置建议后，报纪委书记审批。对反映内容重要或者情况较复杂的问题线索，向同级党委主要负责人报告。<br>问题线索处置不得拖延和积压，对属于本级受理的问题线索，处置意见应当在收到之日起1个月内提出，并制定处置方案，履行审批手续。</p>
+                            <p><strong class="text-red-800">第十一条</strong> 确定问题线索处置方式后，由信访案管部门具体分办。分办的方式有：自办、转办和交办。<br>（一）自办。本级纪委直接办理的问题线索，包括反映同级党委管理的单位和干部的问题线索；上级交办的问题线索；反映问题性质严重、所在企业纪委办理困难较大、特别是涉及下级企业“一把手”问题线索，经集体研究后，可以提级办理；其他需要提级办理的问题线索。<br>（二）转办。按照管理权限，将问题线索转至被反映人（单位）所在单位纪委办理，转办的方式包括酌处、核查和核查并反馈结果三种方式。<br>1．酌处：反映问题可信程度较低、线索不明、无实质性内容或已有结果的重复反映，转由承办单位纪委根据掌握的情况自行决定处置和办理方式。<br>2．核查：问题线索较清楚、可信程度较高、反映问题较严重的，由承办单位组织初步核实。<br>3．核查并反馈结果：问题线索内容具体、反映问题严重、性质恶劣、影响较大的，由承办单位在规定的时间内完成核查，核查结果以纪委名义正式行文上报。<br>（三）交办。指定与被核查人所在单位没有隶属关系的其他子公司纪委办理。</p>
+                            <p><strong class="text-red-800">第十二条</strong> 对本级纪委自办的问题线索，应当结合日常监督掌握的情况，进行综合分析、适当了解，采取谈话函询、初步核实、暂存待查、予以了结等方式处置，经集体研究并履行报批程序。<br>（一）谈话函询。反映问题具有一般性，事实查清后只能给予轻处分或者批评教育的；反映的问题简单、明确，不需要进行初步核实，通过谈话函询即可了解掌握的；反映党风廉政建设方面存在的苗头性、倾向性问题；反映问题年代久远、过于笼统，多为道听途说或者主观臆测，难以查证核实的；存在一定问题，虽不构成违纪但造成一定负面影响的；巡视巡察、考核考察反馈一般性问题整改不力的。<br>（二）初步核实。反映的问题具有存在的可能性和可查性，对照党纪政纪条规，初步判断其可能构成违规违纪的。<br>（三）暂存待查。反映的问题虽具有一定的可查性，但由于种种原因，暂不具备核查的条件，可暂存备查，一旦条件成熟即可开展核查工作的。<br>（四）予以了结。反映的问题失实或者相关问题已作出处理或者无可能开展核查工作的线索。</p>
+                            <p><strong class="text-red-800">第十三条</strong> 收到属于上级党委管理干部的问题线索，应当在5个工作日内将问题线索原件及寄送、收转材料报送上级纪委相关部门。对属于上级纪检监察机关受理的问题线索，不得瞒报、漏报、迟报，不得扩大知情范围，不得复制、摘抄问题线索内容，不得将有关信息录入案件监督管理系统。</p>
+                            <p><strong class="text-red-800">第十四条</strong> 负责信访、案管的职能部门根据同级党委巡视机构要求，按程序提供涉及被巡视单位和人员的问题线索情况。</p>
+                            <p><strong class="text-red-800">第十五条</strong> 对实名反映的问题线索优先办理、优先处置、给予答复。应当在收到问题线索之日起15个工作日内告知实名反映人受理情况。重复反映的，不再告知。应当将实名反映的问题线索处理结果在办结之日起15个工作日内向当事人反馈，并记录反馈情况。当事人提出异议的，应当如实记录，并予以说明；提供新的证据材料的，应当核查处理。</p>
+                            <p><strong class="text-red-800">第十六条</strong> 加强对问题线索的分析甄别，注意发现异常反映，有重点地进行查证。发现诬告陷害的，一经查实，依规依纪依法严肃处理。</p>
+                            <p><strong class="text-red-800">第十七条</strong> 问题线索的接收、登记、存储、流转和办理要全程监督、严格把关，严禁积压、隐匿、截留，防止失泄密和违反规定办理。问题线索管理处置各环节均应当由经办人员签名，载明领导批示和处置过程、办理时限，全程登记备查。</p>
+                            <p><strong class="text-red-800">第十八条</strong> 根据工作需要，纪委书记应当定期听取问题线索综合情况汇报，进行分析研判，对重要检举事项和反映问题集中的领域深入研究，提出处置要求，做到件件有着落、事事有回音。</p>
+                            <p><strong class="text-red-800">第十九条</strong> 案件管理部门应当自问题线索经批准予以了结或作出谈话提醒、批评教育、诫勉谈话、组织处理等决定后三个月内完成归档工作，统一存档保管。归档材料应当齐全完整、应归尽归，载明领导批示和处置过程。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第三章 谈话函询 -->
+                    <section id="chapter-3" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第三章 谈话函询</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第二十条</strong> 各级纪委应当推动加强和规范全系统党内政治生活，经常拿起批评和自我批评的武器，及时开展谈话提醒、约谈函询，促使各级党员干部、职工增强党的观念和纪律意识。</p>
+                            <p><strong class="text-red-800">第二十一条</strong> 谈话函询工作坚持“有则改之、无则加勉”和“惩前毖后、治病救人”的基本原则，坚持严管与厚爱相结合，既把纪律和规矩挺在前面，抓早抓小抓苗头，防止小毛病演变成大问题，又充分关心爱护党员干部，保证党员干部健康成长。<br>根据反映问题线索的具体情况，可分别采取谈话或函询处置方式。谈话、函询根据实际情况亦可交叉实施。</p>
+                            <p><strong class="text-red-800">第二十二条</strong> 谈话函询承办部门对发现、收到的问题线索筛选后，符合谈话函询条件的，及时提出实施谈话函询的初步意见，拟订相关工作方案，报纪委书记批准。对下一级党政主要负责人谈话函询的，应当报纪委书记批准，必要时向党委书记报告。</p>
+                            <p><strong class="text-red-800">第二十三条</strong> 承办部门电话告知被谈话人实施谈话的时间、地点以及相关纪律要求，同时通知被谈话人所在党委的主要负责人。被谈话人为党委主要负责人的，或者被谈话人所作说明涉及党委主要负责人的，可以不通知所在党委主要负责人。根据不同情形，按照以下方式确定谈话人：<br>（一）被谈话人为本级党委管理正职干部的，由纪委书记进行谈话，必要时请同级党委分管领导或者委托纪委副书记进行。承办部门负责人参加。<br>（二）被谈话人为其他干部的，由纪委副书记或承办部门负责人进行。必要时可以委托被谈话人所在党委主要负责人进行。<br>谈话应当在具备安全保障条件的场所进行。<br>谈话应当形成谈话笔录，情况特殊无法形成谈话笔录的，可形成工作记录，由两名以上谈话人员签字。谈话后可视情况要求被谈话人在谈话结束后15个工作日内就所反映的问题写出书面说明，书面说明要求所在党委主要负责人签署意见。</p>
+                            <p><strong class="text-red-800">第二十四条</strong> 函询应当以纪委名义发函给被函询人，并与被函询人确认是否收到。《谈话函询通知书》一式三份，被函询人一份，承办部门留存一份入档，抄送被函询人所在党委主要负责人一份。要求被函询人在收到函件后15个工作日内写出说明材料，由其所在党委主要负责人签署意见后发函回复。被函询人为党委主要负责人的，或者被函询人所作说明涉及党委主要负责人的，应当直接发函回复纪委。</p>
+                            <p><strong class="text-red-800">第二十五条</strong> 承办部门应当在谈话结束或者收到函询回复后30日内写出情况报告和处置意见，按程序报批。根据不同情形作出相应处理：<br>（一）反映不实，或者没有证据证明存在问题的，予以采信了结，并向被函询人发函反馈，抄送所在党委主要负责人;<br>（二）问题轻微，不需要追究党纪责任的，采取谈话提醒、批评教育、责令检查、诫勉谈话等方式处理;<br>（三）反映问题比较具体，但被反映人予以否认，或者说明存在明显问题的，应当再次谈话函询或者进行初步核实。<br>（四）对诬告陷害者，依规依纪依法予以查处。<br>必要时对被反映人谈话函询的说明情况进行抽查核实，若发现被反映人不如实说明情况，认定为对组织不忠诚或者对抗组织调查，从严处理。<br>承办部门应当及时将谈话函询审批资料、被反映人提供的书面说明及证据材料、处理意见、回复情况等材料立卷归档。谈话函询材料应当存入个人廉政档案。</p>
+                            <p><strong class="text-red-800">第二十六条</strong> 各级纪委派员参加民主生活会、组织生活会时，应当监督被谈话函询的党员干部在会上就本年度或者上年度谈话函询问题进行说明，讲清组织予以采信了结的情况；对存在违纪问题的，应当监督其进行自我批评，作出检讨。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第四章 初步核实 -->
+                    <section id="chapter-4" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第四章 初步核实</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第二十七条</strong> 各级纪委应当对具有可查性的涉嫌违纪或者职务违法、职务犯罪问题线索，扎实开展初步核实工作，收集客观性证据，确保真实性和准确性。</p>
+                            <p><strong class="text-red-800">第二十八条</strong> 初步核实一般采取直接核实和委托核实方式。各级纪委可以对反映问题直接组织人员进行核实，也可以委托下级纪委进行核实或者交叉核实。</p>
+                            <p><strong class="text-red-800">第二十九条</strong> 对符合条件需要进行初步核实的，承办部门应当起草报批请示，制定工作方案，成立核查组，报纪委书记审批。对本级党委管理正职干部以及其它重要人员进行初步核实的，经纪委书记核准后，报党委主要负责人审批。</p>
+                            <p><strong class="text-red-800">第三十条</strong> 初步核实工作主要有下列程序：<br>（一）制定初步核实工作方案。一般包括问题线索的来源，初步核实的依据，核查组人员组成，需要核实的问题，初步核实的方法、步骤、时间、范围、措施手段，以及应当注意事项等内容。同时按照“走读式”谈话安全相关管理办法制定开展“走读式”谈话的安全预案。<br>初步核实工作方案和谈话安全预案应当报纪委书记批准。核实过程中，需与被核查人谈话的，要根据前期核实情况制定谈话方案，报纪委书记审批。<br>（二）成立核查组。核查组人员的选择应当根据初步核实内容所涉及的专业范围而定，既可以由纪委职能部室单独抽调人员组成，也可以会同有关业务部门联合组成，还可以从下属企业纪委或相关业务部门抽调人员组成。核查组人数可根据反映主要问题的范围和性质来确定，一般2-4人，对案情复杂、性质严重、时间紧急、工作量大的，可以适当增配人员。<br>被核查人的近亲属，检举人、主要证人，与被核查人有利益关系的人员，可能影响公正查处的人员不得参与初步核实。<br>（三）初步核实的实施。初步核实应当抓住主要问题进行收集证据，注意保守秘密。核查组经批准可以采取必要措施收集证据，与相关人员谈话了解情况，要求相关组织作出说明，调取个人有关事项报告，查阅复制文件、账目、档案等资料，查核资产情况和有关信息，进行鉴定勘验。收集证据应当符合程序要求和形式要求。对被核查人以及相关人员主动上交的财物，核查组应当予以暂扣。<br>核实过程中，需要采取技术调查或者限制出境等措施的，经纪委书记审批并报党委书记批准后，由集团公司纪委统一报请中央纪委国家监委驻国资委纪检监察组协调有关机关。<br>（四）撰写初步核实情况报告。初步核实工作结束后，核查组应当撰写初步核实情况报告，列明被核查人基本情况、反映的主要问题、办理依据以及初步核实结果、存在疑点、处理建议，由核查组全体成员签名备查。<br>承办部门应当综合分析初步核实情况，按照拟立案审查、予以了结、谈话提醒、暂存待查，或者移送有关党组织处理等方式提出处置建议。<br>初步核实情况报告应当报纪委书记审批。对本级部门主要负责人及下一级党政主要负责人初步核实情况报告，经纪委书记审批后，向党委书记报告。</p>
+                            <p><strong class="text-red-800">第三十一条</strong> 对初步核实结果的处理<br>承办部门根据初步核实情况报告提出的处理建议和领导批示意见，区别不同情况作出处理。<br>（一）立案审查。经过初步核实，发现被核查人确有违纪违法行为，需要追究党纪责任的，按照立案程序报请立案。<br>（二）予以了结。问题不属实或者没有证据证明存在问题的，履行审批后予以了结。<br>（三）谈话提醒。问题轻微，不需要追究纪律和法律责任，但需要对本人谈话提醒的，履行审批后，按照干部管理权限组织实施，或委托被核查人所在党委、纪委组织实施。<br>（四）暂存待查。经初步核实，尚不能完全排除问题存在的可能性，在现有条件下难以进一步开展工作的，履行审批后，予以暂存待查。<br>（五）移送有关党组织处理。发现被核查人存在一定违纪问题但不需要给予党纪处分，或者虽有违纪问题嫌疑但难以核实认定的，可以视情况提出诫勉或者给予组织处理等建议，履行审批后，按照干部管理权限，移送有关党组织处理。</p>
+                            <p><strong class="text-red-800">第三十二条</strong> 承办部门初步核实发现涉嫌职务违法、职务犯罪问题，需要追究法律责任的，经纪委书记核准、党委书记审批后，由集团公司纪委统一报请中央纪委国家监委驻国资委纪检监察组协调有关地方纪检监察机关查办。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第五章 立案审查 -->
+                    <section id="chapter-5" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第五章 立案审查</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第三十三条</strong> 各级纪委按照党章规定的管辖权限，对检举、控告及发现的党员干部涉嫌违纪问题，经过初步核实，对存在严重违纪需要追究党纪行政责任的，应当立案审查。<br>凡报请批准立案的，应当已经掌握部分违纪事实和证据，具备进行审查的条件。</p>
+                            <p><strong class="text-red-800">第三十四条</strong> 对符合立案条件的，承办部门应当起草立案审查呈批报告，履行集体研究程序，经纪委书记核准，并报党委书记审批后，予以立案审查。立案审查决定应当向被审查人宣布，并向所在党委主要负责人通报。</p>
+                            <p><strong class="text-red-800">第三十五条</strong> 对同级党委管理的在职干部立案审查的，在向同级党委报批立案的同时，向上级纪委书面报告，按照答复意见再开展下一步工作。</p>
+                            <p><strong class="text-red-800">第三十六条</strong> 纪委书记负责批准审查方案，批准成立审查组，确定审查谈话方案、外查方案，审批重要信息查询、涉案款物处置等事项。审查组组长应当严格执行审查方案，不得擅自更改;应当以书面形式报告审查进展情况，遇重要事项及时请示。</p>
+                            <p><strong class="text-red-800">第三十七条</strong> 立案审查后，应当由纪委相关负责人或者承办部门负责人与被审查人谈话，宣布立案决定，讲明党的政策和纪律，要求被审查人端正态度、配合调查。<br>审查期间对被审查人以同志相称，安排学习党章党规党纪，对照理想信念宗旨，通过深入细致的思想政治工作，促使其深刻反省、认识错误、交代问题，写出忏悔和反思材料。</p>
+                            <p><strong class="text-red-800">第三十八条</strong> 审查组可以依照相关党章党规和法律法规，经审批对相关人员进行审查谈话，查阅、复制有关文件资料，查询有关信息，暂扣、封存、冻结涉案款物，提请有关机关采取技术调查、限制出境等措施。<br>需要提请有关机关协助的，由承办部门统一办理手续，并随时核对情况，防止擅自扩大范围、延长时限。</p>
+                            <p><strong class="text-red-800">第三十九条</strong> 审查谈话、执行审查措施、调查取证等审查事项，必须由2名以上执纪人员共同进行。与被审查人、重要涉案人员谈话，重要的外查取证，暂扣、封存涉案款物，应当以本级纪检人员为主，确需借调人员参与的，一般安排从事辅助性工作。</p>
+                            <p><strong class="text-red-800">第四十条</strong> 外查工作应当严格按照外查方案执行，不得随意扩大调查范围、变更调查对象和事项，重要事项应当及时请示报告。<br>外查工作期间，未经批准，执纪人员不得个人单独接触任何涉案人员及其特定关系人，不得擅自采取调查措施，不得从事与外查事项无关的活动。</p>
+                            <p><strong class="text-red-800">第四十一条</strong> 承办部门和审查组应当严格依规依纪依法收集、鉴别证据，做到全面、客观，形成相互印证、完整稳定的证据链。<br>审查取证应当收集原物原件，逐件清点编号，现场登记，由在场人员签字盖章，原物不便搬运、保存或者取得原件确有困难的，可以将原物封存并拍照录像或者调取原件副本、复印件，但应当注明取证人、取证时间、出处、原件保存单位，并应当由原件保存单位加盖公章；审查谈话应当在具备安全保障条件的场所进行，现场制作谈话笔录并由被谈话人阅看后签字。已调取证据必须及时交审查组统一保管。<br>严禁以威胁、引诱、欺骗及其他违规违法方式收集证据;严禁隐匿、损毁、篡改、伪造证据。</p>
+                            <p><strong class="text-red-800">第四十二条</strong> 暂扣、封存、冻结、移交涉案款物，应当严格履行审批手续。<br>执行暂扣、封存措施，执纪人员应当会同原款物持有人或者保管人、见证人，当面逐一拍照、登记、编号，现场填写登记表，由在场人员签名。对价值不明物品应当及时鉴定，专门封存保管。<br>各级纪委应当设立专用账户、专门场所，确定专门人员保管涉案款物，严格履行交接、调取手续，定期对账核实。严禁私自占有、处置涉案款物及其孳息。</p>
+                            <p><strong class="text-red-800">第四十三条</strong> 对涉嫌严重违纪问题的审查谈话、暂扣、封存涉案财物等重要取证环节应当全程录音录像。录音录像资料由承办部门保管，随同案卷一并归档，定期核查。</p>
+                            <p><strong class="text-red-800">第四十四条</strong> 承办部门负责人、纪委分管副书记应当定期检查审查期间的录音录像、谈话笔录、涉案款物登记表，发现问题及时纠正并报告。</p>
+                            <p><strong class="text-red-800">第四十五条</strong> 查明涉嫌违纪事实后，审查组应当撰写违纪事实材料，与被审查人见面，听取意见。要求被审查人在违纪事实材料上签署意见，对签署不同意见或者拒不签署意见的，审查组应当作出说明或者注明情况。</p>
+                            <p><strong class="text-red-800">第四十六条</strong> 审查工作结束，审查组应当集体讨论，形成审查报告，列明被审查人基本情况、问题线索来源及审查依据、审查过程、主要违纪事实、被审查人的态度和认识、处理建议及党纪依据，并由审查组组长及有关人员签名。<br>对执纪审查过程中发现的重要问题和意见建议，应当形成专题报告。</p>
+                            <p><strong class="text-red-800">第四十七条</strong> 审查报告以及检讨材料、违纪事实材料、涉案款物报告，应当报纪委书记批准，连同全部证据和程序材料，依照规定移送审理。<br>审查全过程形成的材料应当案结卷成、事毕归档。按照“谁承办、谁归档”和“应归尽归”的原则，承办部门应当在给予组织处理、党纪行政处分等决定后三个月内完成归档工作。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第六章 案件审理 -->
+                    <section id="chapter-6" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第六章 案件审理</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第四十八条</strong> 集团公司各级纪委对涉嫌违纪案件，应当严格依规依纪依法审核把关，提出纪律处理或者纪律处分的意见，做到事实清楚、证据确凿、定性准确、处理恰当、手续完备、程序合规。<br>纪律处理或者处分应当坚持民主集中制原则，集体讨论决定，不允许任何个人或者少数人决定和批准。</p>
+                            <p><strong class="text-red-800">第四十九条</strong> 坚持审查与审理分离原则，审查人员不得参与审理。审理部门对涉嫌违纪问题，依照规定应当给予纪律处理或者处分的案件和复议复查案件进行审核处理，实事求是核对违纪案件事实材料，审核鉴别证据，根据党的政策、党内法规和国家法律法规，分析认定问题性质，按照党章党规党纪规定，正确地处理违反党的纪律的党组织或党员。</p>
+                            <p><strong class="text-red-800">第五十条</strong> 移送审理时，应移送下列材料，并办交接手续：<br>（一）同意移送审理的批示；<br>（二）立案依据；<br>（三）立案审查报告和审查意见；<br>（四）全部证据材料；<br>（五）与被审查人见面的错误事实材料；<br>（六）被审查人对错误事实材料的书面意见和检讨材料；<br>（七）审查组对被审查人意见的说明。</p>
+                            <p><strong class="text-red-800">第五十一条</strong> 审理工作按照以下程序进行：<br>（一）审理部门收到立案审查承办部门移送的案件材料后，经审核符合移送条件的予以受理，与承办部门办理正式交接手续。<br>（二）对于重大、复杂、疑难案件，承办部门已查清主要违纪事实并提出倾向性意见的；或者对违纪行为性质认定分歧较大的，经纪委书记批准后可提前介入审理。<br>（三）审理部门受理案件后，应当成立由2人以上组成的审理组，全面审理案卷材料，提出审理意见。<br>（四）坚持集体审议原则，在民主讨论基础上形成处理意见；对争议较大的应当及时报告，形成一致意见后再作出决定。审理部门根据案件审理情况，应当与被审查人谈话，核对违纪事实，听取辩解意见，了解有关情况，做好谈话记录。<br>（五）对主要事实不清、证据不足的，经纪委书记批准，退回承办部门重新审查；需要补充完善证据的，经纪委书记批准，退回承办部门补充审查。<br>（六）审理工作结束后应当形成审理报告，列明被审查人基本情况、线索来源、审查简况、违纪事实、涉案款物处置、承办部门意见、审理意见等。审理报告应当体现党内审查特色，依据《中国共产党纪律处分条例》认定违纪事实性质，分析被审查人违反党章、背离党的性质宗旨的错误本质，反映其态度、认识及思想转变过程。</p>
+                            <p><strong class="text-red-800">第五十二条</strong> 审理工作应当在受理之日起1个月内完成，重大复杂案件经纪委书记批准可以适当延长。</p>
+                            <p><strong class="text-red-800">第五十三条</strong> 对给予本级党委管理的在职干部纪律处分的，在同级党委审议前，按照相关规定向上级纪委书面报告，按照答复意见再开展下一步工作。</p>
+                            <p><strong class="text-red-800">第五十四条</strong> 审理报告经纪委书记批准，提请纪委书记会议审议后，提交集团公司党委常委会讨论决定。会前，应当征求同级党委组织部门和被审查人所在党组织意见。</p>
+                            <p><strong class="text-red-800">第五十五条</strong> 党纪处分决定一般情况下以承办公司纪委名义作出；需要给予相应行政处分的，应当以承办公司名义作出。</p>
+                            <p><strong class="text-red-800">第五十六条</strong> 处分决定作出后，应当通知受处分党员所在党委，抄送同级党委组织部门和其他有关部门，并依照规定在1个月内向其所在党的基层组织中的全体党员以及本人宣布，属于领导班子成员的还应当向所在党组织领导班子宣布。必要时，可委托受处分党员所在单位党组织协助，并要求及时报告处分决定执行情况。其中，对党组织关系在地方，干部管理权限在主管部门的，应当向地方党组织通报处理结果；涉及向党外组织建议撤销党外职务和给予其他行政处分的，应当将处分决定送达党外有关组织。处分决定（或结论）应当送达本人并签字。</p>
+                            <p><strong class="text-red-800">第五十七条</strong> 被审查人涉嫌职务违法、职务犯罪的，应当由集团公司纪委统一请示中央纪委国家监委驻国资委纪检监察组，协调办理移送事宜。<br>案件移送后，承办部门应当跟踪了解处置情况，发现问题及时报告，不得违规过问、干预处置工作。<br>审理工作完成后，对涉及的其他党员、干部问题线索，经纪委书记批准后，承办部门应当及时移送有关纪委处置。</p>
+                            <p><strong class="text-red-800">第五十八条</strong> 对被审查人违纪所得款物，应当依规依纪予以没收、追缴、责令退赔或者登记上交。对涉嫌职务违法、职务犯罪所得款物，应当随案移送。<br>对经认定不属于违纪所得的，承办部门应当在案件审结后依规依纪依法予以返还，办理签收手续。</p>
+                            <p><strong class="text-red-800">第五十九条</strong> 案件办理完结后，由承办人按照规定立卷归档。</p>
+                            <p><strong class="text-red-800">第六十条</strong> 处分决定一经批准即执行。如果本人不服提出申诉，有关党组织应当及时处理或迅速转递，不得扣压，承办单位不得推诿。对于申诉有理，需要改变的，要实事求是地予以改正；对于错误事实清楚，证据确凿，定性准确，处理恰当，而本人坚持错误和无理要求的，要批评教育；对于无理取闹的，要严肃处理。</p>
+                            <p><strong class="text-red-800">第六十一条</strong> 对不服处分决定的申诉，应当由批准处分的党委或者纪委受理；需要复议复查的，由纪委书记批准后受理。</p>
+                            <p><strong class="text-red-800">第六十二条</strong> 申诉办理部门成立复查组，调阅原案案卷，必要时可以调查取证，经集体研究后，提出办理意见，报纪委书记批准或者纪委书记会研究决定，作出复议复查决定。决定应当告知申诉人，抄送相关单位，并在一定范围内宣布。坚持复议复查与审查审理分离，原案审查、审理人员不得参与复议复查。复议复查工作应当在3个月内办结。受处分人提出申诉、复审的，在复议复查、复审复核期间，不停止原处分决定的执行。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第七章 组织处理与纪律处分 -->
+                    <section id="chapter-7" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第七章 组织处理与纪律处分</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第六十三条</strong> 各级纪委应当坚持“惩前毖后、治病救人”方针，根据纪律审查结果，依据相关党内法规和国家法律法规，对需要给予提醒、教育或者追究责任的同级党委管理党员、干部，区分不同情形作出组织处理或者纪律处分。做到不偏不倚、不枉不纵，保证处理、处分质量和效果。<br>对涉嫌职务违法、职务犯罪，需要追究法律责任的党员、干部，应当由集团公司纪委统一报请中央纪委国家监委驻国资委纪检监察组协调移送地方纪委监委办理。</p>
+                            <p><strong class="text-red-800">第六十四条</strong> 组织处理措施包括但不限于：提醒谈话、警示谈话、批评教育、纠正或责令停止违纪行为、责成退出违纪所得、限期整改、责令作出口头或书面检查、召开民主生活会批评帮助、责令公开道歉（检讨）、通报（通报批评）、诫勉（诫勉谈话）、延长预备党员预备期、其他批评教育类措施、取消荣誉称号、撤销政协委员资格、终止（罢免、撤销、责令辞去）人大代表资格、取消预备党员资格、取消（罢免）当选资格、终止党代表资格、停职（停职检查）、调整（调离）职务（岗位）、免职、引咎辞职、责令辞职、改任非领导职务、安排提前退休、降低退休待遇、其他组织调整类措施、降职、取消退休待遇、解聘、解除劳动合同、辞退、组织除名（劝退）、其他重大职务调整类措施等。<br>纪律处分种类包括：警告、严重警告、撤销党内职务、留党察看和开除党籍5档。</p>
+                            <p><strong class="text-red-800">第六十五条</strong> 各级纪委应当依规依纪依法、精准有效运用监督执纪“四种形态”，综合考虑错误性质、情节后果、主观态度等因素，善于运用纪律处分、组织处理、谈话提醒、诫勉谈话、批评教育等多种方式处理案件，综合发挥惩治震慑、惩戒挽救、教育警醒的功效。</p>
+                            <p><strong class="text-red-800">第六十六条</strong> 第一种形态是党内关系要正常化，党内批评和自我批评要经常开展，让咬耳扯袖、红脸出汗成为常态。第一种形态适用情形包括不限于：1.有苗头性、倾向性问题，经初步核实或谈话函询，虽然无违纪事实，但是需要提醒、批评的；2.虽然未发现违纪事实，或者反映的问题难以查证，但尚不能完全排除存在的问题可能性；3.存在一定问题，虽不涉及违纪，但造成一定不良影响或后果，需要提醒、批评的；4.有违纪事实，但情节轻微，不需要追究纪律责任的，或者由第二种形态转化，可免于纪律处分、组织处理的；5.有问责情形，情节轻微，不需要党纪处分、组织处理的；6.综合考核考评结果较差，以及巡视巡查、考核考察反馈问题整改不力，需要提醒、批评的；7.其他需要提醒、批评的问题。<br>第一种形态处理方式包括：谈话函询了结、初步核实了结，以及给予提醒谈话、警示谈话、批评教育、纠正或责令停止违纪行为、责成退出违纪所得、限期整改、责令作出口头或书面检查、召开民主生活会批评帮助、责令公开道歉（检讨）、通报（通报批评）、诫勉（诫勉谈话）、其他批评教育类措施等组织措施。</p>
+                            <p><strong class="text-red-800">第六十七条</strong> 第二种形态是党纪轻处分和组织处理要成为大多数。第二种形态适用情形包括不限于：1.有违纪行为，需要给予纪律轻处分，或者给予组织调整的；2.给予纪律轻处分，因不宜在现岗位继续工作或者不宜继续担任领导职务，需要给予组织调整的；3.有问责情形，需要给予纪律轻处分、组织调整的；4.诫勉谈话后，没有改正或改正不明显，需要督促纠正并给予组织调整的；违纪情节轻微，经批评教育后，仍不改正，需要给予纪律轻处分、组织调整的；5.经综合考量，有从轻减轻情节，需要由第三种形态转化为第二种形态处理的；6.其他需要给予纪律轻处分、组织调整的。<br>第二种形态处理方式包括：党内警告、党内严重警告等党纪轻处分，警告、记过等行政轻处分，以及取消荣誉称号、撤销政协委员资格、终止（罢免、撤销、责令辞去）人大代表（职工代表）资格、取消预备党员资格、取消（罢免）当选资格、终止党代表资格、停职（停职检查）、调整（调离）职务（岗位）、免职、引咎辞职、责令辞职、改任非领导职务、安排提前退休、降低退休待遇、其他组织调整类措施等组织措施。</p>
+                            <p><strong class="text-red-800">第六十八条</strong> 第三种形态是对严重违纪的重处分、作出重大职务调整应当是少数。第三种形态适用情形包括不限于：1.有严重违纪行为，尚不涉法，需要给予纪律重处分、重大职务调整的；2.有问责情形，需要给予纪律重处分，重大职务调整的；3.经综合考量，有从重加重情节，需要由第二种形态转化为第三种形态处理的；4.严重违纪涉嫌违法，经综合考量，有从轻减轻情节，需要由第四种形态转化为第三种形态处理的；5.因犯罪情节轻微，人民检察院依法作出不起诉决定，或者人民法院依法作出有罪判决并免予刑事处罚，需要给予纪律重处分、重大职务调整的；6.经司法机关判处轻刑或者单处附加刑，需要予以开除党籍、开除公职之外纪律重处分、重大职务调整的。<br>第三种形态处理方式包括：撤销党内职务、留党察看、开除党籍等3项党纪重处分，降低岗位等级（或撤职）、开除等2项行政重处分，降职、取消退休待遇、解聘、解除劳动合同、辞退、组织除名（劝退）、其他重大职务调整措施等情形。</p>
+                            <p><strong class="text-red-800">第六十九条</strong> 第四种形态是严重违纪涉嫌违法立案审查的只能是极少数。第四种形态适用情形包括不限于：1.因严重违纪涉嫌违法，需要给予开除党籍、开除公职处分，并移交司法机关处理的；2.因问责情形涉嫌违法，需要移送司法机关处理，并给予开除党籍、开除公职处分的；3.经司法机关判处刑罚或作出有罪判决并免予刑事处罚，需要给予开除党籍、开除公职处分的。<br>第四种形态处理方式包括：1.作出开除党籍、行政开除处分或解除劳动合同，移送司法机关处理；2.司法机关判处刑罚，需要给予“双开”或解除劳动合同处理的。</p>
+                            <p><strong class="text-red-800">第七十条</strong> 各级纪委在执纪审查工作中应当贯彻落实“三个区分开来”重要思想，对单位和干部在推动发展、改革创新、维护稳定过程中，由于先行先试，缺乏经验等原因，未能实现预期目标，出现偏差失误或因积极探索造成无意过失，但不违反法律法规和政策规定及程序，勤勉尽责、未谋取私利，及时主动纠错改正，消除不良影响的，按照有关规定可以免除相关责任或从轻减轻处理。</p>
+                            <p><strong class="text-red-800">第七十一条</strong> 各级纪委应当做实做细纪律处分决定执行工作，聚焦自办案件纪律处分决定宣布和归档、职务级别和工资等相关生活待遇调整、处分影响期内年度考核及评先评优等关键环节，建立健全处分决定执行公示、回访教育、情况报告和专项检查制度，加强与相关党组织和职能部门的协作沟通。具体按集团公司纪委自办案件纪律处分决定执行工作管理办法的有关要求执行。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第八章 自我监督 -->
+                    <section id="chapter-8" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第八章 自我监督</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第七十二条</strong> 集团公司各级纪委应当严格依照党内法规和国家法律，在行使权利上慎之又慎，在自我约束上严之又严，严格执行“九条禁令”，强化自我监督，健全内控机制，自觉接受监督，确保权力严格受到约束，坚决防止“灯下黑”。<br>各级纪委应当加强对监督执纪工作的领导，切实履行自身建设主体责任，严格教育、管理、监督，使各级纪检干部成为严守纪律、改进作风、拒腐防变的表率。</p>
+                            <p><strong class="text-red-800">第七十三条</strong> 各级纪委应当严格干部准入制度，严把政治安全关，各级纪检干部必须忠诚坚定、担当尽责、遵纪守法、清正廉洁，具备履行职责的基本条件。</p>
+                            <p><strong class="text-red-800">第七十四条</strong> 各级纪委应当加强党的政治建设、思想建设、组织建设，突出政治功能，强化政治引领。加强对审查组成员的教育、管理、监督，开展政策理论学习，做好思想政治工作，及时发现问题、进行批评纠正，发挥战斗堡垒作用。</p>
+                            <p><strong class="text-red-800">第七十五条</strong> 各级纪委应当加强干部队伍作风建设，树立依规依纪、纪律严明、作风深入、工作扎实、谦虚谨慎、秉公执纪的良好形象，力戒形式主义、官僚主义，力戒特权思想，力戒口大气粗、颐指气使，不断提高思想政治水平和把握政策能力，建设让党放心、人民信赖的纪检干部队伍。</p>
+                            <p><strong class="text-red-800">第七十六条</strong> 对纪检干部打听案情、过问案件、说情干预的，受请托人应当向审查组组长和承办纪检部室负责人、纪委副书记报告并登记备案。<br>发现审查组成员未经批准接触被审查人、涉案人员及其特定关系人，或者存在交往情形的，应当及时向审查组组长和承办纪检部室负责人直至纪委书记报告并登记备案。</p>
+                            <p><strong class="text-red-800">第七十七条</strong> 严格执行回避制度。审查、审理人员是被审查人或者检举人近亲属、本案证人、利害关系人，或者存在其他可能影响公正审查、审理情形的，不得参与相关审查、审理工作，应当主动申请回避，被审查人、检举人以及其他有关人员也有权要求其回避。<br>承办部门负责人、纪委副书记的回避应当经纪委书记批准，其他人员的回避应当经纪委副书记批准。<br>选用借调人员、陪同人员、审查场所，应当严格执行回避制度。</p>
+                            <p><strong class="text-red-800">第七十八条</strong> 审查组需要借调人员的，由承办公司纪委协调下属企业纪委选派，实行一案一借。加强对借调人员的管理监督，借调结束后由承办部门写出鉴定。</p>
+                            <p><strong class="text-red-800">第七十九条</strong> 监督执纪人员应当严格执行保密制度，控制审查工作事项知悉范围和时间，不准私自留存、隐匿、查阅、摘抄、复制、携带问题线索和涉案资料，严禁泄露审查工作情况。<br>审查组成员工作期间，应当使用专用电子设备和储存介质，实行编号管理，审查工作结束后收回检查。<br>汇报案情、传递审查材料应当使用加密设施，携带案卷材料应当专人专车、卷不离身。</p>
+                            <p><strong class="text-red-800">第八十条</strong> 相关涉密人员离岗后，应当遵守保密期管理规定，严格履行保密义务，不得泄露相关秘密。</p>
+                            <p><strong class="text-red-800">第八十一条</strong> 承办部门开展谈话应当做到全程可控。谈话前做好风险评估、安全防范工作以及应对突发事件的预案；谈话中及时研判谈话内容以及案情变化，发现严重职务违法、职务犯罪，依照监察法需要采取留置措施的，应当及时逐级上报，由集团公司纪委统一报请中央纪委国家监委驻国资委纪检监察组协调办理；谈话结束前做好被谈话人思想工作，谈话后按程序与相关单位或者人员交接，并做好跟踪回访工作。</p>
+                            <p><strong class="text-red-800">第八十二条</strong> 建立健全安全责任制，承办部门负责人和审查组组长是执纪审查安全第一责任人，审查组应当指定专人担任安全员。被审查人发生安全事故的，应当在24小时内逐级上报至中央纪委国家监委，及时做好舆论引导。</p>
+                            <p><strong class="text-red-800">第八十三条</strong> 对纪检干部越权接触相关部门、单位党委负责人，私存线索、跑风漏气、违反安全保密规定，接受请托、干预审查、以案谋私、办人情案，侮辱、打骂、虐待、体罚或者变相体罚被审查人，以违规违纪违法方式收集证据，截留挪用、侵占私分涉案款物，接受宴请、接待和财物等行为，依规依纪严肃处理；涉嫌职务违法、职务犯罪的，报请中央纪委国家监委驻国资委纪检监察组协调有关地方纪检监察机关依法追究法律责任。</p>
+                            <p><strong class="text-red-800">第八十四条</strong> 纪检干部在维护监督执纪工作纪律方面失职失责的，予以严肃问责。</p>
+                            <p><strong class="text-red-800">第八十五条</strong> 纪检干部涉嫌严重违纪或者职务违法、职务犯罪的，开展“一案双查”，既追究直接责任，还应当严肃追究有关领导人员责任。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第九章 附则 -->
+                    <section id="chapter-9" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第九章 附则</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第八十六条</strong> 工作中应当认真遵循《中国共产党纪律检查机关监督执纪工作规则》第一章、第二章规定的指导思想、工作原则、领导体制。</p>
+                            <p><strong class="text-red-800">第八十七条</strong> 集团公司各级纪委按照本实施细则执行。本实施细则未尽事宜，按照有关规定执行。</p>
+                            <p><strong class="text-red-800">第八十八条</strong> 本实施细则由集团公司纪委负责解释。</p>
+                            <p><strong class="text-red-800">第八十九条</strong> 本实施细则自印发之日起施行。<br>集团公司纪委此前有关监督执纪工作的规定与本实施细则不一致的，按照本实施细则执行。</p>
+                        </div>
+                    </section>
+                    
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>本文档仅供内部学习使用</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol text-red-800"></i> 目录导航
+                        </div>
+                        <nav class="max-h-[60vh] overflow-y-auto text-sm" id="tocNav">
+                            <a href="#chapter-1" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第一章 监督检查</a>
+                            <a href="#chapter-2" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第二章 线索处置</a>
+                            <a href="#chapter-3" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第三章 谈话函询</a>
+                            <a href="#chapter-4" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第四章 初步核实</a>
+                            <a href="#chapter-5" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第五章 立案审查</a>
+                            <a href="#chapter-6" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第六章 案件审理</a>
+                            <a href="#chapter-7" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第七章 组织处理与纪律处分</a>
+                            <a href="#chapter-8" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第八章 自我监督</a>
+                            <a href="#chapter-9" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第九章 附则</a>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="scrollToTop()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="scrollToBottom()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-down"></i> <span class="text-xs font-bold">直达底部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印资料</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="scrollToTop()" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+        <button onclick="scrollToBottom()" class="w-12 h-12 bg-white text-gray-600 border border-gray-200 rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-down"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function scrollToBottom() { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }
+
+        let originalContent = '';
+        document.addEventListener("DOMContentLoaded", function() {
+            const articleContent = document.getElementById('articleContent');
+            const proseDiv = articleContent.querySelector('.prose');
+            originalContent = proseDiv.innerHTML;
+        });
+
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const proseDiv = document.querySelector('.prose');
+            const countDiv = document.getElementById('searchCount');
+            proseDiv.innerHTML = originalContent;
+            if (!keyword) { countDiv.style.opacity = '0'; return; }
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            let matchCount = 0;
+            const newHtml = originalContent.replace(regex, (match) => {
+                matchCount++; return `<span class="highlight">${match}</span>`;
+            });
+            proseDiv.innerHTML = newHtml;
+            countDiv.innerText = `${matchCount} 处匹配`;
+            countDiv.style.opacity = '1';
+            const firstMatch = document.querySelector('.highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) current = '#' + section.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
