@@ -4,104 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>贵州联合纪委工作办公室 - 学习交流平台</title>
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Noto Serif SC for headings, Noto Sans SC for body -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        :root {
-            --primary-red: #8B1C1C; /* 庄重的纪委红 */
-            --tech-blue: #1E3A8A;   /* 科技深蓝 */
-            --bg-light: #F8FAFC;    /* 极淡的灰白背景 */
-        }
-
-        body {
-            font-family: 'Noto Sans SC', sans-serif;
-            background-color: var(--bg-light);
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3, .serif-font {
-            font-family: 'Noto Serif SC', serif;
-        }
-
-        /* 背景纹理 - 模拟贵州山水隐喻或抽象线条 */
-        .hero-bg {
-            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-            position: relative;
-        }
+        :root { --primary-red: #8B1C1C; --tech-blue: #1E3A8A; --bg-light: #F8FAFC; }
+        body { font-family: 'Noto Sans SC', sans-serif; background-color: var(--bg-light); overflow-x: hidden; }
+        h1, h2, h3, .serif-font { font-family: 'Noto Serif SC', serif; }
+        .hero-bg { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); position: relative; }
         
-        .hero-bg::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 100%;
-            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239C92AC' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            z-index: 0;
-        }
-
-        /* 交互卡片特效 */
-        .nav-card {
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            cursor: pointer;
-            border-bottom: 4px solid transparent;
-        }
-
-        .nav-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-        }
-
+        /* 卡片基础样式 */
+        .nav-card { transition: all 0.4s; cursor: pointer; border-bottom: 4px solid transparent; }
+        .nav-card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
         .nav-card.red-theme:hover { border-color: var(--primary-red); }
         .nav-card.blue-theme:hover { border-color: var(--tech-blue); }
         .nav-card.feishu-theme:hover { border-color: #00D6B9; }
         .nav-card.brand-theme:hover { border-color: #D97706; }
+        
+        /* 锁住的卡片样式 */
+        .nav-card.locked-theme { background-color: #f3f4f6; }
+        .nav-card.locked-theme:hover { border-color: #4b5563; }
+        
+        /* 弹窗样式 */
+        .modal-overlay { display: none; background-color: rgba(0,0,0,0.6); }
+        .modal-overlay.active { display: flex; }
 
-        /* 图标容器动画 */
-        .icon-box {
-            transition: transform 0.3s ease;
-        }
-        .nav-card:hover .icon-box {
-            transform: scale(1.1);
-        }
-
-        /* 最新动态列表项 */
-        .news-item {
-            transition: background-color 0.2s;
-        }
-        .news-item:hover {
-            background-color: #fff;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-        }
-
-        /* 简单的淡入动画 */
-        .fade-in-up {
-            animation: fadeInUp 0.8s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        /* 关键：用于JS控制显示/隐藏的工具类 */
+        .hidden-mode { display: none !important; }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-slate-800">
 
-    <!-- 顶部导航栏 -->
+    <!-- 1. 顶部导航栏 -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
                 <div class="flex items-center space-x-3">
-                    <!-- 模拟Logo: 国徽或党徽风格 -->
                     <div class="w-10 h-10 bg-red-900 rounded-full flex items-center justify-center text-white shadow-md">
                         <i class="fa-solid fa-star text-sm"></i>
                     </div>
@@ -110,106 +49,107 @@
                         <p class="text-xs text-gray-500 tracking-wider">工作办公室 · 学习交流平台</p>
                     </div>
                 </div>
-                <nav class="hidden md:flex space-x-8">
-                    <a href="#" class="text-gray-600 hover:text-red-900 font-medium transition">首页</a>
-                    <a href="#updates" class="text-gray-600 hover:text-red-900 font-medium transition">学习动态</a>
-                    <a href="#" class="text-gray-600 hover:text-red-900 font-medium transition">通知公告</a>
-                    <a href="#" class="text-gray-600 hover:text-red-900 font-medium transition">联系我们</a>
+                <nav class="hidden md:flex space-x-8 items-center">
+                    <a href="#" class="text-gray-600 hover:text-red-900 font-medium">首页</a>
+                    
+                    <!-- 状态A: 已登录显示 (默认隐藏，JS控制) -->
+                    <div id="nav-logged-in" class="hidden-mode flex items-center gap-4">
+                        <span class="text-green-700 font-bold text-sm px-3 py-1 bg-green-50 rounded-full border border-green-200">
+                            <i class="fa-solid fa-user-check"></i> 管理员在线
+                        </span>
+                        <button onclick="doLogout()" class="text-gray-400 hover:text-red-600 text-sm transition">退出</button>
+                    </div>
+
+                    <!-- 状态B: 未登录显示 -->
+                    <div id="nav-guest">
+                        <span class="text-gray-400 text-sm bg-gray-100 px-3 py-1 rounded-full">访客模式</span>
+                    </div>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- 主视觉区域 (Hero Section) -->
+    <!-- 2. 主视觉区域 -->
     <section class="hero-bg py-16 md:py-24 relative overflow-hidden">
-        <!-- 装饰性背景圆 -->
-        <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-red-50 mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
-        <div class="absolute bottom-0 left-0 -ml-20 -mb-20 w-96 h-96 rounded-full bg-blue-50 mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
-
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-16 fade-in-up" style="animation-delay: 0.1s;">
-                <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
-                    忠诚 · 干净 · 担当
-                </h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">
-                    聚焦主责主业，深化数字赋能，打造贵州纪检监察铁军学习与工作一体化平台。
-                </p>
+            <div class="text-center mb-16">
+                <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">忠诚 · 干净 · 担当</h2>
+                <p class="text-lg text-gray-600 max-w-2xl mx-auto">聚焦主责主业，深化数字赋能。</p>
             </div>
 
-            <!-- 四大功能板块入口 (核心交互区) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 fade-in-up" style="animation-delay: 0.3s;">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <!-- 1. 学习知识库 -->
-                <div onclick="window.open('https://www.ericmm.com/zsksy.html', '_blank')" class="nav-card red-theme bg-white rounded-xl shadow-lg p-8 text-center group">
-                    <div class="icon-box w-16 h-16 mx-auto bg-red-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-100 transition-colors">
+                <!-- === 核心卡片：学习知识库 (JS控制两套皮肤切换) === -->
+
+                <!-- 皮肤A：已登录 (解锁状态，默认隐藏) -->
+                <div id="card-unlocked" onclick="window.open('https://www.ericmm.com/zsksy.html', '_blank')" class="hidden-mode nav-card red-theme bg-white rounded-xl shadow-lg p-8 text-center group">
+                    <div class="w-16 h-16 mx-auto bg-red-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-100 transition-colors">
                         <i class="fa-solid fa-book-open text-2xl text-red-800"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">学习知识库</h3>
-                    <p class="text-sm text-gray-500 mb-4">政策法规、业务指南、案例分析汇编。</p>
-                    <span class="text-xs font-semibold text-red-800 flex items-center justify-center gap-1 group-hover:gap-2 transition-all">
+                    <p class="text-sm text-gray-500 mb-4">政策法规、业务指南汇编。</p>
+                    <span class="text-xs font-semibold text-red-800 flex items-center justify-center gap-1">
                         点击进入 <i class="fa-solid fa-arrow-right"></i>
                     </span>
                 </div>
 
-                <!-- 2. AI数据库查询 -->
-                <div onclick="showToast('正在连接AI检索终端...')" class="nav-card blue-theme bg-white rounded-xl shadow-lg p-8 text-center group">
-                    <div class="icon-box w-16 h-16 mx-auto bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-colors">
+                <!-- 皮肤B：未登录 (锁住状态，默认显示) -->
+                <div id="card-locked" onclick="openModal()" class="nav-card locked-theme rounded-xl shadow-lg p-8 text-center group relative overflow-hidden">
+                    <div class="absolute -right-4 -bottom-4 text-gray-200 text-8xl opacity-30 rotate-12">
+                        <i class="fa-solid fa-lock"></i>
+                    </div>
+                    <div class="w-16 h-16 mx-auto bg-gray-200 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-gray-300 transition-colors">
+                        <i class="fa-solid fa-lock text-2xl text-gray-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-600 mb-2">学习知识库</h3>
+                    <p class="text-sm text-gray-400 mb-4">内部涉密资料，需权限。</p>
+                    <span class="text-xs font-semibold text-gray-500 flex items-center justify-center gap-1">
+                        点击登录解锁 <i class="fa-solid fa-key"></i>
+                    </span>
+                </div>
+
+                <!-- 其他卡片 (保持不变) -->
+                <div class="nav-card blue-theme bg-white rounded-xl shadow-lg p-8 text-center group">
+                    <div class="w-16 h-16 mx-auto bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-colors">
                         <i class="fa-solid fa-microchip text-2xl text-blue-800"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">AI数据库查询</h3>
-                    <p class="text-sm text-gray-500 mb-4">智能检索法规，大数据辅助监督决策。</p>
-                    <span class="text-xs font-semibold text-blue-800 flex items-center justify-center gap-1 group-hover:gap-2 transition-all">
-                        开始检索 <i class="fa-solid fa-arrow-right"></i>
-                    </span>
+                    <p class="text-sm text-gray-500 mb-4">智能检索法规。</p>
                 </div>
 
-                <!-- 3. 飞书办公 -->
                 <div onclick="window.open('https://lcnb6ywyxip9.feishu.cn/base/EO27bu9Q1a9ufwsmP3BcgKRjncc', '_blank')" class="nav-card feishu-theme bg-white rounded-xl shadow-lg p-8 text-center group">
-                    <div class="icon-box w-16 h-16 mx-auto bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-teal-100 transition-colors">
-                        <!-- 飞书风格图标 -->
+                    <div class="w-16 h-16 mx-auto bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-teal-100 transition-colors">
                         <i class="fa-solid fa-paper-plane text-2xl text-teal-600"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">飞书办公</h3>
-                    <p class="text-sm text-gray-500 mb-4">即时通讯、云文档、高效协同工作台。</p>
-                    <span class="text-xs font-semibold text-teal-600 flex items-center justify-center gap-1 group-hover:gap-2 transition-all">
-                        跳转飞书 <i class="fa-solid fa-arrow-right"></i>
-                    </span>
+                    <p class="text-sm text-gray-500 mb-4">即时通讯、高效协同。</p>
                 </div>
 
-                <!-- 4. 品牌建设 -->
-                <div onclick="showToast('正在进入品牌文化长廊...')" class="nav-card brand-theme bg-white rounded-xl shadow-lg p-8 text-center group">
-                    <div class="icon-box w-16 h-16 mx-auto bg-amber-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-100 transition-colors">
+                <div class="nav-card brand-theme bg-white rounded-xl shadow-lg p-8 text-center group">
+                    <div class="w-16 h-16 mx-auto bg-amber-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-100 transition-colors">
                         <i class="fa-solid fa-flag text-2xl text-amber-600"></i>
                     </div>
                     <h3 class="text-xl font-bold text-gray-900 mb-2">品牌建设</h3>
-                    <p class="text-sm text-gray-500 mb-4">清廉文化宣传、部门风采、荣誉展示。</p>
-                    <span class="text-xs font-semibold text-amber-600 flex items-center justify-center gap-1 group-hover:gap-2 transition-all">
-                        查看风采 <i class="fa-solid fa-arrow-right"></i>
-                    </span>
+                    <p class="text-sm text-gray-500 mb-4">清廉文化宣传展示。</p>
                 </div>
 
             </div>
         </div>
     </section>
 
-    <!-- 最新学习动态 (内容更新区) -->
-    <section id="updates" class="py-16 bg-white">
+    <!-- 3. 内容展示区 (已恢复原始文章) -->
+    <section class="py-16 bg-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between mb-8 border-b pb-4 border-gray-100">
                 <h2 class="text-2xl font-bold text-gray-900 border-l-4 border-red-800 pl-3">最新学习动态</h2>
                 <a href="#" class="text-sm text-gray-500 hover:text-red-800 transition">查看更多 <i class="fa-solid fa-angle-right"></i></a>
             </div>
-
-            <!-- 
-                使用说明: 
-                当您需要更新内容时，只需复制下方的 <a> 标签块，并修改 href(链接), 图片src, 标题和日期即可。
-            -->
+            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 
                 <!-- 文章 1 -->
                 <a href="#" class="group block bg-gray-50 rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition duration-300">
                     <div class="h-48 bg-gray-200 overflow-hidden relative">
-                        <!-- 占位图，实际使用时替换为文章配图 -->
                         <img src="https://free.picui.cn/free/2025/12/25/694cff975645c.jpg" alt="廉政新闻" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                         <div class="absolute top-2 right-2 bg-red-800 text-white text-xs px-2 py-1 rounded">党风廉政</div>
                     </div>
@@ -271,45 +211,121 @@
         </div>
     </section>
 
-    <!-- 底部 Footer -->
-    <footer class="bg-slate-900 text-white mt-auto py-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="mb-4 md:mb-0">
-                    <h3 class="text-lg font-bold serif-font mb-1">贵州联合纪委工作办公室</h3>
-                    <p class="text-xs text-slate-400">Guizhou Joint Commission for Discipline Inspection Office</p>
-                </div>
-                <div class="text-sm text-slate-400 text-center md:text-right">
-                    <p class="mb-1">内部系统 · 仅限工作交流使用</p>
-                    <p>&copy; 2025 All Rights Reserved.</p>
+    <!-- 4. 登录弹窗 (纯 JS 控制) -->
+    <div id="loginModal" class="modal-overlay fixed inset-0 z-[60] items-center justify-center backdrop-blur-sm">
+        <div class="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md relative border-t-4 border-red-900 animate-fade-in">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-times text-xl"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <h3 class="text-2xl font-bold text-gray-900 serif-font">内部权限验证</h3>
+                <p class="text-sm text-gray-500 mt-1">请输入账号密码解锁知识库</p>
+                <!-- 错误提示 -->
+                <div id="error-msg" class="hidden-mode mt-3 p-2 bg-red-50 text-red-600 text-sm rounded border border-red-100 flex items-center justify-center">
+                    <i class="fa-solid fa-circle-exclamation mr-2"></i> 账号或密码错误
                 </div>
             </div>
-        </div>
-    </footer>
 
-    <!-- 简单的 Toast 提示框脚本 (模拟页面跳转反馈) -->
-    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white px-6 py-3 rounded-full shadow-xl opacity-0 transition-opacity duration-300 pointer-events-none z-50 flex items-center gap-2">
-        <i class="fa-solid fa-spinner fa-spin"></i>
-        <span id="toast-message">Loading...</span>
+            <div class="space-y-4">
+                <input id="username-input" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-900 focus:border-red-900 outline-none transition" placeholder="账号">
+                <input id="password-input" type="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-900 focus:border-red-900 outline-none transition" placeholder="密码">
+                <button onclick="doLogin()" class="w-full bg-red-900 text-white py-2.5 rounded-lg hover:bg-red-800 transition shadow-lg mt-2 font-medium">
+                    确认解锁
+                </button>
+            </div>
+            
+            <p class="text-center text-xs text-gray-400 mt-4">仅供内部人员访问</p>
+        </div>
     </div>
 
     <script>
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            const msgSpan = document.getElementById('toast-message');
-            
-            msgSpan.innerText = message;
-            toast.classList.remove('opacity-0');
-            
-            // 模拟跳转延迟
-            setTimeout(() => {
-                toast.classList.add('opacity-0');
-            }, 2000);
+        // === 纯 JavaScript 逻辑 ===
+        
+        // 1. 页面加载时：检查是否记得登录状态
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('gzjw_is_logged_in');
+            if (isLoggedIn === 'true') {
+                showLoggedInState();
+            } else {
+                showGuestState();
+            }
+        });
+
+        // 2. 切换界面到【已登录】状态
+        function showLoggedInState() {
+            // 顶部导航变化
+            document.getElementById('nav-logged-in').classList.remove('hidden-mode');
+            document.getElementById('nav-guest').classList.add('hidden-mode');
+
+            // 核心卡片变化：隐藏锁，显示入口
+            document.getElementById('card-unlocked').classList.remove('hidden-mode');
+            document.getElementById('card-locked').classList.add('hidden-mode');
         }
 
-        // 添加简单的进入动画
-        document.addEventListener("DOMContentLoaded", function() {
-            // 这里可以添加更多初始化逻辑
+        // 3. 切换界面到【访客】状态
+        function showGuestState() {
+            // 顶部导航变化
+            document.getElementById('nav-logged-in').classList.add('hidden-mode');
+            document.getElementById('nav-guest').classList.remove('hidden-mode');
+
+            // 核心卡片变化：显示锁，隐藏入口
+            document.getElementById('card-unlocked').classList.add('hidden-mode');
+            document.getElementById('card-locked').classList.remove('hidden-mode');
+        }
+
+        // 4. 执行登录逻辑
+        function doLogin() {
+            var u = document.getElementById('username-input').value;
+            var p = document.getElementById('password-input').value;
+            var errorDiv = document.getElementById('error-msg');
+
+            // === 在这里修改账号密码 ===
+            if (u === 'gzlhjwb' && p === '20250101') {
+                // 登录成功
+                localStorage.setItem('gzjw_is_logged_in', 'true'); // 记在本机浏览器里
+                
+                closeModal();
+                showLoggedInState();
+                
+                // 清理输入框
+                document.getElementById('username-input').value = '';
+                document.getElementById('password-input').value = '';
+                errorDiv.classList.add('hidden-mode');
+                
+            } else {
+                // 登录失败
+                errorDiv.classList.remove('hidden-mode');
+            }
+        }
+
+        // 5. 执行退出逻辑
+        function doLogout() {
+            if(confirm('确定要退出登录吗？')) {
+                localStorage.removeItem('gzjw_is_logged_in'); // 清除记录
+                showGuestState(); // 变回访客状态
+            }
+        }
+
+        // 6. 弹窗控制逻辑
+        const modal = document.getElementById('loginModal');
+        function openModal() {
+            modal.classList.add('active');
+            document.getElementById('error-msg').classList.add('hidden-mode'); // 每次打开清除错误信息
+        }
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+        // 点击遮罩层关闭
+        modal.addEventListener('click', function(e) {
+            if (e.target === modal) closeModal();
+        });
+        
+        // 支持回车键登录
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                doLogin();
+            }
         });
     </script>
 </body>
