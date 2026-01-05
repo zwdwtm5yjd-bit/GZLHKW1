@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>党委巡视工作办法 - 学习资料库</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 章节标题样式 */
+        .part-title {
+            color: var(--primary-red);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 3rem;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #fee2e2;
+            padding-bottom: 0.5rem;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="zsksy.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-book-open text-red-800"></i> 集团党委巡视工作办法
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">2024年12月修订</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字搜索办法内容..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 头部标题区 -->
+                <div class="text-center border-b-2 border-red-800/10 pb-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-red-900 mb-4 serif-font">中国保利集团有限公司<br>党委巡视工作办法</h2>
+                    <div class="text-sm text-gray-500 space-y-2">
+                        <p>（2024年12月25日经集团公司党委常委会审议通过）</p>
+                    </div>
+                </div>
+
+                <!-- 正文内容 (Prose) -->
+                <div class="prose prose-slate max-w-none text-justify space-y-6 leading-relaxed text-gray-800">
+                    
+                    <p class="indent-8 font-medium">按照党中央、国资委党委关于中央企业开展巡视工作的有关要求，为促进中国保利集团有限公司党委（以下简称：集团党委）巡视工作有序规范开展，根据《中国共产党章程》《中国共产党巡视工作条例》等党内法规以及国资委有关规章制度，制定本巡视工作办法。</p>
+
+                    <!-- 第一部分 巡视工作实体篇 -->
+                    <div class="part-title" id="part-1">第一部分 巡视工作实体篇</div>
+
+                    <section id="chapter-1-1" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4">第一章 机构设置和职责</h3>
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-gray-800">第一节 组织机构</h4>
+                            <p><strong class="text-red-800">第一条</strong> 集团党委巡视工作实行分级负责、巡视机构组织实施、纪检和人力部门协助、有关职能部门支持、被巡视党组织配合、职工群众参与的体制机制。</p>
+                            <p><strong class="text-red-800">第二条</strong> 集团党委实行内部巡视制度，设立专职巡视机构，对集团党委管理的所属子公司党组织全面巡视，在一届任期内实现全覆盖。</p>
+                            <p><strong class="text-red-800">第三条</strong> 集团党委承担巡视工作的主体责任。党委书记承担巡视工作第一责任人责任。</p>
+                            <p><strong class="text-red-800">第四条</strong> 集团党委成立巡视工作领导小组（以下简称：领导小组），向集团党委负责并报告工作。组长由党委书记、董事长担任，副组长由党委专职副书记和纪委书记担任。成员由巡视、人力、党群、纪检部门主要负责人组成，原则上不超过7人。组长负责全面工作，副组长协助组长开展工作。</p>
+                            <p><strong class="text-red-800">第五条</strong> 领导小组下设办公室（以下简称：巡视办），作为日常办事机构，并配备专职工作人员。</p>
+                            <p><strong class="text-red-800">第六条</strong> 集团党委设立巡视组（以下简称：巡视组），承担对集团公司所属子公司党组织的巡视任务，向领导小组负责并报告工作。</p>
+
+                            <h4 class="font-bold text-gray-800 mt-6">第二节 领导小组工作规则</h4>
+                            <p><strong class="text-red-800">第七条</strong> 领导小组在集团党委领导下组织开展巡视监督，研究重大事项、重大问题，向集团党委报告巡视工作情况。</p>
+                            <p><strong class="text-red-800">第八条</strong> 领导小组的主要职责：<br>
+                            （一）贯彻落实党中央、国资委党委和集团党委巡视工作的决议、决定；<br>
+                            （二）研究提出内部巡视工作规划、年度计划和阶段任务安排，组织实施巡视全覆盖；<br>
+                            （三）听取巡视办、巡视组工作汇报；<br>
+                            （四）在集团党委领导下，组织开展巡视反馈、通报和移交工作，督促推动有关责任主体落实巡视整改和成果运用责任；<br>
+                            （五）指导子公司巡察工作，统筹推进集团巡视巡察上下联动；<br>
+                            （六）推动巡视监督与其他监督贯通协调；<br>
+                            （七）加强对巡视工作队伍建设、制度建设和信息化建设的整体谋划和统筹领导；<br>
+                            （八）对巡视组进行管理和监督；<br>
+                            （九）研究处理巡视工作中的其他重要事项。</p>
+                            <p><strong class="text-red-800">第九条</strong> 领导小组建立会议制度。会议由组长召集并主持。根据需要，可以安排有关人员列席会议。领导小组成员不能出席的，事先须按程序请假。</p>
+                            <p><strong class="text-red-800">第十条</strong> 领导小组会议应当形成纪要，由组长审批。</p>
+                            <p><strong class="text-red-800">第十一条</strong> 领导小组原则上在现场巡视结束后及时听取巡视组汇报。必要时可与党委会合并召开，听取审议巡视组情况汇报。</p>
+                            <p><strong class="text-red-800">第十二条</strong> 以领导小组名义印发的规划、计划、方案、报告等由组长审核签发。</p>
+                            <p><strong class="text-red-800">第十三条</strong> 领导小组成员发表巡视工作的讲话、文章以及接受采访应当报组长批准。</p>
+
+                            <h4 class="font-bold text-gray-800 mt-6">第三节 巡视办工作规则</h4>
+                            <p><strong class="text-red-800">第十四条</strong> 巡视办的主要职责：<br>
+                            （一）贯彻落实集团党委及领导小组的工作要求，对有关决定事项进行督办；<br>
+                            （二）根据领导小组授权，对接上级党委巡视集团党委有关工作，对接国资委党委巡视办有关工作，落实有关要求；<br>
+                            （三）向领导小组报告工作情况和重要事项；<br>
+                            （四）统筹、协调、指导、保障巡视组开展工作；<br>
+                            （五）负责对下级巡察机构进行指导；<br>
+                            （六）协调有关单位、部门协助、支持巡视工作，推动建立巡视监督与其他监督贯通协调机制；<br>
+                            （七）负责巡视工作理论研究、政策调研、制度建设、档案管理和信息化建设等工作；<br>
+                            （八）加强对巡视干部的教育、培训、考核、管理和监督；<br>
+                            （九）办理领导小组交办的其他事项。</p>
+                            <p><strong class="text-red-800">第十五条</strong> 建立健全请示报告工作制度，对重要工作安排、重要事项处理、重要制度制定等及时请示报告。</p>
+
+                            <h4 class="font-bold text-gray-800 mt-6">第四节 巡视组工作规则</h4>
+                            <p><strong class="text-red-800">第十六条</strong> 巡视组由组长、副组长和其他工作人员组成。巡视组组长、副组长从集团党委巡视组组长、副组长库中选调，具体人选根据每次巡视任务由领导小组研究并报集团党委确定并授权。巡视组成员从集团党委巡视人才库中选调。巡视组设一名联络员，一般由巡视机构在编干部担任。</p>
+                            <p><strong class="text-red-800">第十七条</strong> 巡视组的主要职责：<br>
+                            （一）根据集团党委及领导小组的部署要求开展巡视；<br>
+                            （二）向领导小组报告巡视情况，提出意见建议；<br>
+                            （三）向被巡视党组织反馈巡视意见，向纪委、人力资源管理中心和有关单位移交巡视发现的问题和问题线索，参与推动巡视整改和成果运用；<br>
+                            （四）对巡视组成员进行日常教育、管理和监督；<br>
+                            （五）办理领导小组交办的其他事项。</p>
+                            <p><strong class="text-red-800">第十八条</strong> 巡视组实行组长负责制，主要职责是：<br>
+                            （一）主持巡视组日常工作，及时研究决定巡视中的有关重要事项，负责组织对有关重要情况进行了解；<br>
+                            （二）按规定向领导小组请示报告巡视中的重大事项，及时与巡视办沟通有关情况；<br>
+                            （三）审核签批以巡视组名义报送的巡视报告、专题报告、反馈意见等重要文稿，组织审定巡视报告底稿和移交材料；<br>
+                            （四）受领导小组委托，向被巡视党组织领导班子传达集团党委关于巡视工作决策部署，与被巡视党组织主要负责人沟通巡视有关情况，向被巡视党组织反馈巡视意见；<br>
+                            （五）严格巡视组日常管理，负责对组内人员的教育、管理和监督，提出人员调整、回避、考核、奖惩的建议；<br>
+                            （六）抓好巡视组党支部工作，发挥党支部战斗堡垒作用；<br>
+                            （七）落实领导小组交办的其他事项。</p>
+                            <p><strong class="text-red-800">第十九条</strong> 巡视组建立组务会制度，研究决定巡视组重要工作事项，指定专人负责会议记录。</p>
+                        </div>
+                    </section>
+
+                    <section id="chapter-1-2" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第二章 巡视巡察上下联动</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第二十条</strong> 主要子公司党委应建立巡察制度，设立巡察机构，按照党组织隶属关系和干部管理权限，对下一级党组织领导班子及其成员开展巡察监督，一般应在一届任期内实现巡察全覆盖。下属单位多且规模较大的三级子公司党委视情况建立巡察制度，设立巡察机构，对所管理的党组织开展巡察监督。</p>
+                            <p><strong class="text-red-800">第二十一条</strong> 巡视办指导主要子公司党组织规范开展巡察工作，召开座谈交流、实地调研、专项检查、信息报送、了解情况。通过规划指引、制度规范、培训宣贯、人才库建设、信息化建设等方式，开展分类督导。</p>
+                            <p><strong class="text-red-800">第二十二条</strong> 集团党委对主要子公司党组织巡察工作进行考核（详见附件1）。</p>
+                            <p><strong class="text-red-800">第二十三条</strong> 各主要子公司党委应严格落实党委书记听取巡察汇报情况报备制度（详见附件2）。</p>
+                        </div>
+                    </section>
+
+                    <section id="chapter-1-3" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第三章 队伍建设</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第二十四条</strong> 加强思想政治建设，不断提高政治站位和政治觉悟。</p>
+                            <p><strong class="text-red-800">第二十五条</strong> 加强专业能力建设，完善巡视巡察业务培训工作规划和年度计划，确保集团公司专职巡视巡察干部每年一次教育培训全覆盖。通过“以干代训”“上挂下派”等方式，提高巡视巡察干部履职能力。</p>
+                            <p><strong class="text-red-800">第二十六条</strong> 加强组织建设。各级党组织按照《中国保利集团有限公司党务工作机构设置及人员配备指导意见》建立健全巡视巡察机构。各主要子公司党委巡察办主任、副主任任免职务应及时向集团党委巡视办报备。集团党委建立巡视干部人才库制度（详见附件3，各主要子公司可参照执行）。</p>
+                            <p><strong class="text-red-800">第二十七条</strong> 加强作风纪律建设。巡视巡察人员应严格遵守《巡视巡察干部行为规范》（详见附件4）。</p>
+                        </div>
+                    </section>
+
+                    <section id="chapter-1-4" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第四章 公文管理、档案管理和保密工作</h3>
+                        <div class="space-y-4">
+                            <h4 class="font-bold text-gray-800">第一节 公文管理</h4>
+                            <p><strong class="text-red-800">第二十八条</strong> 巡视办负责校核呈报上级、集团党委的综合报告、巡视报告、巡视反馈意见、巡视反馈新闻简报、整改公开稿等事项。</p>
+                            <p><strong class="text-red-800">第二十九条</strong> 巡视办按照领导要求及时组织传达学习领导批示件精神，研究提出贯彻措施并抓好落实。</p>
+
+                            <h4 class="font-bold text-gray-800 mt-6">第二节 档案管理</h4>
+                            <p><strong class="text-red-800">第三十条</strong> 按照“谁承办、谁归档”的原则，巡视办、巡视组分别做好材料的收集、整理和归档工作。</p>
+                            <p><strong class="text-red-800">第三十一条</strong> 巡视档案保管期限分为三类：永久、30年、10年（有关归档档案材料范围具体内容详见附件5）。</p>
+                            <p><strong class="text-red-800">第三十二条</strong> 巡视组应于现场巡视结束后7日内完成立卷归档，巡视办协助巡视组做好归档工作，逐件清点并履行交接手续。</p>
+                            <p><strong class="text-red-800">第三十三条</strong> 归档材料应以案卷形式整理，按照被巡视党组织、保管期限、成文日期等顺序分别装盒，做到齐全完整、分类科学。</p>
+                            <p><strong class="text-red-800">第三十四条</strong> 录音、录像、照片等音像档案，应标注制作时间、文字说明、责任人等，并按照有关档案管理要求单独存放。</p>
+                            <p><strong class="text-red-800">第三十五条</strong> 借阅、复制巡视档案应经巡视办负责同志审批。</p>
+                            <p><strong class="text-red-800">第三十六条</strong> 档案销毁处理。对超过保管期限的档案材料，确无保存价值的档案应登记造册，巡视办等提出处置意见报分管集团领导批准后，按集团档案管理办法执行。严禁将待销毁的档案出售或转移给任何部门和个人。</p>
+
+                            <h4 class="font-bold text-gray-800 mt-6">第三节 保密工作</h4>
+                            <p><strong class="text-red-800">第三十七条</strong> 保密工作按照“业务谁主管、保密谁负责”的原则，与巡视工作同研究、同部署、同检查、同落实、同考核。</p>
+                            <p><strong class="text-red-800">第三十八条</strong> 巡视组组长是本组保密工作第一责任人，巡视组联络员应协助组长抓好保密工作。</p>
+                            <p><strong class="text-red-800">第三十九条</strong> 严格管理涉密文件。巡视工作人员在开展巡视前均须签订保密承诺书，严禁泄露信访举报内容。严禁通过无保密措施的渠道传递巡视工作涉密文件资料及信息。</p>
+                            <p><strong class="text-red-800">第四十条</strong> 巡视组在驻地开展工作，涉密文件资料及设备在不使用或离开房间时应当入柜上锁，严防丢失、泄密。</p>
+                            <p><strong class="text-red-800">第四十一条</strong> 巡视组在驻地召开会议或研究巡视报告、专题报告、重大敏感问题线索等涉密事宜时，要采取适当措施，严防泄密。</p>
+                            <p><strong class="text-red-800">第四十二条</strong> 现场巡视结束撤离驻地前，巡视组要指定专人对每个房间进行检查，严防遗漏涉密文件资料。</p>
+                            <p><strong class="text-red-800">第四十三条</strong> 每轮巡视工作结束后，巡视组工作人员不得留存任何涉密文件资料。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第二部分 巡视工作程序篇 -->
+                    <div class="part-title" id="part-2">第二部分 巡视工作程序篇</div>
+
+                    <section id="chapter-2-1" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4">第一章 巡前准备</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第一条 制定工作方案</strong> 巡视办按照相关规定，拟定巡视工作方案，提交领导小组研究后，按程序报集团党委审议同意。包括巡视对象、方式、监督重点、巡视组构成等。</p>
+                            <p><strong class="text-red-800">第二条 巡前动员培训</strong> 召开动员部署会，传达学习上级精神；组织集中培训，学习政策法规、工作流程和信息化系统等。</p>
+                            <p><strong class="text-red-800">第三条 通报沟通情况</strong> 组织听取集团总部有关部门通报情况；提供上轮巡视材料；巡视组组长与相关部门负责人单独沟通。</p>
+                            <p><strong class="text-red-800">第四条 巡视组建立工作机制</strong> 明确组内分工；建立组务会制度；成立临时党支部。</p>
+                            <p><strong class="text-red-800">第五条 进驻准备</strong> 印发巡视通知；部署组内工作（收集情况、梳理清单、制定实施方案、落实保密）；起草审阅进驻材料。</p>
+                            <p><strong class="text-red-800">第六条 被巡视党组织准备工作</strong> 协助配合做好沟通情况、动员会、工作汇报、个别谈话、立行立改等准备。</p>
+                        </div>
+                    </section>
+
+                    <section id="chapter-2-2" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第二章 现场巡视</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第七条 巡视进驻和动员</strong> 召开见面沟通会；召开巡视工作动员会议；公开进驻情况（通报、新闻报道）。</p>
+                            <p><strong class="text-red-800">第八条 听取汇报</strong> 听取工作汇报、整改专题汇报及纪检、选人用人等专题汇报。</p>
+                            <p><strong class="text-red-800">第九条 个别谈话</strong> 确定对象；拟定提纲；合理分组；进行谈话；汇总情况。</p>
+                            <p><strong class="text-red-800">第十条 调阅资料</strong> 送达目录清单；妥善保管材料。</p>
+                            <p><strong class="text-red-800">第十一条 召开座谈会</strong> 针对普遍性、突出性问题召开座谈会。</p>
+                            <p><strong class="text-red-800">第十二条 列席会议</strong> 列席重要会议，不发表意见、不参与评议。</p>
+                            <p><strong class="text-red-800">第十三条 下沉调研</strong> 拟定方案；深入基层了解情况。</p>
+                            <p><strong class="text-red-800">第十四条 受理信访举报</strong> 受理涉及领导班子及成员、管理干部等问题的来信来电来访。</p>
+                            <p><strong class="text-red-800">第十五条 抽查领导干部个人事项报告</strong> 原则上抽查2-3名班子成员。</p>
+                            <p><strong class="text-red-800">第十六条 开展民主测评和问卷调查</strong></p>
+                            <p><strong class="text-red-800">第十七条 专项检查</strong> 开展选人用人、巡察工作等专项检查。</p>
+                            <p><strong class="text-red-800">第十八条 提请会商协助</strong> 向相关部门会商研判问题。</p>
+                            <p><strong class="text-red-800">第十九条 立行立改</strong> 发现违反八项规定、损害群众利益等突出问题，督促及时解决。</p>
+                            <p><strong class="text-red-800">第二十条 编制问题底稿</strong> 事实清楚、证据确凿，作为报告依据。</p>
+                            <p><strong class="text-red-800">第二十一条 中期汇报</strong> 进驻一个月左右向领导小组汇报阶段情况。</p>
+                            <p><strong class="text-red-800">第二十二条 与被巡视党组织主要负责人沟通情况</strong> 报告初稿形成时当面沟通，听取意见。</p>
+                            <p><strong class="text-red-800">第二十三条 撤离驻地</strong> 清退资料设备；结算费用。</p>
+                        </div>
+                    </section>
+
+                    <section id="chapter-2-3" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第三章 报告和反馈</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第二十四条 提交报告材料</strong> 完善巡视报告、专题报告、线索报告等。</p>
+                            <p><strong class="text-red-800">第二十五条 领导小组听取汇报</strong> 听取汇报，提出意见建议。</p>
+                            <p><strong class="text-red-800">第二十六条 集团党委听取汇报</strong> 审议巡视情况，并按规定报备。</p>
+                            <p><strong class="text-red-800">第二十七条 巡视反馈</strong> 确定方案；制发反馈意见；起草讲话；召开反馈沟通会；召开巡视反馈通报会。</p>
+                            <p><strong class="text-red-800">第二十八条 巡视移交</strong> 向同级纪委移交问题线索；向被巡视党组织、人力等部门移交相关材料。</p>
+                            <p><strong class="text-red-800">第二十九条 巡视材料归档</strong> 协助做好归档工作。</p>
+                        </div>
+                    </section>
+
+                    <section id="chapter-2-4" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">第四章 巡视工作后评估</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第三十条</strong> 巡视办采取多种方式对巡视组作风纪律情况进行检查评估。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第三部分 巡视整改与成果运用篇 -->
+                    <div class="part-title" id="part-3">第三部分 巡视整改与成果运用篇</div>
+
+                    <section id="chapter-3-1" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4">整改责任与实施</h3>
+                        <div class="space-y-4">
+                            <p><strong class="text-red-800">第一条 被巡视党组织履行巡视整改主体责任</strong> 建立机制，制定方案，处置线索，召开专题民主生活会，报送整改情况报告，公开整改情况，建立长效机制。</p>
+                            <p><strong class="text-red-800">第二条 被巡视党组织纪委及纪委书记</strong> 履行监督责任，处置问题线索。</p>
+                            <p><strong class="text-red-800">第三条 被巡视党组织主要负责人</strong> 履行第一责任人责任，带头领办重点难点问题。</p>
+                            <p><strong class="text-red-800">第四条 被巡视党组织专职副书记</strong> 协助抓好整改日常领导工作。</p>
+                            <p><strong class="text-red-800">第五条 被巡视党组织领导班子其他成员</strong> 履行“一岗双责”。</p>
+                            <p><strong class="text-red-800">第六条 集团党委巡视工作领导小组</strong> 督办决定事项，统筹整改监督。</p>
+                            <p><strong class="text-red-800">第七条 集团公司纪检部门</strong> 履行整改监督责任，处置移交线索，参加反馈会，建立台账，开展专项治理，追究整改不力责任。</p>
+                            <p><strong class="text-red-800">第八条 集团公司人力资源管理中心</strong> 履行整改监督责任，处置选人用人等问题，统筹专项检查整改，将整改情况纳入考核。</p>
+                            <p><strong class="text-red-800">第九条 集团公司党群工作办公室</strong> 履行上级巡视整改综合协调督办责任。</p>
+                            <p><strong class="text-red-800">第十条 集团公司有关职能部门</strong> 落实上级巡视整改，推动解决共性问题。</p>
+                            <p><strong class="text-red-800">第十一条 集团党委巡视组</strong> 做好反馈移交，参与审核整改报告。</p>
+                            <p><strong class="text-red-800">第十二条 集团党委巡视工作办公室</strong> 履行协调、审核、督促责任，建立评估机制。</p>
+                        </div>
+                    </section>
+
+                    <!-- 附件部分 -->
+                    <div class="part-title" id="part-4">附件文件</div>
+
+                    <section id="attachment-1" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4">附件1：子公司党组织巡察工作考核评价规定</h3>
+                        <div class="space-y-4 bg-gray-50 p-6 rounded-lg text-sm text-gray-700">
+                            <p><strong>考核对象：</strong>集团所属子公司党组织（分开展/不开展巡察两类）。</p>
+                            <p><strong>考核内容（100分）：</strong></p>
+                            <ul class="list-disc list-inside ml-4 space-y-1">
+                                <li><strong>组织领导（15分）：</strong>学习传达、规划计划、书记听取汇报情况。</li>
+                                <li><strong>队伍建设（15分）：</strong>机构设置、人才库、培训。</li>
+                                <li><strong>巡察质量（30分）：</strong>全覆盖进度、政治定位（四个聚焦）、发现问题线索、信息化、制度建设、创新做法。</li>
+                                <li><strong>整改落实（40分）：</strong>党委领导、小组督办、纪委/人力日常监督、巡察办统筹、整改成效。</li>
+                            </ul>
+                            <p><strong>评价等级：</strong>优秀（90+）、良好（80-90）、一般（60-80）、较差（60以下）。</p>
+                            <p><strong>结果运用：</strong>纳入党建考核；连续两年“一般”约谈，结果“较差”诫勉谈话。</p>
+                        </div>
+                    </section>
+
+                    <section id="attachment-2" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">附件2：党委书记听取巡察汇报情况报备制度</h3>
+                        <div class="space-y-4 bg-gray-50 p-6 rounded-lg text-sm text-gray-700">
+                            <p><strong>报备内容：</strong>书记讲话（附原始记录）、汇报材料、工作方案。</p>
+                            <p><strong>要求：</strong>书记讲话要点人点事点问题。报备材料要原汁原味。</p>
+                            <p><strong>时限：</strong>听取汇报后15个工作日内报送。</p>
+                            <p><strong>督办：</strong>建立《党委书记讲话点人点事情况管理台账》，年底报送集团巡视办。</p>
+                        </div>
+                    </section>
+
+                    <section id="attachment-3" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">附件3：巡视干部人才库管理规定</h3>
+                        <div class="space-y-4 bg-gray-50 p-6 rounded-lg text-sm text-gray-700">
+                            <p><strong>构成：</strong>组长/副组长库（部门副职及以上、纪委书记等）、巡视人才库（各专业骨干）。</p>
+                            <p><strong>条件：</strong>中共党员、政治坚定、专业突出、3年以上工作经验、一般不超过45岁。</p>
+                            <p><strong>推荐：</strong>总部部门及部分单位推荐1-2名，其他单位推荐10名。</p>
+                            <p><strong>管理：</strong>动态管理，每两年调整一次。巡视表现作为评优评先、提拔使用的重要参考。</p>
+                        </div>
+                    </section>
+
+                    <section id="attachment-4" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">附件4：巡视巡察干部行为规范</h3>
+                        <div class="space-y-4 bg-gray-50 p-6 rounded-lg text-sm text-gray-700">
+                            <ul class="list-disc list-inside space-y-2">
+                                <li><strong>政治纪律：</strong>严守规矩，不发表违背上级言论。</li>
+                                <li><strong>工作纪律：</strong>不干预具体工作，不泄露信息，不层层陪同，不参加无关活动，不题词发贺信。</li>
+                                <li><strong>组织纪律：</strong>不提无关要求，不谋取私利。</li>
+                                <li><strong>廉洁纪律：</strong>不收礼，不接受宴请，不报销个人费用。</li>
+                                <li><strong>群众纪律：</strong>不漠视群众诉求。</li>
+                                <li><strong>生活纪律：</strong>不超规格食宿，不奢侈浪费。</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <div class="mt-8 text-sm text-gray-500 text-center">
+                        （注：附件5-16为具体归档范围、工作手册及各类文书模板，详情请查阅原始文件）
+                    </div>
+                    
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>本文档仅供内部学习使用 · 内容依据保集党字[2025]2号文件</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol text-red-800"></i> 目录导航
+                        </div>
+                        <nav class="max-h-[70vh] overflow-y-auto text-sm" id="tocNav">
+                            <div class="px-4 py-2 text-xs font-bold text-gray-400 bg-gray-50 uppercase">第一部分 实体篇</div>
+                            <a href="#chapter-1-1" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第一章 机构设置</a>
+                            <a href="#chapter-1-2" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第二章 上下联动</a>
+                            <a href="#chapter-1-3" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第三章 队伍建设</a>
+                            <a href="#chapter-1-4" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第四章 档案保密</a>
+
+                            <div class="px-4 py-2 text-xs font-bold text-gray-400 bg-gray-50 uppercase border-t border-gray-100">第二部分 程序篇</div>
+                            <a href="#chapter-2-1" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第一章 巡前准备</a>
+                            <a href="#chapter-2-2" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第二章 现场巡视</a>
+                            <a href="#chapter-2-3" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第三章 报告反馈</a>
+                            <a href="#chapter-2-4" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">第四章 巡后评估</a>
+
+                            <div class="px-4 py-2 text-xs font-bold text-gray-400 bg-gray-50 uppercase border-t border-gray-100">第三部分 整改篇</div>
+                            <a href="#chapter-3-1" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">整改责任与实施</a>
+
+                            <div class="px-4 py-2 text-xs font-bold text-gray-400 bg-gray-50 uppercase border-t border-gray-100">附件</div>
+                            <a href="#attachment-1" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">附件1 考核规定</a>
+                            <a href="#attachment-2" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">附件2 报备制度</a>
+                            <a href="#attachment-3" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">附件3 人才库</a>
+                            <a href="#attachment-4" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">附件4 行为规范</a>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印资料</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+        <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="w-12 h-12 bg-white text-gray-600 border border-gray-200 rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-down"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const proseDiv = document.querySelector('.prose');
+            
+            // 清除上次高亮
+            if (!window.originalContent) window.originalContent = proseDiv.innerHTML;
+            proseDiv.innerHTML = window.originalContent;
+
+            if (!keyword) {
+                document.getElementById('searchCount').style.opacity = '0';
+                return;
+            }
+
+            // 执行搜索与高亮
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            let matchCount = 0;
+            
+            const walker = document.createTreeWalker(proseDiv, NodeFilter.SHOW_TEXT, null, false);
+            const nodes = [];
+            while(walker.nextNode()) nodes.push(walker.currentNode);
+
+            // 简单替换（仅作演示，实际生产需更复杂的DOM操作防止破坏HTML结构）
+            const newHtml = window.originalContent.replace(regex, (match) => {
+                matchCount++;
+                return `<span class="highlight">${match}</span>`;
+            });
+            
+            proseDiv.innerHTML = newHtml;
+            
+            document.getElementById('searchCount').innerText = `${matchCount} 处匹配`;
+            document.getElementById('searchCount').style.opacity = '1';
+
+            const firstMatch = document.querySelector('.highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // 目录滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section, .part-title');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

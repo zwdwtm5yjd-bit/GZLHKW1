@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>党委巡视工作全流程实务指南 - 学习资料库</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+            --step-line-color: #E2E8F0;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 流程步骤样式 */
+        .step-card {
+            border-left: 4px solid var(--primary-red);
+            transition: transform 0.2s;
+        }
+        .step-card:hover {
+            transform: translateX(5px);
+        }
+        .step-number {
+            background-color: var(--primary-red);
+            color: white;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 9999px;
+            font-weight: bold;
+            font-family: 'Noto Serif SC', serif;
+            font-size: 1.2rem;
+        }
+        
+        .output-tag {
+            background-color: #ECFDF5;
+            color: #047857;
+            border: 1px solid #A7F3D0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-right: 4px;
+            margin-bottom: 4px;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+            .step-card { break-inside: avoid; border: 1px solid #eee; margin-bottom: 1rem; box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="zsksy.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-clipboard-list text-red-800"></i> 巡视工作全流程实务指南
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">依据相关制度文件编制</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字（如：问题底稿、立行立改）..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 头部标题区 -->
+                <div class="text-center border-b-2 border-red-800/10 pb-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-red-900 mb-4 serif-font">集团党委巡视工作<br>全流程实务与产出清单</h2>
+                    <div class="text-sm text-gray-500 space-y-2">
+                        <p>规范化 · 流程化 · 实操化</p>
+                    </div>
+                </div>
+
+                <!-- 正文内容 (Prose) -->
+                <div class="prose prose-slate max-w-none text-justify space-y-8 leading-relaxed text-gray-800">
+                    
+                    <!-- 流程概览 -->
+                    <div class="bg-gray-50 p-6 rounded-xl border border-gray-200 mb-8">
+                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-route text-red-800"></i> 巡视工作全景图
+                        </h3>
+                        <div class="flex flex-col md:flex-row justify-between gap-4 text-sm font-bold text-center">
+                            <div class="flex-1 bg-white p-3 rounded-lg border-l-4 border-blue-600 shadow-sm">
+                                <div class="text-blue-800 mb-1">第一阶段</div>
+                                <div class="text-gray-800">巡前准备</div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-gray-300 self-center hidden md:block"></i>
+                            <div class="flex-1 bg-white p-3 rounded-lg border-l-4 border-orange-500 shadow-sm">
+                                <div class="text-orange-800 mb-1">第二阶段</div>
+                                <div class="text-gray-800">现场巡视</div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-gray-300 self-center hidden md:block"></i>
+                            <div class="flex-1 bg-white p-3 rounded-lg border-l-4 border-red-600 shadow-sm">
+                                <div class="text-red-800 mb-1">第三阶段</div>
+                                <div class="text-gray-800">报告与反馈</div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-gray-300 self-center hidden md:block"></i>
+                            <div class="flex-1 bg-white p-3 rounded-lg border-l-4 border-green-600 shadow-sm">
+                                <div class="text-green-800 mb-1">第四阶段</div>
+                                <div class="text-gray-800">整改与移交</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 第一阶段：巡前准备 -->
+                    <section id="step-1" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="step-number">1</div>
+                            <h3 class="text-xl font-bold text-gray-900 border-b-2 border-red-100 flex-1 pb-2">巡前准备阶段</h3>
+                        </div>
+                        <div class="space-y-6">
+                            
+                            <!-- 1.1 制定方案 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-file-pen text-blue-600"></i> 1.1 制定方案与组建队伍
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>拟定巡视工作方案，明确对象、方式（常规/专项/机动/提级）、重点。</li>
+                                        <li>组建巡视组：落实“三个不固定”（组长、单位、关系），从人才库抽调人员。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">巡视工作方案</span>
+                                        <span class="output-tag">巡视组人员名单</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 1.2 动员培训 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-chalkboard-user text-blue-600"></i> 1.2 动员部署与培训
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>召开动员部署会，传达精神，部署任务。</li>
+                                        <li>组织集中培训：学习习近平总书记论述、党纪党规、工作流程及信息化系统。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">动员讲话稿</span>
+                                        <span class="output-tag">培训资料</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 1.3 通报情况 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-comments text-blue-600"></i> 1.3 沟通情况与进驻准备
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>听取集团总部部门（纪检、组织、审计、信访等）通报情况。</li>
+                                        <li>收集上轮巡视报告、整改报告等材料。</li>
+                                        <li>印发巡视通知，发送《配合手册》和《调阅目录》。</li>
+                                        <li>巡视组建立组务会制度，成立临时党支部，签订保密承诺书。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">部门通报材料</span>
+                                        <span class="output-tag">问题清单</span>
+                                        <span class="output-tag">巡视实施方案</span>
+                                        <span class="output-tag">巡视通知</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- 第二阶段：现场巡视 -->
+                    <section id="step-2" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-4 mt-8">
+                            <div class="step-number">2</div>
+                            <h3 class="text-xl font-bold text-gray-900 border-b-2 border-red-100 flex-1 pb-2">现场巡视阶段</h3>
+                        </div>
+                        <div class="space-y-6">
+                            
+                            <!-- 2.1 进驻动员 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-flag text-orange-600"></i> 2.1 进驻与动员
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>召开见面沟通会：通报任务，交换意见。</li>
+                                        <li>召开巡视工作动员会：组长动员，被巡视党组织表态。</li>
+                                        <li>发布巡视公告，设置联系信箱。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">见面会记录</span>
+                                        <span class="output-tag">动员会讲话稿</span>
+                                        <span class="output-tag">巡视公告</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2.2 深入了解 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-magnifying-glass-chart text-orange-600"></i> 2.2 深入了解（核心环节）
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作（12+N方式）：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><strong>听取汇报：</strong>工作汇报、整改专题、纪检/选人用人专题汇报。</li>
+                                        <li><strong>个别谈话：</strong>覆盖班子成员、中层干部等，制作谈话笔录。</li>
+                                        <li><strong>调阅资料：</strong>查阅会议记录、财务凭证、档案等。</li>
+                                        <li><strong>受理信访：</strong>接听电话、接待来访，建立台账。</li>
+                                        <li><strong>下沉调研：</strong>深入基层一线核实情况。</li>
+                                        <li><strong>列席会议：</strong>列席党委会、董事会等。</li>
+                                        <li><strong>专项检查：</strong>选人用人、巡察工作专项检查。</li>
+                                        <li><strong>其他：</strong>民主测评、问卷调查、抽查个人事项报告等。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">汇报材料</span>
+                                        <span class="output-tag">谈话记录</span>
+                                        <span class="output-tag">信访台账</span>
+                                        <span class="output-tag">下沉调研报告</span>
+                                        <span class="output-tag">专项检查报告</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2.3 问题研判 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-scale-balanced text-orange-600"></i> 2.3 问题研判与底稿编制
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><strong>立行立改：</strong>发现突出问题（如违反八项规定），督促即知即改。</li>
+                                        <li><strong>编制底稿：</strong>对发现的问题制作底稿，做到事实清楚、证据确凿。</li>
+                                        <li><strong>中期汇报：</strong>进驻一个月左右向领导小组汇报。</li>
+                                        <li><strong>沟通情况：</strong>报告初稿形成后，与被巡视党组织主要负责人当面沟通（不谈线索）。</li>
+                                        <li><strong>撤离：</strong>清退资料，结算费用。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">立行立改通知书</span>
+                                        <span class="output-tag">巡视报告问题底稿</span>
+                                        <span class="output-tag">中期汇报材料</span>
+                                        <span class="output-tag">沟通情况记录</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- 第三阶段：报告与反馈 -->
+                    <section id="step-3" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-4 mt-8">
+                            <div class="step-number">3</div>
+                            <h3 class="text-xl font-bold text-gray-900 border-b-2 border-red-100 flex-1 pb-2">报告与反馈阶段</h3>
+                        </div>
+                        <div class="space-y-6">
+                            
+                            <!-- 3.1 撰写报告 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-pen-to-square text-red-600"></i> 3.1 撰写报告与审议
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>起草“1+N”报告体系：巡视报告、专题报告、线索报告、“一把手”专题材料等。</li>
+                                        <li>领导小组听取汇报。</li>
+                                        <li>集团党委听取汇报（并按规定向国资委报备）。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">巡视情况报告</span>
+                                        <span class="output-tag">问题线索报告</span>
+                                        <span class="output-tag">“一把手”情况反映</span>
+                                        <span class="output-tag">会议纪要</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3.2 反馈意见 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-bullhorn text-red-600"></i> 3.2 巡视反馈
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作（双反馈）：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>向主要负责人反馈：原原本本反馈，含重点人问题线索（不含本人）。</li>
+                                        <li>向领导班子反馈：召开反馈通报会，隐去敏感内容。</li>
+                                        <li>被巡视党组织签收反馈意见，表态发言。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">反馈意见（两份）</span>
+                                        <span class="output-tag">反馈会讲话稿</span>
+                                        <span class="output-tag">签收单</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- 第四阶段：整改与移交 -->
+                    <section id="step-4" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-4 mt-8">
+                            <div class="step-number">4</div>
+                            <h3 class="text-xl font-bold text-gray-900 border-b-2 border-red-100 flex-1 pb-2">整改与移交阶段</h3>
+                        </div>
+                        <div class="space-y-6">
+                            
+                            <!-- 4.1 移交办理 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-share-from-square text-green-600"></i> 4.1 线索与事项移交
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li>分类移交问题线索：向纪委移交（审批表+目录）。</li>
+                                        <li>向人力部门移交选人用人问题。</li>
+                                        <li>向被巡视党组织移交反馈意见。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">移交审批表</span>
+                                        <span class="output-tag">移交目录</span>
+                                        <span class="output-tag">交接单</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 4.2 整改落实 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-list-check text-green-600"></i> 4.2 整改落实与监督
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><strong>方案制定：</strong>被巡视党组织1个月内报送整改方案和台账。</li>
+                                        <li><strong>专题民主生活会：</strong>召开巡视整改专题民主生活会。</li>
+                                        <li><strong>进展报告：</strong>6个月内报送集中整改进展情况报告。</li>
+                                        <li><strong>公开通报：</strong>向党内通报、向职工公开。</li>
+                                        <li><strong>日常监督：</strong>纪检、人力、巡视办审核报告，跟踪督办。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">整改方案</span>
+                                        <span class="output-tag">整改台账</span>
+                                        <span class="output-tag">集中整改报告</span>
+                                        <span class="output-tag">公开通报稿</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 4.3 归档评估 -->
+                            <div class="step-card bg-white p-5 shadow-sm rounded-r-lg">
+                                <h4 class="font-bold text-gray-800 mb-2 flex items-center gap-2">
+                                    <i class="fa-solid fa-box-archive text-gray-600"></i> 4.3 归档与后评估
+                                </h4>
+                                <div class="pl-6 border-l-2 border-gray-100 ml-1 space-y-2 text-sm text-gray-700">
+                                    <p><strong>核心动作：</strong></p>
+                                    <ul class="list-disc list-inside space-y-1">
+                                        <li><strong>归档：</strong>现场巡视结束后7日内完成立卷，巡视办协助归档。</li>
+                                        <li><strong>后评估：</strong>对巡视组作风纪律进行检查评估。</li>
+                                    </ul>
+                                    <div class="mt-3 bg-gray-50 p-3 rounded">
+                                        <span class="text-xs font-bold text-gray-500 uppercase block mb-1">关键产出物 (Output)</span>
+                                        <span class="output-tag">全套巡视档案</span>
+                                        <span class="output-tag">后评估报告</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+                    
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>本文档仅供内部学习使用 · 内容依据保集党字[2025]2号文件</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol text-red-800"></i> 流程导航
+                        </div>
+                        <nav class="max-h-[60vh] overflow-y-auto text-sm" id="tocNav">
+                            <a href="#step-1" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">1. 巡前准备</a>
+                            <a href="#step-2" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">2. 现场巡视</a>
+                            <a href="#step-3" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">3. 报告反馈</a>
+                            <a href="#step-4" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">4. 整改移交</a>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="scrollToTop()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印指南</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="scrollToTop()" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const proseDiv = document.querySelector('.prose');
+            
+            // 清除上次高亮
+            if (!window.originalContent) window.originalContent = proseDiv.innerHTML;
+            proseDiv.innerHTML = window.originalContent;
+
+            if (!keyword) {
+                document.getElementById('searchCount').style.opacity = '0';
+                return;
+            }
+
+            // 执行搜索与高亮
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            let matchCount = 0;
+            
+            const newHtml = window.originalContent.replace(regex, (match) => {
+                matchCount++;
+                return `<span class="highlight">${match}</span>`;
+            });
+            
+            proseDiv.innerHTML = newHtml;
+            
+            document.getElementById('searchCount').innerText = `${matchCount} 处匹配`;
+            document.getElementById('searchCount').style.opacity = '1';
+
+            const firstMatch = document.querySelector('.highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // 目录滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
