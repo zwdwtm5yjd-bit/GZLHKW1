@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>“六大纪律”负面清单147条 - 学习资料库</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 负面清单卡片样式 */
+        .item-card {
+            transition: all 0.2s ease;
+        }
+        .item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        
+        /* 学科颜色标识 */
+        .tag-political { background-color: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+        .tag-org { background-color: #FFF7ED; color: #9A3412; border: 1px solid #FED7AA; }
+        .tag-clean { background-color: #F0FDF4; color: #166534; border: 1px solid #BBF7D0; }
+        .tag-mass { background-color: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
+        .tag-work { background-color: #FAF5FF; color: #6B21A8; border: 1px solid #E9D5FF; }
+        .tag-life { background-color: #FDF4FF; color: #86198F; border: 1px solid #FBCFE8; }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+            .item-card { break-inside: avoid; border: 1px solid #eee; margin-bottom: 0.5rem; box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="zsksy.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-gavel text-red-800"></i> “六大纪律”负面清单147条
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">2023版《中国共产党纪律处分条例》对照检查专用</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="搜索关键词（如：赌博、因私出国）..." onkeyup="filterList()">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：清单展示区 -->
+            <main class="flex-1 min-h-screen" id="listContent">
+                
+                <!-- 政治纪律 -->
+                <section id="sec-political" class="mb-10 scroll-mt-28">
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-red-100 pb-2">
+                        <div class="w-10 h-10 rounded-lg bg-red-800 text-white flex items-center justify-center font-bold text-lg shadow-sm">政</div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">政治纪律</h2>
+                            <p class="text-xs text-gray-500">共 41 条 · 维护党的团结统一的根本保证</p>
+                        </div>
+                    </div>
+                    <div class="grid gap-4" id="list-political">
+                        <!-- JS 动态填充 -->
+                    </div>
+                </section>
+
+                <!-- 组织纪律 -->
+                <section id="sec-org" class="mb-10 scroll-mt-28">
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-orange-100 pb-2">
+                        <div class="w-10 h-10 rounded-lg bg-orange-700 text-white flex items-center justify-center font-bold text-lg shadow-sm">组</div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">组织纪律</h2>
+                            <p class="text-xs text-gray-500">共 26 条 · 维护党的集中统一</p>
+                        </div>
+                    </div>
+                    <div class="grid gap-4" id="list-org">
+                        <!-- JS 动态填充 -->
+                    </div>
+                </section>
+
+                <!-- 廉洁纪律 -->
+                <section id="sec-clean" class="mb-10 scroll-mt-28">
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-green-100 pb-2">
+                        <div class="w-10 h-10 rounded-lg bg-green-700 text-white flex items-center justify-center font-bold text-lg shadow-sm">廉</div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">廉洁纪律</h2>
+                            <p class="text-xs text-gray-500">共 41 条 · 廉洁用权的行为规则</p>
+                        </div>
+                    </div>
+                    <div class="grid gap-4" id="list-clean">
+                        <!-- JS 动态填充 -->
+                    </div>
+                </section>
+
+                <!-- 群众纪律 -->
+                <section id="sec-mass" class="mb-10 scroll-mt-28">
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-blue-100 pb-2">
+                        <div class="w-10 h-10 rounded-lg bg-blue-700 text-white flex items-center justify-center font-bold text-lg shadow-sm">群</div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">群众纪律</h2>
+                            <p class="text-xs text-gray-500">共 8 条 · 践行党的根本宗旨</p>
+                        </div>
+                    </div>
+                    <div class="grid gap-4" id="list-mass">
+                        <!-- JS 动态填充 -->
+                    </div>
+                </section>
+
+                <!-- 工作纪律 -->
+                <section id="sec-work" class="mb-10 scroll-mt-28">
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-purple-100 pb-2">
+                        <div class="w-10 h-10 rounded-lg bg-purple-700 text-white flex items-center justify-center font-bold text-lg shadow-sm">工</div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">工作纪律</h2>
+                            <p class="text-xs text-gray-500">共 25 条 · 履职尽责、担当作为</p>
+                        </div>
+                    </div>
+                    <div class="grid gap-4" id="list-work">
+                        <!-- JS 动态填充 -->
+                    </div>
+                </section>
+
+                <!-- 生活纪律 -->
+                <section id="sec-life" class="mb-10 scroll-mt-28">
+                    <div class="flex items-center gap-3 mb-6 border-b-2 border-pink-100 pb-2">
+                        <div class="w-10 h-10 rounded-lg bg-pink-700 text-white flex items-center justify-center font-bold text-lg shadow-sm">生</div>
+                        <div>
+                            <h2 class="text-2xl font-bold text-gray-900">生活纪律</h2>
+                            <p class="text-xs text-gray-500">共 6 条 · 明大德、守公德、严私德</p>
+                        </div>
+                    </div>
+                    <div class="grid gap-4" id="list-life">
+                        <!-- JS 动态填充 -->
+                    </div>
+                </section>
+
+            </main>
+
+            <!-- (B) 右侧：悬浮目录与工具 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol text-red-800"></i> 快速导航
+                        </div>
+                        <nav class="text-sm" id="tocNav">
+                            <a href="#sec-political" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">政治纪律 (41)</a>
+                            <a href="#sec-org" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">组织纪律 (26)</a>
+                            <a href="#sec-clean" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">廉洁纪律 (41)</a>
+                            <a href="#sec-mass" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">群众纪律 (8)</a>
+                            <a href="#sec-work" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">工作纪律 (25)</a>
+                            <a href="#sec-life" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">生活纪律 (6)</a>
+                        </nav>
+                    </div>
+
+                    <!-- 工具按钮 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印清单</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室 · 内部资料</p>
+        </div>
+    </footer>
+
+    <!-- 数据与逻辑 -->
+    <script>
+        // 147条负面清单数据
+        const dataList = {
+            political: [
+                "在重大原则问题上不同党中央保持一致且有实际言论、行为或者造成不良后果的行为。（第49条）",
+                "通过网络、广播、电视、报刊、传单、书籍等，或者利用讲座、论坛、报告会、座谈会等方式，公开发表坚持资产阶级自由化立场、反对四项基本原则，反对党的改革开放决策的文章、演说、宣言、声明等的行为。（第50条第1款）",
+                "发布、播出、刊登、出版坚持资产阶级自由化立场、反对四项基本原则，反对党的改革开放决策的文章、演说、宣言、声明等或者为上述行为提供方便条件的行为。（第50条第2款）",
+                "通过网络等方式公开发表违背四项基本原则，违背、歪曲党的改革开放决策，或者其他有严重政治问题的文章、演说、宣言、声明等；妄议党中央大政方针，破坏党的集中统一；丑化党和国家形象，或者诋毁、诬蔑党和国家领导人、英雄模范，或者歪曲党的历史、中华人民共和国历史、人民军队历史的行为。（第51条第1款）",
+                "发布、播出、刊登、出版有严重政治问题的言论或者为上述行为提供方便条件的行为。（第51条第2款）",
+                "制作、贩卖、传播有严重政治问题的报刊、书籍、音像制品、电子读物，以及网络文本、图片、音频、视频资料等的行为。（第52条第1款）",
+                "私自携带、寄递有严重政治问题的报刊、书籍、音像制品、电子读物等入出境的行为。（第52条第2款）",
+                "私自阅看、浏览、收听有严重政治问题的报刊、书籍、音像制品、电子读物，以及网络文本、图片、音频、视频资料等的行为。（第52条第3款）",
+                "在党内组织秘密集团或者组织其他分裂党的活动的行为。（第53条第1款）",
+                "参加秘密集团或者参加其他分裂党的活动的行为。（第53条第2款）",
+                "在党内搞团团伙伙、结党营私、拉帮结派、政治攀附、培植个人势力等非组织活动，或者通过搞利益交换、为自己营造声势等活动捞取政治资本的行为。（第54条）",
+                "搞投机钻营，结交政治骗子或者被政治骗子利用的，或者充当政治骗子的行为。（第55条）",
+                "党员领导干部在本人主政的地方或者分管的部门自行其是，搞山头主义，拒不执行党中央确定的大政方针，甚至背着党中央另搞一套的行为。（第56条第1款）",
+                "贯彻党中央决策部署只表态不落实，或者落实党中央决策部署不坚决，打折扣、搞变通，在政治上造成不良影响或者严重后果的行为。（第56条第2款）",
+                "不顾全大局，搞部门或地方保护的行为。（第56条第3款）",
+                "党员领导干部政绩观错位，违背新发展理念、背离高质量发展要求，给党、国家和人民的利益造成较大损失，搞劳民伤财的“形象工程”、“政绩工程”的行为。（第57条）",
+                "对党不忠诚不老实，表里不一，阳奉阴违，欺上瞒下，搞两面派，做两面人，在政治上造成不良影响的行为。（第58条）",
+                "制造、散布、传播政治谣言，破坏党的团结统一的行为。（第59条第1款）",
+                "政治品行恶劣，匿名诬告，有意陷害或者制造其他谣言，造成损害或者不良影响的行为。（第59条第2款）",
+                "擅自对应当由党中央决定的重大政策问题作出决定、对外发表主张的行为。（第60条）",
+                "不按照有关规定向组织请示、报告重大事项的行为。（第61条）",
+                "干扰巡视巡察工作或者不落实巡视巡察整改要求的行为。（第62条）",
+                "对抗组织审查的行为。包括串供或者伪造、销毁、转移、隐匿证据；阻止他人揭发检举、提供证据材料；包庇同案人员；向组织提供虚假情况，掩盖事实等。（第63条）",
+                "组织、参加反对党的基本理论、基本路线、基本方略或者重大方针政策的集会、游行、示威等活动的行为。（第64条）",
+                "未经组织批准参加其他集会、游行、示威等活动的行为。（第64条第4款）",
+                "组织、参加旨在反对党的领导、反对社会主义制度或者敌视政府等组织的行为。（第65条第1款）",
+                "组织、参加会道门或者邪教组织的行为。（第66条第1款）",
+                "从事、参与挑拨破坏民族关系制造事端或者参加民族分裂活动的行为。（第67条第1款）",
+                "其他违反党和国家民族政策的行为。（第67条第4款）",
+                "组织、利用宗教活动反对党的理论、路线、方针、政策和决议，破坏民族团结的行为。（第68条第1款）",
+                "其他违反党和国家宗教政策的行为。（第68条第4款）",
+                "信仰宗教或者参与利用宗教搞煽动活动的行为。（第69条）",
+                "组织、参加迷信活动的行为。（第70条）",
+                "组织、利用宗族势力对抗党和政府，妨碍党和国家的方针政策以及决策部署的实施，或者破坏党的基层组织建设的行为。（第71条第1款）",
+                "在国（境）外、外国驻华使（领）馆申请政治避难，或者违纪后逃往国（境）外、外国驻华使（领）馆的行为。（第72条第1款）",
+                "在国（境）外公开发表反对党和政府的文章、演说、宣言、声明等的行为。（第72条第2款）",
+                "故意为他人申请政治避难、违纪后外逃，或者在国（境）外公开发表反对党和政府的文章、演说、宣言、声明等提供方便条件的行为。（第72条第3款）",
+                "在涉外活动中，其言行在政治上造成恶劣影响，损害党和国家尊严、利益的行为。（第73条）",
+                "不履行全面从严治党主体责任、监督责任或者履行全面从严治党主体责任、监督责任不力，给党组织造成严重损害或者严重不良影响的行为。（第74条）",
+                "党员领导干部对违反政治纪律和政治规矩等错误思想和行为不报告、不抵制、不斗争，放任不管，搞无原则一团和气，造成不良影响的行为。（第75条）",
+                "违反党的优良传统和工作惯例等党的规矩，在政治上造成不良影响的行为。（第76条）"
+            ],
+            org: [
+                "违反民主集中制原则的行为。包括拒不执行或者擅自改变党组织作出的重大决定；违反议事规则，个人或者少数人决定重大问题；故意规避集体决策，决定重大事项、重要干部任免、重要项目安排和大额资金使用；借集体决策名义集体违规的行为。（第77条）",
+                "下级党组织拒不执行或者擅自改变上级党组织决定的行为。（第78条）",
+                "拒不执行党组织的分配、调动、交流等决定，或者在特殊时期或者紧急状况下，拒不执行党组织决定的行为。（第79条）",
+                "在党组织纪律审查中，依法依规负有作证义务的党员拒绝作证或者提供虚假情况的行为。（第80条）",
+                "违反个人有关事项报告规定，隐瞒不报；在组织进行谈话、函询时，不如实向组织说明问题；不按要求报告或者不如实报告个人去向；或者不如实填报个人档案资料的行为。（第81条第1款）",
+                "篡改、伪造个人档案资料的行为。（第81条第2款）",
+                "隐瞒入党前严重错误的行为。（第81条第3款）",
+                "党员领导干部违反有关规定组织、参加自发成立的老乡会、校友会、战友会等的行为。（第82条）",
+                "在民主推荐、民主测评、组织考察和党内选举中搞拉票、助选等非组织活动；在法律规定的投票、选举活动中违背组织原则搞非组织活动，组织、怂恿、诱使他人投票、表决；在选举中进行其他违反党章、其他党内法规和有关章程活动的行为。（第83条第1款）",
+                "搞有组织的拉票贿选，或者用公款拉票贿选的行为。（第83条第2款）",
+                "在干部选拔任用工作中，有任人唯亲、排斥异己、封官许愿、说情干预、跑官要官、突击提拔或者调整干部等违反干部选拔任用规定的行为。（第84条第1款）",
+                "用人失察失误造成严重后果的行为。（第84条第2款）",
+                "在推进领导干部能上能下工作中，搞好人主义的行为。（第85条）",
+                "在干部、职工的录用、考核、职务职级晋升、职称评聘、荣誉表彰，授予学术称号和征兵、安置退役军人等工作中，隐瞒、歪曲事实真相，或者利用职权或者职务上的影响违反有关规定为本人或者其他人谋取利益的行为。（第86条第1款）",
+                "弄虚作假，骗取职务、职级、职称、待遇、资格、学历、学位、荣誉、称号或者其他利益的行为。（第86条第2款）",
+                "侵犯党员的表决权、选举权和被选举权的行为。（第87条第1款）",
+                "以强迫、威胁、欺骗、拉拢等手段，妨害党员自主行使表决权、选举权和被选举权的行为。（第87条第2款）",
+                "对批评、检举、控告进行阻挠、压制，或者将批评、检举、控告材料私自扣压、销毁，或者故意将其泄露给他人；对党员的申辩、辩护、作证等进行压制，造成不良后果；压制党员申诉，造成不良后果的，或者不按照有关规定处理党员申诉等行为。（第88条第1款）",
+                "对批评人、检举人、控告人、证人及其他人员打击报复的行为。（第88条第2款）",
+                "违反党章和其他党内法规的规定，采取弄虚作假或者其他手段把不符合党员条件的人发展为党员，或者为非党员出具党员身份证明的行为。（第89条第1款）",
+                "违反有关规定程序发展党员的行为。（第89条第2款）",
+                "违反有关规定取得外国国籍或者获取国（境）外永久居留资格、长期居留许可的行为。（第90条）",
+                "违反有关规定办理因私出国（境）证件、前往港澳通行证，或者未经批准出入国（边）境，或者虽经批准因私出国（边）境但存在擅自变更路线、无正当理由超期未归等超过批准范围出（国）境的行为。（第91条）",
+                "驻外机构或者临时出国（境）团（组）中的党员擅自脱离组织，或者从事外事、机要、军事等工作的党员违反有关规定同国（境）外机构、人员联系和交往的行为。（第92条）",
+                "驻外机构或者临时出国（境）团（组）中的党员，脱离组织出走时间不满六个月又自动回归的行为。（第93条第1款）",
+                "故意为他人脱离组织出走提供方便条件的行为。（第93条第2款）"
+            ],
+            clean: [
+                "利用职权或者职务上的影响为他人谋取利益，本人的配偶、子女及其配偶等亲属和其他特定关系人收受对方财物的行为。（第94条第2款）",
+                "相互利用职权或者职务上的影响为对方及其配偶、子女及其配偶等亲属、身边工作人员和其他特定关系人谋取利益搞权权交易的行为。（第95条）",
+                "纵容、默许配偶、子女及其配偶等亲属、身边工作人员和其他特定关系人利用党员干部本人职权或者职务上的影响谋取私利的行为。（第96条第1款）",
+                "党员干部的配偶、子女及其配偶等亲属和其他特定关系人不实际工作而获取薪酬或者虽实际工作但领取明显超出同职级标准薪酬，党员干部知情未予纠正的行为。（第96条第2款）",
+                "收受可能影响公正执行公务的礼品、礼金、消费卡（券）和有价证券、股权、其他金融产品等财物的行为。（第97条第1款）",
+                "收受其他明显超出正常礼尚往来的财物的行为。（第97条第2款）",
+                "向从事公务的人员及其配偶、子女及其配偶等亲属和其他特定关系人赠送明显超出正常礼尚往来的礼品、礼金、消费卡和有价证券、股权、其他金融产品等财物的，以及以讲课费、课题费、咨询费等变相送礼的行为。（第98条）",
+                "借用管理和服务对象的钱款、住房、车辆等，影响公正执行公务的行为。（第99条第1款）",
+                "通过民间借贷等金融活动获取大额回报，影响公正执行公务的行为。（第99条第2款）",
+                "利用职权或者职务上的影响操办婚丧喜庆事宜，在社会上造成不良影响；借机敛财或者有其他侵犯国家、集体和人民利益的行为。（第100条）",
+                "接受、提供可能影响公正执行公务的宴请或者旅游、健身、娱乐等活动安排的行为。（第101条）",
+                "违反有关规定取得、持有、实际使用运动健身卡、会所和俱乐部会员卡、高尔夫球卡等各种消费卡（券），或者违反有关规定出入私人会所的行为。（第102条）",
+                "违反有关规定从事营利活动的行为。包括经商办企业；拥有非上市公司（企业）的股份或者证券；买卖股票或者进行其他证券投资；从事有偿中介活动；在国（境）外注册公司或者投资入股等。（第103条第1款）",
+                "利用参与企业重组改制、定向增发、兼并投资、土地使用权出让等工作中掌握的信息买卖股票，利用职权或者职务上的影响通过购买信托产品、基金等方式非正常获利的行为。（第103条第2款）",
+                "违反有关规定在经济组织、社会组织等单位中兼职，或者经批准兼职但获取薪酬、奖金、津贴等额外利益的行为。（第103条第3款）",
+                "利用职权或者职务上的影响，为配偶、子女及其配偶等亲属和其他特定关系人在审批监管、资源开发、金融信贷、大宗采购、土地使用权出让、房地产开发、工程招投标以及公共财政收支等方面谋取利益的行为。（第104条第1款）",
+                "利用职权或者职务上的影响，为配偶、子女及其配偶等亲属和其他特定关系人吸收存款、推销金融产品、经营名贵特产类特殊资源等提供帮助谋取利益的行为。（第104条第2款）",
+                "党员领导干部离职或者退（离）休后违反有关规定接受原任职务管辖的地区和业务范围内或者与原工作业务直接相关的企业和中介机构等单位的聘用，或者个人从事与原任职务管辖业务或与原工作业务直接相关的营利活动的行为。（第105条第1款）",
+                "党员领导干部离职或者退（离）休后违反有关规定担任上市公司、基金管理公司独立董事、独立监事等职务的行为。（第105条第2款）",
+                "离职或者退（离）休后利用原职权或者职务上的影响，为配偶、子女以及配偶的亲属和其他特定关系人从事经营活动谋取利益的行为。（第106条第1款）",
+                "离职或者退（离）休后利用原职权或者职务上的影响为他人谋取利益，本人的配偶、子女以及配偶等亲属收受对方财物的行为。（第106条第2款）",
+                "党员领导干部的配偶、子女及其配偶，违反有关规定在该党员领导干部管辖的地区和业务范围内从事可能影响其公正执行公务的经营活动，或者有其他违反经商办企业禁业规定行为。（第107条）",
+                "党和国家机关违反有关规定经商办企业的行为。（第108条）",
+                "党员领导干部违反工作、生活保障制度，在交通、医疗、警卫等方面为本人、配偶、子女及其配偶等亲属、身边工作人员和其他特定关系人谋求特殊待遇的行为。（第109条）",
+                "在分配、购买住房中侵犯国家、集体利益的行为。（第110条）",
+                "利用职权或者职务上的影响，侵占非本人经管的公私财物，或者以象征性地支付钱款等方式侵占公私财物，或者无偿、象征性地支付报酬接受服务、使用劳务的行为。（第111条第1款）",
+                "利用职权或者职务上的影响，将应当由本人、配偶、子女及其配偶等亲属、身边工作人员和其他特定关系人个人支付的费用，由下属单位、其他单位或者他人支付、报销的行为。（第111条第2款）",
+                "利用职权或者职务上的影响，违反有关规定占用公物归个人使用，时间超过六个月的行为。（第112条第1款）",
+                "占用公物进行营利活动的行为。（第112条第2款）",
+                "将公物借给他人进行营利活动的行为。（第112条第3款）",
+                "违反有关规定组织、参加用公款支付的宴请、娱乐、健身活动，或者用公款购买赠送或者发放礼品、消费卡（券）等的行为。（第113条）",
+                "违反有关规定自定薪酬或者滥发津贴、补贴、奖金、福利等的行为。（第114条）",
+                "公款旅游或者以学习培训、考察调研、职工疗养等为名变相公款旅游；改变公务行程，借机旅游；参加所管理企业、下属单位组织的考察活动，借机旅游的行为。（第115条第1款）",
+                "以考察、学习、培训、研讨、招商、参展等名义变相用公款出国（境）旅游的行为。（第115条第2款）",
+                "违反接待管理规定，超标准、超范围接待或者借机大吃大喝的行为。（第116条）",
+                "违反有关规定配备、购买、更换、装饰、使用公务交通工具或者有其他违反公务交通工具管理规定的行为。（第117条）",
+                "违反会议活动管理规定，到禁止召开会议的风景名胜区开会；决定或者批准举办各类节会、庆典活动的行为。（第118条第1款）",
+                "擅自举办评比达标表彰、创新示范活动或者借评比达标表彰、创新示范活动收取费用的行为。（第118条第2款）",
+                "违反办公用房管理等规定，决定或者批准兴建、装修办公楼、培训中心等楼堂馆所；超标准配备、使用办公用房；未经批准租用、借用办公用房；用公款包租、占用客房或者其他场所供个人使用的行为。（第119条）",
+                "搞权色交易或者给予财物搞钱色交易的行为。（第120条）",
+                "有其他违反廉洁纪律规定的行为。（第121条）"
+            ],
+            mass: [
+                "在扶贫领域或者其他方面，超标准、超范围向群众筹资筹劳、摊派费用，加重群众负担；违反有关规定扣留、收缴群众款物或者处罚群众；克扣群众财物，或者违反有关规定拖欠群众钱款；在管理、服务活动中违反有关规定收取费用；在办理涉及群众事务时刁难群众、吃拿卡要等。（第122条）",
+                "干涉生产经营自主权，致使群众财产遭受较大损失的行为。（第123条）",
+                "在社会保障、社会救助、政策扶持、扶贫脱贫、救灾救济款物分配等事项中优亲厚友、明显有失公平的行为。（第124条）",
+                "利用宗族或者黑恶势力等欺压群众，或者纵容涉黑涉恶活动、为黑恶势力充当“保护伞”的行为。（第125条）",
+                "对涉及群众生产、生活等切身利益的问题依照政策或者有关规定能解决而不及时解决，庸懒无为、效率低下；对符合政策的群众诉求消极应付、推诿扯皮，损害党群、干群关系；对待群众态度恶劣、简单粗暴，造成不良影响；弄虚作假，欺上瞒下，损害群众利益等。（第126条）",
+                "遇到国家财产和群众生命财产受到严重威胁时，能救而不救的行为。（第127条）",
+                "不按照规定公开党务、政务、厂务、村（居）务等，侵犯群众知情权的行为。（第128条）",
+                "有其他违反群众纪律规定的行为。（第129条）"
+            ],
+            work: [
+                "工作中不负责任或者疏于管理，贯彻执行、检查督促落实上级决策部署不力，给党、国家和人民利益以及公共财产造成较大损失的行为。（第130条第1款）",
+                "党员领导干部对于到任前已经存在且属于其职责范围内的问题，消极回避、推卸责任的行为。（第130条第2款）",
+                "工作中不敢斗争、不愿担当，面对重大矛盾冲突、危机困难临阵退缩的行为。（第131条）",
+                "热衷于搞舆论造势、浮在表面；单纯以会议贯彻会议、以文件落实文件，在实际工作中不见诸行动；脱离实际、不做深入调查研究，搞随意决策、机械执行；违反精文简会有关规定搞文山会海；在督察检查考核等工作中搞层层加码、过度留痕，增加基层工作负担等形式主义、官僚主义行为。（第132条）",
+                "在公务活动用餐、单位食堂用餐管理中不履行或者不正确履行宣传教育、监督管理职责，导致餐饮浪费的行为。（第133条）",
+                "在机构编制工作中，擅自超过“三定”规定范围调整职责、设置机构、核定领导职数和配备人员；违规干预地方机构设置的行为。（第134条）",
+                "在信访工作中，不按照规定受理、办理信访事项；对规模性集体信访等处置不力，导致事态扩大；对党委和政府信访部门提出的改进工作、完善政策等建议重视不够、落实不力，导致问题长期得不到解决等。（第135条）",
+                "党员被立案审查期间，擅自批准其出差、出（国）境、辞职，或者对其交流、提拔职务、晋升职务、晋升职级、进一步使用、奖励，或者办理退休手续；党员被依法依法追究刑事责任后，不按照规定给予党纪处分等行为。（第136条）",
+                "滥用问责，或者在问责工作中严重不负责任，造成不良影响的行为。（第137条）",
+                "因工作不负责任致使所管理的人员叛逃的行为。（第138条第1款）",
+                "因工作不负责任致使所管理的人员出逃、出走的行为。（第138条第2款）",
+                "进行统计造假，或者对统计造假失察的行为。（第139条）",
+                "在上级检查、视察工作或者向上级汇报、报告工作时对应当报告的事项不报告或者不如实报告，造成严重损害或者严重不良影响的行为。（第140条第1款）",
+                "在上级检查、视察工作或者向上级汇报、报告工作时纵容、唆使、暗示、强迫下级说假话、报假情的行为。（第140条第2款）",
+                "党员领导干部违反有关规定干预和插手市场经济活动的行为。包括干预和插手建设工程项目、土地使用权出让、政府采购、房地产开发、矿产资源开发、国有企业重组改制、资金借贷等。（第141条）",
+                "党员领导干部违反有关规定干预和插手司法活动、执纪执法活动，向有关地方或者部门打听案情、打招呼、说情，或者以其他方式对司法活动、执纪执法活动施加影响的行为。（第142条第1款）",
+                "党员领导干部违反有关规定干预和插手公共财政资金分配、项目立项评审、政府奖励表彰等活动，造成重大损失或者不良影响的行为。（第142条第2款）",
+                "按照有关规定对干预和插手行为负有报告和登记义务的受请托人，不按规定报告或者登记的行为。（第143条）",
+                "泄露、扩散或者打探、窃取党组织关于干部选拔任用、纪律审查、巡视巡察等尚未公开事项或者其他应当保密的内容的行为。（第144条第1款）",
+                "私自留存涉及党组织关于干部选拔任用、纪律审查、巡视巡察等方面资料的行为。（第144条第2款）",
+                "在考试、录取工作中，泄露试题、考场舞弊、涂改考卷、违规录取等违反有关规定的行为。（第145条）",
+                "以不正当方式谋求本人或者其他人用公款出国（境）的行为。（第146条）",
+                "临时出国（境）团（组）或者人员中的党员，擅自延长在国（境）外期限，或者擅自变更路线的行为。（第147条）",
+                "驻外机构或者临时出国（境）团（组）中的党员，触犯驻在国家、地区的法律、法令或者不尊重驻在国家、地区的宗教习俗的行为。（第148条）",
+                "在党的纪律检查、组织、宣传、统一战线工作以及机关工作等其他工作中，不履行或者不正确履行职责，造成损失或者不良影响的行为。（第149条）"
+            ],
+            life: [
+                "生活奢靡、铺张浪费、贪图享乐、追求低级趣味的行为。（第150条）",
+                "与他人发生不正当性关系的行为。（第151条第1款）",
+                "利用职权、教养关系、从属关系或者其他相类似关系与他人发生性关系的行为。（第151条第2款）",
+                "党员领导干部不重视家风建设，对配偶、子女及其配偶失管失教，造成不良影响或者严重后果的行为。（第152条）",
+                "违背社会公序良俗，在公共场所、网络空间有不当行为的行为。（第153条）",
+                "其他严重违反社会公德、家庭美德的行为。（第154条，生活纪律兜底条款）"
+            ]
+        };
+
+        // 渲染函数
+        function renderItems(containerId, items, styleClass) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = items.map((item, index) => {
+                // 提取条款号作为标签
+                const match = item.match(/（第[\d]+条.*?）/);
+                const articleTag = match ? match[0] : '';
+                const cleanContent = item.replace(articleTag, '');
+                
+                return `
+                <div class="item-card bg-white p-5 rounded-lg border border-gray-100 shadow-sm relative group hover:border-red-200">
+                    <div class="flex items-start gap-3">
+                        <span class="shrink-0 w-6 h-6 rounded-full ${styleClass} text-xs flex items-center justify-center font-bold mt-0.5">${index + 1}</span>
+                        <div class="flex-1">
+                            <p class="text-gray-800 leading-relaxed text-justify text-sm">${cleanContent}</p>
+                            ${articleTag ? `<span class="inline-block mt-2 text-xs font-bold text-gray-400 bg-gray-50 px-2 py-1 rounded border border-gray-100">${articleTag.replace(/（|）/g, '')}</span>` : ''}
+                        </div>
+                    </div>
+                    <!-- 复制按钮 -->
+                    <button onclick="copyText(this, '${item.replace(/'/g, "\\'")}')" class="absolute top-4 right-4 text-gray-300 hover:text-red-600 opacity-0 group-hover:opacity-100 transition-opacity" title="复制条款">
+                        <i class="fa-regular fa-copy"></i>
+                    </button>
+                </div>
+                `;
+            }).join('');
+        }
+
+        // 初始化渲染
+        document.addEventListener('DOMContentLoaded', () => {
+            renderItems('list-political', dataList.political, 'tag-political');
+            renderItems('list-org', dataList.org, 'tag-org');
+            renderItems('list-clean', dataList.clean, 'tag-clean');
+            renderItems('list-mass', dataList.mass, 'tag-mass');
+            renderItems('list-work', dataList.work, 'tag-work');
+            renderItems('list-life', dataList.life, 'tag-life');
+        });
+
+        // 搜索过滤功能
+        function filterList() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const cards = document.querySelectorAll('.item-card');
+            let count = 0;
+
+            cards.forEach(card => {
+                const text = card.textContent;
+                // 清除之前的匹配高亮
+                const p = card.querySelector('p');
+                if (!keyword) {
+                    card.style.display = '';
+                    p.innerHTML = p.innerText; // 恢复纯文本
+                    return;
+                }
+
+                // 简单匹配显示/隐藏
+                if (text.includes(keyword)) {
+                    card.style.display = '';
+                    count++;
+                    // 高亮关键词
+                    const regex = new RegExp(`(${keyword})`, 'gi');
+                    p.innerHTML = p.innerText.replace(regex, '<span class="highlight">$1</span>');
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            document.getElementById('searchCount').innerText = `${count} 处匹配`;
+            document.getElementById('searchCount').style.opacity = keyword ? '1' : '0';
+        }
+
+        // 复制功能
+        function copyText(btn, text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // 按钮反馈
+            const icon = btn.querySelector('i');
+            icon.classList.remove('fa-copy', 'fa-regular');
+            icon.classList.add('fa-check', 'fa-solid');
+            setTimeout(() => {
+                icon.classList.remove('fa-check', 'fa-solid');
+                icon.classList.add('fa-copy', 'fa-regular');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

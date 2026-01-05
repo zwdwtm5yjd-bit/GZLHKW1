@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>习近平关于巡视巡察工作重要论述引用全典 - 学习资料库</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 引用块样式 */
+        .quote-box {
+            background-color: #FEF2F2;
+            border-left: 4px solid var(--primary-red);
+            padding: 1rem;
+            margin: 1.5rem 0;
+            font-family: 'Noto Serif SC', serif;
+            color: #7F1D1D;
+            font-style: italic;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="zsksy.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-quote-left text-red-800"></i> 巡视巡察论述全典
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">深度写作必备 · 行业巡视专用 · 最新指示</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字（如：政治画像、回头看）..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 头部标题区 -->
+                <div class="text-center border-b-2 border-red-800/10 pb-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-red-900 mb-4 serif-font">习近平关于巡视巡察工作<br>重要论述引用全典</h2>
+                    <div class="text-sm text-gray-500 space-y-2">
+                        <p>权威引用 · 分类整理 · 适用解析</p>
+                    </div>
+                </div>
+
+                <!-- 正文内容 (Prose) -->
+                <div class="prose prose-slate max-w-none text-justify space-y-6 leading-relaxed text-gray-800">
+                    
+                    <!-- 第一章 核心理论 -->
+                    <section id="chapter-1" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4">一、 核心理论：政治画像与政治生态（深度写作必备）</h3>
+                        <div class="space-y-4">
+                            <p>本部分收录关于巡视“深层逻辑”的论述，适合用于阐述巡视工作的政治高度和理论深度。</p>
+                            
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">关于“政治画像”与识别“两面人”</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“要透过现象看本质，既听其言、更观其行，既察其表、更析其里，看政治忠诚，看政治定力，看政治担当，看政治能力，看政治自律。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“巡视组在报告中要对被巡视党组织和领导干部进行‘政治画像’。这不仅仅是列举违纪事实，而是要透过现象看本质。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2019年1月，《关于加强党的政治建设的意见》及相关讲话</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>论述如何精准发现问题、鉴别干部政治素质。</p>
+
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">关于“政治生态”与“森林”隐喻</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“政治生态好，人心就顺、正气就足；政治生态不好，就会人心涣散、弊病丛生。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“如果不除恶务尽，一有风吹草动就会死灰复燃、卷土重来，不仅恶化政治生态，更会严重损害党心民心。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2016年1月12日，在十八届中央纪委六次全会上的讲话</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>论述巡视工作在净化政治环境中的长远作用。</p>
+
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">关于“一把手”监督难</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“上级监督太远，同级监督太软，下级监督太难。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“‘一把手’是党的事业发展的领头雁……‘一把手’违纪违法最易产生催化、连锁反应，甚至造成区域性、系统性、塌方式腐败。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2014年、2021年关于加强对“一把手”和领导班子监督的论述</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>分析监督难点，强调加强对“关键少数”巡视的必要性。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第二章 重点领域 -->
+                    <section id="chapter-2" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">二、 重点领域专项语录（行业巡视专用）</h3>
+                        <div class="space-y-4">
+                            <p>本部分针对特定行业，收录了极具针对性的“狠话”和要求，是撰写行业性巡视报告的“金句库”。</p>
+                            
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">1. 金融领域：破除“精英论”</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“坚持查真相、说真话、报实情……以维护经济金融安全为己任，在大是大非面前保持清醒头脑，在职责范围内大胆监督，做到坚持原则、敢于亮剑、一查到底。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“金融是‘国之大者’，关系中国式现代化建设全局。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2022年、2024年关于金融巡视与金融工作的指示</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>金融监管部门、银行保险证券机构巡视整改材料。</p>
+
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">2. 国有企业：根与魂</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“坚持党的领导、加强党的建设，是我国国有企业的光荣传统，是国有企业的‘根’和‘魂’，是我国国有企业的独特优势。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“国有企业是中国特色社会主义的重要物质基础和政治基础，是我们党执政兴国的重要支柱和依靠力量。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“坚决防止国有资产流失……严禁上级主管部门干预下级机构设置和编制配备，严禁突击提拔干部。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2016年全国国有企业党的建设工作会议、2023年二中全会讲话</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>国企巡视、国资监管文稿。</p>
+
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">3. 体育领域：拿干净的金牌（2023-2024热点）</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“拿道德的金牌、风格的金牌、干净的金牌。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“坚决查处体育领域的腐败问题……体育工作在拨乱反正、修复生态中重回正轨。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2023年、2024年关于体育强国建设及反腐的指示</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>体育系统巡视整改、赛风赛纪整治材料。</p>
+
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">4. 医药卫生：全链条整治（2023-2024热点）</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“深化整治金融、国企、能源、医药和基建工程等权力集中、资金密集、资源富集领域的腐败，清理风险隐患。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“坚持受贿行贿一起查……坚持正风肃纪反腐相贯通，以‘同查’严惩风腐交织问题。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2024年1月8日，在二十届中央纪委三次全会上的讲话</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>医疗反腐、医药领域专项整治文稿。</p>
+
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">5. 高校领域：政治方向</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“我们的高校是党领导下的高校，是中国特色社会主义高校，必须坚持正确政治方向。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“巡视高校，首先要看党委领导下的校长负责制执行得怎么样，看党的建设是否弱化。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>全国高校思想政治工作会议及巡视相关指示</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>高校巡视反馈、整改方案。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第三章 整改与成果 -->
+                    <section id="chapter-3" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">三、 巡视整改与成果运用：最严厉的追责</h3>
+                        <div class="space-y-4">
+                            <p>本部分收录了关于“后半篇文章”的论述，措辞极为严厉，适合用于警示教育和整改动员。</p>
+                            
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">关于“新官不理旧账”</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“不能‘新官不理旧账’。出了事，要追责。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“巡视把问题发现了就要整改，‘新官不理旧账’不行，虚假整改更不行。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2014年、2020年听取巡视汇报时的讲话</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>批评整改推诿扯皮、责任甩锅。</p>
+
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">关于“虚假整改”与“纸上整改”</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“整改落实要防止虎头蛇尾、久拖不决，防止搞纸上整改、虚假整改，防止以简单问责基层干部代替整改责任落实。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“有的地方和单位就卡在整改上，口头上接受，实质上对抗抵制，没有真改实改。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2019年主题教育工作会议、2020年听取巡视汇报时的讲话</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>整改督查、回头看反馈。</p>
+
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">关于“四个融入”的标准</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“把抓巡视整改融入日常工作，融入深化改革，融入全面从严治党，融入班子队伍建设。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2022年6月17日，中央政治局会议审议金融巡视整改情况时强调</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>撰写巡视整改长效机制建设方案。</p>
+                        </div>
+                    </section>
+
+                    <!-- 第四章 最新指示 -->
+                    <section id="chapter-4" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">四、 2024-2025年最新指示：改革与基层延伸</h3>
+                        <div class="space-y-4">
+                            <p>本部分收录了最新的风向标式论述，体现了巡视工作的新任务。</p>
+                            
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">关于服务全面深化改革（2024年7月）</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“要把重大改革落实情况纳入监督检查和巡视巡察内容，以实绩实效和人民群众满意度检验改革。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2024年7月，关于《中共中央关于进一步全面深化改革、推进中国式现代化的决定》的说明</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>撰写关于二十届三中全会精神落实的监督检查材料。</p>
+
+                            <h4 class="font-bold text-lg text-gray-800 mt-4">关于整治群众身边不正之风（2024年）</h4>
+                            <div class="quote-box">
+                                <p><strong>原话：</strong>“群众身边不正之风和腐败问题，群众深恶痛绝，必须下大气力整治。”</p>
+                                <p class="mt-2"><strong>原话：</strong>“推动反腐败斗争向基层延伸、向群众身边延伸，惩治‘蝇贪蚁腐’，让群众有更多获得感。”</p>
+                            </div>
+                            <p class="text-sm text-gray-600"><strong>出处：</strong>2024年1月，二十届中央纪委三次全会</p>
+                            <p class="text-sm text-gray-600"><strong>适用：</strong>基层巡察、乡村振兴领域专项巡察。</p>
+                        </div>
+                    </section>
+
+                    <!-- 附录/参考文献 -->
+                    <section id="chapter-5" class="scroll-mt-32">
+                        <h3 class="text-xl font-bold text-gray-900 border-l-4 border-red-800 pl-3 mb-4 mt-8">附录与参考文献</h3>
+                        <div class="space-y-4 text-sm text-gray-600 bg-gray-50 p-6 rounded-lg">
+                            <ul class="list-disc list-inside space-y-2">
+                                <li>习近平：在十八届中央纪委六次全会上的讲话</li>
+                                <li>习近平：在十九届中央纪委六次全会上的讲话</li>
+                                <li>习近平：在二十届中央纪委二次、三次全会上的讲话</li>
+                                <li>《关于加强党的政治建设的意见》</li>
+                                <li>全国国有企业党的建设工作会议精神</li>
+                                <li>全国高校思想政治工作会议精神</li>
+                                <li>《中共中央关于进一步全面深化改革、推进中国式现代化的决定》</li>
+                                <li>中央纪委国家监委网站相关专题报道</li>
+                            </ul>
+                        </div>
+                    </section>
+                    
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>本文档仅供内部学习使用</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ol text-red-800"></i> 目录导航
+                        </div>
+                        <nav class="max-h-[60vh] overflow-y-auto text-sm" id="tocNav">
+                            <a href="#chapter-1" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">核心理论</a>
+                            <a href="#chapter-2" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">重点领域</a>
+                            <a href="#chapter-3" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">整改与成果</a>
+                            <a href="#chapter-4" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">最新指示</a>
+                            <a href="#chapter-5" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">参考文献</a>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="scrollToTop()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="scrollToBottom()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-down"></i> <span class="text-xs font-bold">直达底部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印资料</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="scrollToTop()" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+        <button onclick="scrollToBottom()" class="w-12 h-12 bg-white text-gray-600 border border-gray-200 rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-down"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+        function scrollToBottom() { window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' }); }
+
+        let originalContent = '';
+        document.addEventListener("DOMContentLoaded", function() {
+            const articleContent = document.getElementById('articleContent');
+            const proseDiv = articleContent.querySelector('.prose');
+            originalContent = proseDiv.innerHTML;
+        });
+
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const proseDiv = document.querySelector('.prose');
+            const countDiv = document.getElementById('searchCount');
+            proseDiv.innerHTML = originalContent;
+            if (!keyword) { countDiv.style.opacity = '0'; return; }
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            let matchCount = 0;
+            const newHtml = originalContent.replace(regex, (match) => {
+                matchCount++; return `<span class="highlight">${match}</span>`;
+            });
+            proseDiv.innerHTML = newHtml;
+            countDiv.innerText = `${matchCount} 处匹配`;
+            countDiv.style.opacity = '1';
+            const firstMatch = document.querySelector('.highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) current = '#' + section.getAttribute('id');
+            });
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) link.classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
