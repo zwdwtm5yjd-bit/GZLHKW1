@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贵州联合纪检品牌 - 清风守正 廉润安全</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        :root {
+            --brand-red: #8B1C1C; /* 纪委红 */
+            --brand-blue: #1E3A8A; /* 科技/深蓝 */
+            --brand-gold: #D97706; /* 点缀金 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .serif {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 品牌渐变背景 */
+        .brand-gradient {
+            background: linear-gradient(135deg, var(--brand-red) 0%, #5a1212 100%);
+        }
+
+        /* Logo 交互特效 */
+        .logo-point {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .logo-point:hover {
+            transform: translateX(10px);
+            background-color: #FEF2F2;
+            border-left-color: var(--brand-red);
+        }
+        .logo-point.active {
+            background-color: #FEF2F2;
+            border-left: 4px solid var(--brand-red);
+        }
+
+        /* 页面切换动画 */
+        .view-section {
+            display: none;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .view-section.active {
+            display: block;
+        }
+
+        /* 磨砂玻璃效果 */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        /* 按钮流光特效 */
+        .btn-shine {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-shine::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        .btn-shine:hover::after {
+            left: 100%;
+            transition: 0.5s;
+        }
+
+        /* 背景流动波浪 */
+        .wave-bg {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.05;
+            background-image: radial-gradient(#8B1C1C 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        /* Logo背后的融合光晕 */
+        .logo-fusion-glow {
+            background: radial-gradient(circle at center, rgba(255,255,255,1) 30%, rgba(255,255,255,0.8) 50%, rgba(255,255,255,0) 70%);
+            filter: blur(15px);
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 顶部导航 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- 左侧 Logo 区域 -->
+                <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchView('home')">
+                    <div class="w-10 h-10 bg-red-900 rounded-full flex items-center justify-center text-white shadow-md group-hover:bg-red-800 transition-colors">
+                        <i class="fa-solid fa-scale-balanced text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">贵州联合纪委</h1>
+                        <p class="text-xs text-gray-500 tracking-wider group-hover:text-red-800 transition-colors">清风守正 · 廉润安全</p>
+                    </div>
+                </div>
+                
+                <!-- 右侧导航 -->
+                <nav class="hidden md:flex space-x-1">
+                    <button onclick="switchView('home')" id="nav-home" class="px-4 py-2 rounded-lg text-red-900 font-bold bg-red-50 transition-colors border border-transparent">
+                        品牌解读
+                    </button>
+                    <button onclick="switchView('practice')" id="nav-practice" class="px-4 py-2 rounded-lg text-gray-600 hover:text-red-900 hover:bg-gray-50 transition-colors border border-transparent">
+                        实践成果
+                    </button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- ========================================== -->
+    <!-- 视图 1: 品牌解读 (Brand Overview) -->
+    <!-- ========================================== -->
+    <div id="view-home" class="view-section active">
+        
+        <!-- Hero Banner: 左右分栏布局 -->
+        <div class="relative bg-white overflow-hidden min-h-[600px] flex items-center">
+            
+            <!-- ★ 灵动装饰背景 (Z-Index: 0) -->
+            <div class="wave-bg"></div>
+            <div class="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-red-50/50 to-transparent z-0 pointer-events-none"></div>
+            <svg class="absolute bottom-0 left-0 w-full h-64 text-red-50 transform translate-y-1/3 z-0 pointer-events-none" viewBox="0 0 1440 320" preserveAspectRatio="none">
+                <path fill="currentColor" fill-opacity="0.6" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+            </svg>
+
+            <!-- 
+                ★ 核心布局修改：
+                改为 Grid 布局 (lg:grid-cols-2)，彻底分离左右内容。
+                左侧放文字，右侧放图片。
+                这样无论屏幕多宽，文字都不会“跑到”图片下面去。
+            -->
+            <div class="max-w-7xl mx-auto w-full relative z-10 px-4 sm:px-6 lg:px-8 py-12 lg:py-24">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    
+                    <!-- 左侧：文字内容 -->
+                    <div class="text-center lg:text-left">
+                        <div class="inline-flex items-center px-3 py-1 rounded-full bg-red-100/80 text-red-800 text-xs font-bold mb-6 animate__animated animate__fadeInDown border border-red-200">
+                            <span class="w-2 h-2 bg-red-600 rounded-full mr-2 animate-pulse"></span>
+                            贵州联合纪检品牌
+                        </div>
+                        <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl animate__animated animate__fadeInUp leading-tight">
+                            <span class="block">清风守正</span>
+                            <span class="block text-red-800 mt-2">廉润安全</span>
+                        </h1>
+                        <p class="mt-6 text-base text-gray-600 sm:text-lg md:text-xl animate__animated animate__fadeInUp animate__delay-1s leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                            传承保利集团<span class="font-bold text-red-800">“红”</span><span class="font-bold text-blue-800">“蓝”</span>两大基因，以思想筑廉为基，以行动促廉为本，构建纪检监察新范式，护航企业高质量发展。
+                        </p>
+                        
+                        <div class="mt-8 sm:mt-10 flex flex-col sm:flex-row justify-center lg:justify-start gap-4 animate__animated animate__fadeInUp animate__delay-1s">
+                            <a href="#" onclick="switchView('practice')" class="btn-shine flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-gradient-to-r from-red-800 to-red-900 hover:from-red-700 hover:to-red-800 shadow-lg hover:shadow-red-900/30 transition-all transform hover:-translate-y-1">
+                                查看实践成果 <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                            <button onclick="scrollToSection('logo-visual')" class="flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors">
+                                了解标志内涵
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：Logo 图片 & 光晕 -->
+                    <div class="relative flex items-center justify-center lg:justify-end animate__animated animate__fadeInRight">
+                         <div class="relative w-full max-w-md lg:max-w-lg">
+                             <!-- 融合光晕：放在图片正下方 -->
+                             <div class="absolute inset-0 logo-fusion-glow scale-125 -z-10 rounded-full opacity-80"></div>
+                             
+                             <!-- 图片 -->
+                             <img 
+                                class="w-full h-auto object-contain hover:scale-105 transition-transform duration-700 drop-shadow-2xl relative z-10" 
+                                src="https://youke3.picui.cn/s1/2026/01/06/695c81a471c64.png" 
+                                alt="贵州联合纪检品牌Logo"
+                            >
+                         </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Logo 解读交互区 -->
+        <section id="logo-visual" class="py-16 bg-white relative">
+            <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-gray-200 to-transparent"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <span class="text-red-800 font-bold tracking-[0.2em] text-xs uppercase opacity-70">Visual Identity</span>
+                    <h2 class="text-3xl font-bold text-gray-900 serif mt-2">标志内涵可视化解读</h2>
+                    <p class="mt-4 text-gray-500 max-w-2xl mx-auto">Logo以红蓝两色晕染基调，将“G”形红旗、莲花、水波与盾形完美融合。</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <!-- 左侧：图解示意 -->
+                    <div class="relative bg-gradient-to-b from-gray-50 to-white rounded-3xl border border-gray-100 p-10 flex items-center justify-center min-h-[450px] shadow-inner group overflow-hidden">
+                        
+                        <!-- 背景装饰环 -->
+                        <div class="absolute inset-0 rounded-3xl border-2 border-dashed border-gray-100 animate-[spin_60s_linear_infinite] opacity-50"></div>
+                        
+                        <!-- 融合光晕 -->
+                        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 logo-fusion-glow rounded-full -z-0"></div>
+
+                        <img 
+                            src="https://youke3.picui.cn/s1/2026/01/06/695c81a471c64.png" 
+                            class="max-h-80 w-auto opacity-90 transition-all duration-500 group-hover:scale-105 z-10 relative" 
+                            alt="Logo"
+                        >
+                        
+                        <!-- 标注点 -->
+                        <div class="absolute top-12 left-12 animate-bounce z-20 cursor-help" title="红旗·引领">
+                            <div class="relative">
+                                <span class="bg-red-600 text-white text-xs px-3 py-1.5 rounded-full shadow-lg border border-white font-medium flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> 红旗·引领
+                                </span>
+                                <div class="absolute top-full left-4 h-8 w-px bg-red-600/30"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="absolute bottom-16 right-16 animate-bounce z-20 cursor-help" style="animation-delay: 0.5s;" title="蓝水·基石">
+                            <div class="relative">
+                                <span class="bg-blue-800 text-white text-xs px-3 py-1.5 rounded-full shadow-lg border border-white font-medium flex items-center gap-1">
+                                    <span class="w-1.5 h-1.5 bg-white rounded-full animate-pulse"></span> 蓝水·基石
+                                </span>
+                                <div class="absolute bottom-full right-4 h-8 w-px bg-blue-800/30"></div>
+                            </div>
+                        </div>
+                        
+                         <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse z-20 cursor-help" title="莲心·初心">
+                            <span class="bg-amber-500 text-white text-xs px-3 py-1.5 rounded-full shadow-lg border border-white font-medium backdrop-blur-sm bg-opacity-90">
+                                莲心·初心
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：交互列表 -->
+                    <div class="space-y-4">
+                        <div class="logo-point bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-transparent hover:shadow-md transition-all">
+                            <div class="flex items-start gap-5">
+                                <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-red-800 to-blue-800 flex items-center justify-center text-white shadow-lg shrink-0 mt-1">
+                                    <i class="fa-solid fa-palette text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-1">红蓝基因 · 魂骨交融</h3>
+                                    <p class="text-sm text-gray-600 leading-relaxed text-justify">红旗舒展呈半包围“G”形（贵州）。以<span class="text-red-700 font-bold">红铸魂强基</span>，承精神根脉；以<span class="text-blue-800 font-bold">蓝立身之本</span>，载实干初心。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="logo-point bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-transparent hover:shadow-md transition-all">
+                            <div class="flex items-start gap-5">
+                                <div class="w-12 h-12 rounded-xl bg-red-50 text-red-700 flex items-center justify-center shrink-0 mt-1">
+                                    <i class="fa-solid fa-spa text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-1">莲影含廉 · 四瓣舒展</h3>
+                                    <p class="text-sm text-gray-600 leading-relaxed text-justify">莲即“廉”，莲心藏初心。四瓣花瓣象征“思想筑廉、行动促廉、制度固廉、成果守廉”四维机制。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="logo-point bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-transparent hover:shadow-md transition-all">
+                            <div class="flex items-start gap-5">
+                                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center shrink-0 mt-1">
+                                    <i class="fa-solid fa-water text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-1">清水涟漪 · 源清流洁</h3>
+                                    <p class="text-sm text-gray-600 leading-relaxed text-justify">莲因水而愈洁。寓意涤荡尘埃，内铸忠诚干净、外塑担当作为的纪检底色。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="logo-point bg-white p-6 rounded-xl shadow-sm border border-gray-100 border-l-4 border-l-transparent hover:shadow-md transition-all">
+                            <div class="flex items-start gap-5">
+                                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center shrink-0 mt-1">
+                                    <i class="fa-solid fa-shield-halved text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-bold text-gray-900 mb-1">盾舟相济 · 护航发展</h3>
+                                    <p class="text-sm text-gray-600 leading-relaxed text-justify">盾为坚障，防微杜渐；舟为载具，推动高质量发展。构建“安全为基、发展为要”的护航闭环。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 品牌精神四维展示 -->
+        <section class="py-20 bg-slate-50 relative overflow-hidden">
+            <!-- 装饰背景字 -->
+            <div class="absolute top-10 left-10 text-[150px] font-bold text-gray-200 opacity-20 pointer-events-none select-none leading-none serif">
+                SPIRIT
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-16">
+                    <span class="text-red-800 font-bold tracking-widest uppercase text-xs bg-red-100 px-3 py-1 rounded-full">Core Value</span>
+                    <h2 class="text-3xl font-bold text-gray-900 mt-4 serif">四位一体 · 廉润安全</h2>
+                    <p class="mt-4 text-gray-500 max-w-2xl mx-auto">构建“价值内化、监督下沉、制度集成、价值转化”的四维机制，破解纪检工作“四化”难题。</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                    <!-- Card 1 -->
+                    <div class="group bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-24 h-24 bg-red-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+                        <div class="relative z-10">
+                            <div class="w-14 h-14 bg-red-800 rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-red-200">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">思想筑廉</h3>
+                            <p class="text-xs font-bold text-red-800 uppercase tracking-wider mb-4">Value Internalization</p>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                破解<span class="font-bold text-red-800 bg-red-50 px-1">“教育形式化”</span>。<br>从灌输到认同，打造沉浸式教育场景，以文化人。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2 -->
+                    <div class="group bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+                         <div class="absolute top-0 right-0 w-24 h-24 bg-blue-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+                         <div class="relative z-10">
+                            <div class="w-14 h-14 bg-blue-800 rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-blue-200">
+                                <i class="fa-solid fa-person-running"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">行动促廉</h3>
+                            <p class="text-xs font-bold text-blue-800 uppercase tracking-wider mb-4">Supervision Sinking</p>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                破解<span class="font-bold text-blue-800 bg-blue-50 px-1">“监督表层化”</span>。<br>从集中到嵌入，三张清单管控，技术赋能穿透。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 3 -->
+                    <div class="group bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+                         <div class="absolute top-0 right-0 w-24 h-24 bg-slate-100 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+                         <div class="relative z-10">
+                            <div class="w-14 h-14 bg-slate-800 rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-slate-200">
+                                <i class="fa-solid fa-gavel"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">制度固廉</h3>
+                            <p class="text-xs font-bold text-slate-800 uppercase tracking-wider mb-4">System Integration</p>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                 破解<span class="font-bold text-slate-800 bg-slate-100 px-1">“制度零散化”</span>。<br>从零散到集中，全周期约束，执行刚性化。
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 4 -->
+                    <div class="group bg-white p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-xl transition-all duration-300 hover:-translate-y-2 relative overflow-hidden">
+                         <div class="absolute top-0 right-0 w-24 h-24 bg-amber-50 rounded-bl-full -mr-4 -mt-4 transition-transform group-hover:scale-110"></div>
+                         <div class="relative z-10">
+                            <div class="w-14 h-14 bg-amber-600 rounded-xl flex items-center justify-center text-white text-2xl mb-6 shadow-lg shadow-amber-200">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">成果守廉</h3>
+                            <p class="text-xs font-bold text-amber-600 uppercase tracking-wider mb-4">Value Conversion</p>
+                            <p class="text-sm text-gray-600 leading-relaxed">
+                                 破解<span class="font-bold text-amber-600 bg-amber-50 px-1">“成果虚化”</span>。<br>从隐性到显性，量化考核指标，价值贡献可视化。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- 视图 2: 实践成果 (Practical Achievements) -->
+    <!-- ========================================== -->
+    <div id="view-practice" class="view-section">
+        
+        <!-- Header Section -->
+        <div class="bg-slate-900 text-white py-20 relative overflow-hidden">
+            <!-- 装饰背景 -->
+            <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+            <div class="absolute right-0 bottom-0 opacity-20 transform translate-x-1/4 translate-y-1/4">
+                 <i class="fa-solid fa-scale-balanced text-[300px]"></i>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+                <h2 class="text-3xl sm:text-4xl font-bold serif mb-6 tracking-wide">我们做了什么？</h2>
+                <div class="w-20 h-1 bg-red-600 mx-auto mb-6"></div>
+                <p class="text-slate-300 max-w-2xl mx-auto text-lg leading-relaxed">
+                    贵州联合纪检品牌落地生根，以实实在在的举措构建品牌型治理范式。
+                </p>
+            </div>
+        </div>
+
+        <!-- Content Tabs/Timeline -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                <!-- 左侧：导航菜单 -->
+                <div class="lg:col-span-3">
+                    <div class="sticky top-24 space-y-3">
+                        <button onclick="scrollToSection('sec-idea')" class="w-full text-left px-5 py-4 rounded-xl hover:bg-red-50 hover:text-red-800 font-medium transition-all flex items-center justify-between group border border-transparent hover:border-red-100 hover:shadow-sm">
+                            <span class="font-bold">01 思想筑廉</span>
+                            <i class="fa-solid fa-brain text-gray-300 group-hover:text-red-800 transition-colors"></i>
+                        </button>
+                        <button onclick="scrollToSection('sec-action')" class="w-full text-left px-5 py-4 rounded-xl hover:bg-blue-50 hover:text-blue-800 font-medium transition-all flex items-center justify-between group border border-transparent hover:border-blue-100 hover:shadow-sm">
+                            <span class="font-bold">02 行动促廉</span>
+                            <i class="fa-solid fa-person-running text-gray-300 group-hover:text-blue-800 transition-colors"></i>
+                        </button>
+                        <button onclick="scrollToSection('sec-system')" class="w-full text-left px-5 py-4 rounded-xl hover:bg-slate-50 hover:text-slate-800 font-medium transition-all flex items-center justify-between group border border-transparent hover:border-slate-200 hover:shadow-sm">
+                            <span class="font-bold">03 制度固廉</span>
+                            <i class="fa-solid fa-gavel text-gray-300 group-hover:text-slate-800 transition-colors"></i>
+                        </button>
+                        <button onclick="scrollToSection('sec-result')" class="w-full text-left px-5 py-4 rounded-xl hover:bg-amber-50 hover:text-amber-800 font-medium transition-all flex items-center justify-between group border border-transparent hover:border-amber-100 hover:shadow-sm">
+                            <span class="font-bold">04 成果守廉</span>
+                            <i class="fa-solid fa-trophy text-gray-300 group-hover:text-amber-800 transition-colors"></i>
+                        </button>
+                        
+                        <div class="mt-8 pt-8 border-t border-gray-100">
+                             <button onclick="switchView('home')" class="w-full px-4 py-3 border border-gray-200 rounded-xl text-sm text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors flex items-center justify-center">
+                                <i class="fa-solid fa-arrow-left mr-2"></i> 返回品牌解读
+                             </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右侧：详细内容 -->
+                <div class="lg:col-span-9 space-y-16">
+                    
+                    <!-- 1. 思想筑廉 -->
+                    <section id="sec-idea" class="scroll-mt-24">
+                        <div class="flex items-center mb-8 pb-4 border-b border-gray-100">
+                            <div class="w-12 h-12 bg-red-100 text-red-800 rounded-xl flex items-center justify-center text-xl mr-5 shadow-sm">
+                                <i class="fa-solid fa-brain"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">思想筑廉</h3>
+                                <p class="text-sm text-gray-500">教育浸润工程</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow">
+                            <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+                                <div class="p-8">
+                                    <div class="text-red-800 font-bold mb-3 text-sm bg-red-50 inline-block px-2 py-1 rounded">线上：沉浸式平台</div>
+                                    <h4 class="font-bold text-gray-900 mb-3 text-lg">“廉于行‘纪’在心”专栏</h4>
+                                    <p class="text-sm text-gray-600 mb-6 leading-relaxed">融合党纪法规与案例，打造指尖课堂。</p>
+                                    <ul class="text-xs text-gray-500 space-y-2">
+                                        <li class="flex items-center"><i class="fa-solid fa-check-circle text-red-500 mr-2"></i> 发布图文/视频 29期</li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check-circle text-red-500 mr-2"></i> 1147人次参与答题</li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check-circle text-red-500 mr-2"></i> 动画解读视频 2个</li>
+                                    </ul>
+                                </div>
+                                <div class="p-8">
+                                    <div class="text-red-800 font-bold mb-3 text-sm bg-red-50 inline-block px-2 py-1 rounded">线下：家企联动</div>
+                                    <h4 class="font-bold text-gray-900 mb-3 text-lg">廉洁家书与家访</h4>
+                                    <p class="text-sm text-gray-600 mb-6 leading-relaxed">构建“单位-家庭”双向监督网。</p>
+                                    <ul class="text-xs text-gray-500 space-y-2">
+                                        <li class="flex items-center"><i class="fa-solid fa-check-circle text-red-500 mr-2"></i> 发放倡廉家书</li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check-circle text-red-500 mr-2"></i> 收集亲情寄语 60条</li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check-circle text-red-500 mr-2"></i> 关键岗位实地家访</li>
+                                    </ul>
+                                </div>
+                                <div class="p-8">
+                                    <div class="text-red-800 font-bold mb-3 text-sm bg-red-50 inline-block px-2 py-1 rounded">阵地：实景长廊</div>
+                                    <h4 class="font-bold text-gray-900 mb-3 text-lg">廉洁文化长廊</h4>
+                                    <p class="text-sm text-gray-600 mb-6 leading-relaxed">物理空间再现，LED数字技术融合。</p>
+                                    <ul class="text-xs text-gray-500 space-y-2">
+                                        <li class="flex items-center"><i class="fa-solid fa-check-circle text-red-500 mr-2"></i> 建成4条高标准长廊</li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check-circle text-red-500 mr-2"></i> 展示古今典故15则</li>
+                                        <li class="flex items-center"><i class="fa-solid fa-check-circle text-red-500 mr-2"></i> 企业成果10项</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 2. 行动促廉 -->
+                    <section id="sec-action" class="scroll-mt-24">
+                        <div class="flex items-center mb-8 pb-4 border-b border-gray-100">
+                            <div class="w-12 h-12 bg-blue-100 text-blue-800 rounded-xl flex items-center justify-center text-xl mr-5 shadow-sm">
+                                <i class="fa-solid fa-person-running"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">行动促廉</h3>
+                                <p class="text-sm text-gray-500">风险防控体系</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                             <!-- Item 1 -->
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-blue-800 shadow-sm flex flex-col md:flex-row gap-6 hover:shadow-md transition-shadow">
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                                        <span class="w-6 h-6 rounded-full bg-blue-800 text-white text-xs flex items-center justify-center">1</span>
+                                        三张清单管理
+                                    </h4>
+                                    <p class="text-sm text-gray-600 mt-2 pl-8 leading-relaxed">权力清单明责、风险清单预警、防控清单督办。季度滚动排查重点职能部门。</p>
+                                </div>
+                                <div class="flex-shrink-0 flex items-center gap-2 text-sm font-bold text-blue-800 bg-blue-50 px-5 py-3 rounded-lg self-start md:self-center">
+                                    <i class="fa-solid fa-list-check"></i> 项目化推进
+                                </div>
+                            </div>
+                             <!-- Item 2 -->
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-blue-600 shadow-sm flex flex-col md:flex-row gap-6 hover:shadow-md transition-shadow">
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                                        <span class="w-6 h-6 rounded-full bg-blue-600 text-white text-xs flex items-center justify-center">2</span>
+                                        数字技术赋能
+                                    </h4>
+                                    <p class="text-sm text-gray-600 mt-2 pl-8 leading-relaxed">依托用友YonBIP、OA等6大系统，实现资金、招待等风险领域数据穿透与智能预警。</p>
+                                </div>
+                                <div class="flex-shrink-0 flex items-center gap-2 text-sm font-bold text-blue-600 bg-blue-50 px-5 py-3 rounded-lg self-start md:self-center">
+                                    <i class="fa-solid fa-robot"></i> 智能预警
+                                </div>
+                            </div>
+                             <!-- Item 3 -->
+                            <div class="bg-white p-6 rounded-xl border-l-4 border-blue-400 shadow-sm flex flex-col md:flex-row gap-6 hover:shadow-md transition-shadow">
+                                <div class="flex-1">
+                                    <h4 class="text-lg font-bold text-gray-900 flex items-center gap-2">
+                                        <span class="w-6 h-6 rounded-full bg-blue-400 text-white text-xs flex items-center justify-center">3</span>
+                                        基层赋权激活
+                                    </h4>
+                                    <p class="text-sm text-gray-600 mt-2 pl-8 leading-relaxed">选聘36名业务骨干为“基层纪检监督员”，履行“三到”职责，打通监督最后一公里。</p>
+                                </div>
+                                <div class="flex-shrink-0 flex items-center gap-2 text-sm font-bold text-blue-500 bg-blue-50 px-5 py-3 rounded-lg self-start md:self-center">
+                                    <i class="fa-solid fa-users-viewfinder"></i> 发现问题23条
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 3. 制度固廉 -->
+                    <section id="sec-system" class="scroll-mt-24">
+                        <div class="flex items-center mb-8 pb-4 border-b border-gray-100">
+                            <div class="w-12 h-12 bg-slate-100 text-slate-800 rounded-xl flex items-center justify-center text-xl mr-5 shadow-sm">
+                                <i class="fa-solid fa-gavel"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">制度固廉</h3>
+                                <p class="text-sm text-gray-500">全周期约束</p>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded-2xl p-8 border border-gray-200 shadow-sm">
+                            <div class="relative">
+                                <!-- Timeline Line -->
+                                <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-slate-200"></div>
+                                
+                                <!-- Timeline Item 1 -->
+                                <div class="relative pl-12 mb-10 group">
+                                    <div class="absolute left-0 top-1 w-9 h-9 bg-white border-4 border-slate-600 rounded-full flex items-center justify-center text-sm font-bold shadow-sm z-10 group-hover:scale-110 transition-transform">1</div>
+                                    <h4 class="font-bold text-gray-900 text-lg">廉洁从业“十不准”</h4>
+                                    <p class="text-sm text-gray-600 mt-2 leading-relaxed bg-slate-50 p-4 rounded-lg">修订下发《基层管理人员廉洁从业十项规定》，建立“负面清单+正向激励”双轨机制。</p>
+                                </div>
+
+                                <!-- Timeline Item 2 -->
+                                <div class="relative pl-12 mb-10 group">
+                                    <div class="absolute left-0 top-1 w-9 h-9 bg-white border-4 border-slate-400 rounded-full flex items-center justify-center text-sm font-bold shadow-sm z-10 group-hover:scale-110 transition-transform">2</div>
+                                    <h4 class="font-bold text-gray-900 text-lg">规范谈话函询机制</h4>
+                                    <p class="text-sm text-gray-600 mt-2 leading-relaxed bg-slate-50 p-4 rounded-lg">明确任前谈话、诫勉谈话等6类场景。累计开展各类谈话300人次。</p>
+                                </div>
+
+                                <!-- Timeline Item 3 -->
+                                <div class="relative pl-12 group">
+                                    <div class="absolute left-0 top-1 w-9 h-9 bg-white border-4 border-slate-300 rounded-full flex items-center justify-center text-sm font-bold shadow-sm z-10 group-hover:scale-110 transition-transform">3</div>
+                                    <h4 class="font-bold text-gray-900 text-lg">前置合规审查</h4>
+                                    <p class="text-sm text-gray-600 mt-2 leading-relaxed bg-slate-50 p-4 rounded-lg">合同审批嵌入廉洁审查，提出修改意见186条，全部采纳，软要求变刚约束。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 4. 成果守廉 -->
+                    <section id="sec-result" class="scroll-mt-24">
+                        <div class="flex items-center mb-8 pb-4 border-b border-gray-100">
+                            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-xl flex items-center justify-center text-xl mr-5 shadow-sm">
+                                <i class="fa-solid fa-trophy"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl font-bold text-gray-900">成果守廉</h3>
+                                <p class="text-sm text-gray-500">效能转化体系</p>
+                            </div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-amber-500 hover:shadow-lg transition-all hover:-translate-y-1">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="text-xs font-bold text-amber-600 uppercase tracking-widest">KPI</div>
+                                    <i class="fa-solid fa-chart-pie text-amber-200 text-2xl"></i>
+                                </div>
+                                <h4 class="text-lg font-bold text-gray-900 mb-3">廉洁建设指数化</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    将廉洁建设纳入党建考核，权重占比<span class="text-red-600 font-bold text-lg mx-1">15%</span>，实行“一票否决”制。
+                                </p>
+                            </div>
+                            <div class="bg-white p-8 rounded-2xl shadow-sm border-t-4 border-amber-500 hover:shadow-lg transition-all hover:-translate-y-1">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div class="text-xs font-bold text-amber-600 uppercase tracking-widest">Archive</div>
+                                    <i class="fa-solid fa-file-shield text-amber-200 text-2xl"></i>
+                                </div>
+                                <h4 class="text-lg font-bold text-gray-900 mb-3">廉政档案全覆盖</h4>
+                                <p class="text-sm text-gray-600 leading-relaxed">
+                                    建立181名中层及以上干部电子廉政档案，与职业发展挂钩，出具意见书113份。
+                                </p>
+                            </div>
+                            <div class="bg-gradient-to-br from-amber-50 to-white p-8 rounded-2xl shadow-sm border border-amber-100 md:col-span-2 relative overflow-hidden">
+                                <div class="absolute right-0 bottom-0 opacity-10 transform translate-x-4 translate-y-4">
+                                    <i class="fa-solid fa-coins text-9xl text-amber-600"></i>
+                                </div>
+                                <div class="relative z-10">
+                                    <div class="text-xs font-bold text-amber-600 uppercase tracking-widest mb-2">Value</div>
+                                    <h4 class="text-xl font-bold text-gray-900 mb-3">治理效能显性化</h4>
+                                    <p class="text-base text-gray-600 leading-relaxed max-w-2xl">
+                                        推动126项历史遗留问题整改，追回拖欠款项，将廉洁治理转化为真金白银的企业效益。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-gray-50 py-16 text-center">
+             <button onclick="switchView('home')" class="inline-flex items-center px-8 py-4 border border-transparent text-lg font-medium rounded-xl text-red-700 bg-red-100 hover:bg-red-200 transition-colors shadow-sm">
+                <i class="fa-solid fa-house mr-3"></i> 返回首页
+            </button>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="bg-slate-900 text-white py-12 mt-auto border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                <div class="text-center md:text-left">
+                    <h3 class="text-xl font-bold serif mb-2">贵州联合纪委</h3>
+                    <p class="text-xs text-slate-400 tracking-wider">Guizhou Union Commission for Discipline Inspection</p>
+                </div>
+                <div class="text-sm text-slate-400 text-center md:text-right">
+                    <p class="mb-2 font-medium text-slate-300">清风守正 · 廉润安全</p>
+                    <p>&copy; 2025 All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript 交互逻辑 -->
+    <script>
+        // 视图切换逻辑
+        function switchView(viewName) {
+            // 隐藏所有视图
+            document.querySelectorAll('.view-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            // 移除导航高亮
+            document.getElementById('nav-home').className = "px-4 py-2 rounded-lg text-gray-600 hover:text-red-900 hover:bg-gray-50 transition-colors border border-transparent";
+            document.getElementById('nav-practice').className = "px-4 py-2 rounded-lg text-gray-600 hover:text-red-900 hover:bg-gray-50 transition-colors border border-transparent";
+
+            // 激活选定视图
+            if (viewName === 'home') {
+                document.getElementById('view-home').classList.add('active');
+                document.getElementById('nav-home').className = "px-4 py-2 rounded-lg text-red-900 font-bold bg-red-50 transition-colors border border-red-100 shadow-sm";
+                window.scrollTo(0, 0);
+            } else {
+                document.getElementById('view-practice').classList.add('active');
+                document.getElementById('nav-practice').className = "px-4 py-2 rounded-lg text-blue-900 font-bold bg-blue-50 transition-colors border border-blue-100 shadow-sm";
+                window.scrollTo(0, 0);
+            }
+        }
+
+        // 页面内滚动跳转
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                const headerOffset = 100;
+                const elementPosition = element.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+            }
+        }
+    </script>
+</body>
+</html>
