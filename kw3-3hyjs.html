@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>应知应会·会议精神 - 纪检监察系统</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+            --card-bg: #FFFFFF;
+            --section-bg: #FFF5F5;       /* 浅红背景 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 会议卡片样式 */
+        .meeting-card {
+            border-top: 4px solid var(--primary-red);
+            transition: all 0.3s ease;
+        }
+        .meeting-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+            .meeting-card { break-inside: avoid; border: 1px solid #eee; margin-bottom: 1rem; box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="important_speeches.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-users-rectangle text-red-800"></i> 应知应会·会议精神
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">最新精神 · 权威解读</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字（如：二十大、三中全会）..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 头部标题区 -->
+                <div class="text-center border-b-2 border-red-800/10 pb-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-red-900 mb-4 serif-font">中央及省委重要会议精神要点</h2>
+                    <div class="text-sm text-gray-500 space-y-2">
+                        <p>紧跟核心 · 把握大局 · 狠抓落实</p>
+                    </div>
+                </div>
+
+                <!-- 正文内容 (Prose) -->
+                <div class="prose prose-slate max-w-none text-justify space-y-12 leading-relaxed text-gray-800">
+                    
+                    <!-- 第一部分：党的二十大精神 -->
+                    <section id="part-1" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-red-800">
+                            <div class="w-10 h-10 bg-red-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">一、 党的二十大精神</h3>
+                                <p class="text-sm text-gray-500 mt-1">举旗定向 · 宏伟蓝图</p>
+                            </div>
+                        </div>
+
+                        <div class="meeting-card bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="font-bold text-gray-900 text-lg mb-4">大会主题</h4>
+                            <p class="text-gray-700 mb-4 bg-red-50 p-4 rounded-lg">
+                                高举中国特色社会主义伟大旗帜，全面贯彻新时代中国特色社会主义思想，弘扬伟大建党精神，自信自强、守正创新，踔厉奋发、勇毅前行，为全面建设社会主义现代化国家、全面推进中华民族伟大复兴而团结奋斗。
+                            </p>
+                            
+                            <h4 class="font-bold text-gray-900 text-lg mb-4 mt-6">全面从严治党战略部署</h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <strong class="text-red-800 block mb-2">两个“永远在路上”</strong>
+                                    <p class="text-sm text-gray-700">全面从严治党永远在路上，党的自我革命永远在路上。</p>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded-lg">
+                                    <strong class="text-red-800 block mb-2">健全监督体系</strong>
+                                    <p class="text-sm text-gray-700">健全党统一领导、全面覆盖、权威高效的监督体系，完善权力监督制约机制。</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-6">
+                                <h5 class="font-bold text-gray-800 mb-2">【纪检监察落脚点】</h5>
+                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                    <li>坚持以严的基调强化正风肃纪。</li>
+                                    <li>坚决打赢反腐败斗争攻坚战持久战。</li>
+                                    <li>完善党的自我革命制度规范体系。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第二部分：二十届三中全会精神 -->
+                    <section id="part-2" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-blue-800">
+                            <div class="w-10 h-10 bg-blue-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">二、 党的二十届三中全会精神</h3>
+                                <p class="text-sm text-gray-500 mt-1">深化改革 · 推进中国式现代化</p>
+                            </div>
+                        </div>
+
+                        <div class="meeting-card bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="font-bold text-gray-900 text-lg mb-4">核心任务</h4>
+                            <p class="text-gray-700 mb-4">
+                                紧紧围绕推进中国式现代化进一步全面深化改革。
+                            </p>
+                            
+                            <h4 class="font-bold text-gray-900 text-lg mb-4 mt-6">纪检监察体制改革重点</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                <li><strong>深化纪检监察体制改革：</strong>完善纪委监委机关内设机构设置、职能配置、力量配备。</li>
+                                <li><strong>完善巡视巡察工作体制机制：</strong>健全巡视巡察上下联动格局，推进政治监督具体化、精准化、常态化。</li>
+                                <li><strong>健全反腐败法律法规：</strong>制定反腐败国家立法，修改监察法，出台反跨境腐败法。</li>
+                                <li><strong>加强对“一把手”和领导班子监督：</strong>完善权力配置和运行制约机制。</li>
+                            </ul>
+
+                            <div class="mt-6 bg-blue-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-blue-800 mb-2">【贯彻落实要求】</h5>
+                                <p class="text-sm text-gray-700">
+                                    纪检监察机关要以改革精神推进工作，把改革任务落实情况作为政治监督重点，确保党中央改革决策部署落地见效。
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第三部分：中央纪委全会精神 -->
+                    <section id="part-3" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-green-700">
+                            <div class="w-10 h-10 bg-green-700 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-gavel"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">三、 二十届中央纪委三次全会精神</h3>
+                                <p class="text-sm text-gray-500 mt-1">自我革命 · 纵深推进</p>
+                            </div>
+                        </div>
+
+                        <div class="meeting-card bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="font-bold text-gray-900 text-lg mb-4">八项重点任务</h4>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
+                                <div class="bg-gray-50 p-3 rounded">1. 深入学习贯彻习近平总书记关于党的自我革命的重要思想。</div>
+                                <div class="bg-gray-50 p-3 rounded">2. 突出“两个维护”深化政治监督。</div>
+                                <div class="bg-gray-50 p-3 rounded">3. 铲除腐败问题产生的土壤和条件。</div>
+                                <div class="bg-gray-50 p-3 rounded">4. 推动防范和治理腐败问题常态化、长效化。</div>
+                                <div class="bg-gray-50 p-3 rounded">5. 突出常态长效深化落实中央八项规定精神。</div>
+                                <div class="bg-gray-50 p-3 rounded">6. 突出严的基调深化党的纪律建设。</div>
+                                <div class="bg-gray-50 p-3 rounded">7. 突出政治定位深化巡视巡察。</div>
+                                <div class="bg-gray-50 p-3 rounded">8. 突出规范化、法治化、正规化深化纪检监察体制改革和干部队伍建设。</div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第四部分：省委及省纪委全会精神 -->
+                    <section id="part-4" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-purple-800">
+                            <div class="w-10 h-10 bg-purple-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-map-location-dot"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">四、 贵州省委及省纪委全会精神</h3>
+                                <p class="text-sm text-gray-500 mt-1">结合实际 · 贵州实践</p>
+                            </div>
+                        </div>
+
+                        <div class="meeting-card bg-white p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="font-bold text-gray-900 text-lg mb-4">十三届省纪委三次全会精神</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                                <li><strong>主题：</strong>深入学习贯彻二十届中央纪委三次全会精神，纵深推进清廉贵州建设。</li>
+                                <li><strong>目标：</strong>持续发力、纵深推进反腐败斗争，坚决铲除腐败滋生的土壤和条件，为谱写中国式现代化贵州实践新篇章提供坚强保障。</li>
+                            </ul>
+                            
+                            <h4 class="font-bold text-gray-900 text-lg mb-4 mt-6">重点工作部署</h4>
+                            <div class="space-y-3 text-sm text-gray-700">
+                                <p><span class="font-bold text-purple-800">政治监督：</span>聚焦围绕“四新”主攻“四化”主战略和“四区一高地”主定位加强监督检查。</p>
+                                <p><span class="font-bold text-purple-800">纠治“四风”：</span>重拳纠治形式主义、官僚主义，持续整治享乐主义、奢靡之风。</p>
+                                <p><span class="font-bold text-purple-800">反腐败：</span>深化整治金融、国企、能源、烟草、医药、基建工程和招投标等权力集中、资金密集、资源富集领域的腐败。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 自测小练习 -->
+                    <section id="part-quiz" class="scroll-mt-32">
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-10">
+                            <h3 class="text-lg font-bold text-yellow-800 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-pen-to-square"></i> 精神领会自测（点击查看答案）
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="cursor-pointer group" onclick="this.classList.toggle('show-answer')">
+                                    <p class="text-sm text-gray-800 font-bold mb-2">1. 党的二十大报告指出，全面建设社会主义现代化国家的首要任务是？</p>
+                                    <div class="hidden group-[.show-answer]:block text-sm text-green-700 bg-green-50 p-2 rounded">
+                                        答案：高质量发展。
+                                    </div>
+                                    <div class="text-xs text-gray-400 group-[.show-answer]:hidden">点击显示答案</div>
+                                </div>
+                                <div class="cursor-pointer group" onclick="this.classList.toggle('show-answer')">
+                                    <p class="text-sm text-gray-800 font-bold mb-2">2. 二十届三中全会提出的进一步全面深化改革的总目标是？</p>
+                                    <div class="hidden group-[.show-answer]:block text-sm text-green-700 bg-green-50 p-2 rounded">
+                                        答案：继续完善和发展中国特色社会主义制度，推进国家治理体系和治理能力现代化。
+                                    </div>
+                                    <div class="text-xs text-gray-400 group-[.show-answer]:hidden">点击显示答案</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>内容整理自：新华网、中央纪委国家监委网站、贵州省纪委监委网站</p>
+                    <p>仅供内部学习参考</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ul text-red-800"></i> 会议导航
+                        </div>
+                        <nav class="max-h-[60vh] overflow-y-auto text-sm" id="tocNav">
+                            <a href="#part-1" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">一、二十大精神</a>
+                            <a href="#part-2" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">二、二十届三中全会</a>
+                            <a href="#part-3" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">三、中纪委全会</a>
+                            <a href="#part-4" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">四、省纪委全会</a>
+                            <a href="#part-quiz" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-yellow-600 transition-colors">五、学习自测</a>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="scrollToTop()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印资料</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="scrollToTop()" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const proseDiv = document.querySelector('.prose');
+            
+            if (!window.originalContent) window.originalContent = proseDiv.innerHTML;
+            proseDiv.innerHTML = window.originalContent;
+
+            if (!keyword) {
+                document.getElementById('searchCount').style.opacity = '0';
+                return;
+            }
+
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            let matchCount = 0;
+            
+            const walker = document.createTreeWalker(proseDiv, NodeFilter.SHOW_TEXT, null, false);
+            const nodes = [];
+            while(walker.nextNode()) nodes.push(walker.currentNode);
+
+            const newHtml = window.originalContent.replace(regex, (match) => {
+                matchCount++;
+                return `<span class="highlight">${match}</span>`;
+            });
+            
+            proseDiv.innerHTML = newHtml;
+            
+            document.getElementById('searchCount').innerText = `${matchCount} 处匹配`;
+            document.getElementById('searchCount').style.opacity = '1';
+
+            const firstMatch = document.querySelector('.highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

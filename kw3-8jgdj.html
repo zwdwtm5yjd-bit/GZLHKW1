@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>机关党建 - 应知应会专题库</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --party-red: #c02322; /* 党建红 */
+            --party-gold: #fcc437; /* 党徽金 */
+            --bg-light: #fffdf9;  /* 米色背景，更温润 */
+            --text-main: #281515;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+            color: var(--text-main);
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* --- Hero Section: 红旗飘扬质感 --- */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, rgba(168, 25, 25, 0.95) 0%, rgba(120, 10, 10, 0.9) 100%),
+                        url('https://images.unsplash.com/photo-1532375810709-75b1da00537c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+            box-shadow: 0 4px 20px -5px rgba(185, 28, 28, 0.4);
+        }
+        
+        /* 红色丝绸纹理装饰 */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23ffffff' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        /* 玻璃质感卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--party-gold);
+        }
+
+        /* 侧边导航 */
+        .nav-item.active {
+            color: var(--party-red);
+            border-left: 4px solid var(--party-red);
+            background-color: #FEF2F2;
+            font-weight: 700;
+        }
+
+        /* 流程图节点样式 */
+        .step-circle {
+            width: 3rem; height: 3rem;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+            position: relative;
+            z-index: 10;
+            background: white;
+            border: 2px solid var(--party-red);
+            color: var(--party-red);
+        }
+        .step-active { background: var(--party-red); color: white; }
+        .step-line {
+            position: absolute; top: 1.5rem; left: 0; width: 100%; height: 2px;
+            background: #e5e7eb; z-index: 0;
+        }
+
+        /* 重点卡片 */
+        .content-card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #f3f4f6;
+            transition: all 0.2s;
+        }
+        .content-card:hover { box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+
+        /* 金色徽章 */
+        .badge-gold {
+            background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 100%);
+            color: #78350f;
+            font-weight: bold;
+            padding: 0.1rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.75rem;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <div class="w-10 h-10 bg-red-800 rounded-full flex items-center justify-center text-white shadow-md border-2 border-yellow-500">
+                        <i class="fa-solid fa-star text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">机关党建实务</h1>
+                        <p class="text-xs text-gray-500 tracking-wider">应知应会 · 2025版</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="zsksy.html" class="text-gray-600 hover:text-red-900 font-medium transition flex items-center gap-2">
+                        <i class="fa-solid fa-reply"></i> 返回专题库
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+                <div class="w-full lg:w-2/3">
+                    <span class="inline-block py-1 px-3 rounded-full bg-red-900/50 border border-yellow-500/50 text-xs font-bold mb-4 text-yellow-200 backdrop-blur-sm">
+                        <i class="fa-solid fa-flag mr-1"></i> 围绕中心 · 建设队伍 · 服务群众
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold serif-font mb-6 leading-tight drop-shadow-xl">
+                        铸魂 强基 赋能<br>
+                        <span class="text-yellow-400">全面提高机关党建质量</span>
+                    </h2>
+                    <p class="text-red-50 text-lg mb-10 leading-relaxed font-light max-w-2xl">
+                        坚持以党的政治建设为统领，深化“四强”党支部创建，推进党建和业务深度融合，以高质量党建引领高质量发展。
+                    </p>
+                    
+                    <!-- 核心模块看板 -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-landmark text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">政治功能强</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-users text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">支部班子强</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-user-graduate text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">党员队伍强</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-rocket text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">作用发挥强</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- 侧边导航 -->
+            <aside class="w-full lg:w-64 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul text-red-800"></i> 内容导航
+                    </div>
+                    <nav class="flex flex-col text-sm py-2">
+                        <a href="#political" class="nav-item active px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            1. 政治建设 (第一议题)
+                        </a>
+                        <a href="#four-strong" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            2. “四强”党支部标准
+                        </a>
+                        <a href="#org-life" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            3. “三会一课”规范
+                        </a>
+                        <a href="#development" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            4. 党员发展流程
+                        </a>
+                        <a href="#dues" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            5. 党费收缴标准
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- 主要内容区 -->
+            <main class="flex-1 space-y-12">
+
+                <!-- 1. 政治建设 -->
+                <section id="political" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">政治建设：第一议题制度</h2>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border-l-4 border-l-red-800 p-6">
+                        <div class="flex gap-4">
+                            <div class="shrink-0 text-red-800">
+                                <i class="fa-solid fa-book-open text-4xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg text-gray-900 mb-2">什么是“第一议题”？</h3>
+                                <p class="text-gray-600 text-sm leading-relaxed mb-4">
+                                    指各级党组织在召开重要会议（如党委会、支委会、党员大会）时，必须把<strong class="text-red-800">学习贯彻习近平新时代中国特色社会主义思想</strong>和习近平总书记最新重要讲话、重要指示批示精神作为会议的第一项议程。
+                                </p>
+                                <div class="bg-red-50 p-4 rounded text-sm text-red-900">
+                                    <strong><i class="fa-solid fa-circle-check mr-1"></i> “三学”要求：</strong>
+                                    第一时间学、原原本本学、结合实际学。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. “四强”党支部标准 -->
+                <section id="four-strong" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-yellow-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">“四强”党支部创建标准</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 1. 政治功能强 -->
+                        <div class="content-card p-5 border-t-4 border-t-red-600">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-red-800">01 政治功能强</h3>
+                                <i class="fa-solid fa-landmark text-gray-200 text-2xl"></i>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside">
+                                <li>坚持不懈用党的创新理论凝心铸魂。</li>
+                                <li>党员干部政治判断力、领悟力、执行力显著提高。</li>
+                                <li>不折不扣贯彻落实党中央决策部署。</li>
+                            </ul>
+                        </div>
+                        
+                        <!-- 2. 支部班子强 -->
+                        <div class="content-card p-5 border-t-4 border-t-yellow-500">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-yellow-700">02 支部班子强</h3>
+                                <i class="fa-solid fa-users text-gray-200 text-2xl"></i>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside">
+                                <li>书记选优配强，是业务骨干也是党建行家。</li>
+                                <li>班子团结协作，严格执行民主集中制。</li>
+                                <li>抓党建带队伍促业务能力强。</li>
+                            </ul>
+                        </div>
+
+                        <!-- 3. 党员队伍强 -->
+                        <div class="content-card p-5 border-t-4 border-t-blue-600">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-blue-800">03 党员队伍强</h3>
+                                <i class="fa-solid fa-user-graduate text-gray-200 text-2xl"></i>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside">
+                                <li>理想信念坚定，对党绝对忠诚。</li>
+                                <li>业务能力精湛，平常时候看得出来，关键时刻站得出来。</li>
+                                <li>遵规守纪，作风优良。</li>
+                            </ul>
+                        </div>
+
+                        <!-- 4. 作用发挥强 -->
+                        <div class="content-card p-5 border-t-4 border-t-green-600">
+                            <div class="flex justify-between items-center mb-3">
+                                <h3 class="font-bold text-green-800">04 作用发挥强</h3>
+                                <i class="fa-solid fa-rocket text-gray-200 text-2xl"></i>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-2 list-disc list-inside">
+                                <li>党建和业务深度融合，拒绝“两张皮”。</li>
+                                <li>攻坚克难有作为，服务群众有实效。</li>
+                                <li>战斗堡垒作用和先锋模范作用充分彰显。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. “三会一课”规范 -->
+                <section id="org-life" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">“三会一课”实操规范</h2>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-gray-50 text-gray-700 font-bold border-b border-gray-200">
+                                <tr>
+                                    <th class="px-6 py-4 w-1/4">名称</th>
+                                    <th class="px-6 py-4 w-1/4">频次要求</th>
+                                    <th class="px-6 py-4">主要内容与参会人员</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr>
+                                    <td class="px-6 py-4 font-bold text-red-800">支部党员大会</td>
+                                    <td class="px-6 py-4"><span class="badge-gold">每季度至少1次</span></td>
+                                    <td class="px-6 py-4 text-gray-600">全体党员参加。讨论决定重大事项，如选举、发展党员、评优评先等。</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-bold text-red-800">支部委员会</td>
+                                    <td class="px-6 py-4"><span class="badge-gold">每月至少1次</span></td>
+                                    <td class="px-6 py-4 text-gray-600">支委参加。研究支部工作，讨论拟提交党员大会的议题。</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-bold text-red-800">党小组会</td>
+                                    <td class="px-6 py-4"><span class="badge-gold">每月至少1次</span></td>
+                                    <td class="px-6 py-4 text-gray-600">党小组成员参加。学习文件、汇报思想、开展批评与自我批评。</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-bold text-red-800">党课</td>
+                                    <td class="px-6 py-4"><span class="badge-gold">每季度至少1次</span></td>
+                                    <td class="px-6 py-4 text-gray-600">全体党员参加。学习党的理论、政策、党史等。书记每年至少讲1次。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="bg-yellow-50 p-3 text-xs text-yellow-800 border-t border-yellow-100">
+                            <i class="fa-solid fa-lightbulb mr-1"></i> <strong>提示：</strong>“主题党日”一般每月固定1天开展，可与“三会一课”有机融合，但不能相互替代。
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. 党员发展流程 -->
+                <section id="development" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">发展党员工作流程 (5个阶段)</h2>
+                    </div>
+
+                    <div class="relative py-4">
+                        <div class="step-line top-1/2 -translate-y-1/2 hidden md:block"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4 relative z-10">
+                            
+                            <div class="text-center group">
+                                <div class="step-circle step-active mx-auto mb-3 shadow-md group-hover:scale-110 transition">01</div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">申请入党</h4>
+                                <p class="text-xs text-gray-500">递交申请书<br>派人谈话</p>
+                            </div>
+                            
+                            <div class="text-center group">
+                                <div class="step-circle step-active mx-auto mb-3 shadow-md group-hover:scale-110 transition">02</div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">入党积极分子</h4>
+                                <p class="text-xs text-gray-500">推荐确定<br>培养考察(1年以上)</p>
+                            </div>
+                            
+                            <div class="text-center group">
+                                <div class="step-circle step-active mx-auto mb-3 shadow-md group-hover:scale-110 transition">03</div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">发展对象</h4>
+                                <p class="text-xs text-gray-500">政治审查<br>短期培训</p>
+                            </div>
+
+                            <div class="text-center group">
+                                <div class="step-circle step-active mx-auto mb-3 shadow-md group-hover:scale-110 transition">04</div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">预备党员</h4>
+                                <p class="text-xs text-gray-500">支部大会通过<br>入党宣誓</p>
+                            </div>
+
+                            <div class="text-center group">
+                                <div class="step-circle bg-yellow-400 text-red-900 border-yellow-500 mx-auto mb-3 shadow-md group-hover:scale-110 transition">05</div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">正式党员</h4>
+                                <p class="text-xs text-gray-500">预备期考察(1年)<br>按期转正</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. 党费收缴标准 -->
+                <section id="dues" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">党费收缴标准 (2025)</h2>
+                    </div>
+
+                    <div class="bg-red-50 rounded-xl p-6 border border-red-100">
+                        <div class="flex items-center gap-2 mb-4">
+                            <i class="fa-solid fa-calculator text-red-700"></i>
+                            <h3 class="font-bold text-red-900">按月领取工资的党员</h3>
+                        </div>
+                        <p class="text-xs text-gray-600 mb-4">计算基数 = 岗位工资 + 薪级工资 + 绩效工资 + 津贴补贴 - 个人所得税 - 社保/公积金个人部分</p>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <div class="text-xs text-gray-500 mb-1">基数 ≤ 3000元</div>
+                                <div class="font-bold text-xl text-red-800">0.5%</div>
+                            </div>
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <div class="text-xs text-gray-500 mb-1">3000 < 基数 ≤ 5000</div>
+                                <div class="font-bold text-xl text-red-800">1.0%</div>
+                            </div>
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <div class="text-xs text-gray-500 mb-1">5000 < 基数 ≤ 10000</div>
+                                <div class="font-bold text-xl text-red-800">1.5%</div>
+                            </div>
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <div class="text-xs text-gray-500 mb-1">基数 > 10000元</div>
+                                <div class="font-bold text-xl text-red-800">2.0%</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="text-center text-gray-400 text-sm pt-8 pb-12">
+                    <p>— 资料更新日期：2025年3月 · 中央和国家机关工委 —</p>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="bg-slate-900 text-white mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-slate-400">
+                <p class="mb-2">贵州联合纪委工作办公室 · 宣</p>
+                <p>&copy; 2025 All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 250) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            if (current) {
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href').includes(current)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

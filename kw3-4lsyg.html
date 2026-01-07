@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>应知应会·历史沿革 - 纪检监察系统</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+            --card-bg: #FFFFFF;
+            --section-bg: #FFF5F5;       /* 浅红背景 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 时间轴样式 */
+        .timeline-item {
+            position: relative;
+            padding-left: 2rem;
+            padding-bottom: 2rem;
+            border-left: 2px solid #E5E7EB;
+        }
+        .timeline-item:last-child {
+            border-left: none;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: -9px;
+            top: 0;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--primary-red);
+            border: 4px solid #FEE2E2;
+        }
+        
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+            .timeline-item { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="meeting_spirit.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-clock-rotate-left text-red-800"></i> 应知应会·历史沿革
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">百年纪检 · 薪火相传</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字（如：五大、监察体制改革）..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 头部标题区 -->
+                <div class="text-center border-b-2 border-red-800/10 pb-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-red-900 mb-4 serif-font">中国共产党纪律检查机关发展历程</h2>
+                    <div class="text-sm text-gray-500 space-y-2">
+                        <p>从首届中央监察委员会到国家监察体制改革</p>
+                    </div>
+                </div>
+
+                <!-- 正文内容 (Prose) -->
+                <div class="prose prose-slate max-w-none text-justify space-y-12 leading-relaxed text-gray-800">
+                    
+                    <!-- 第一部分：初创与探索 -->
+                    <section id="part-1" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-red-800">
+                            <div class="w-10 h-10 bg-red-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-flag"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">一、 初创与探索时期 (1927-1949)</h3>
+                                <p class="text-sm text-gray-500 mt-1">从无到有 · 艰难起步</p>
+                            </div>
+                        </div>
+
+                        <div class="ml-4">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">1927年4月：中共五大</h4>
+                                <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                                    <strong class="text-red-800 block mb-1">里程碑事件：选举产生首届中央监察委员会</strong>
+                                    <p class="text-sm text-gray-700">这是党的历史上第一个中央纪律检查监督机构。王荷波任主席，杨匏安任副主席。</p>
+                                    <p class="text-xs text-gray-500 mt-2">意义：标志着党内监督制度的正式确立。</p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">1928年7月：中共六大</h4>
+                                <p class="text-sm text-gray-700 mb-2">决定成立<strong>中央审查委员会</strong>，主要任务是审核党的财政会计。</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">1945年：中共七大</h4>
+                                <p class="text-sm text-gray-700 mb-2">党章规定设立中央及各级<strong>党的监察委员会</strong>。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第二部分：成立与撤销 -->
+                    <section id="part-2" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-orange-600">
+                            <div class="w-10 h-10 bg-orange-600 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-building-columns"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">二、 成立与曲折发展 (1949-1978)</h3>
+                                <p class="text-sm text-gray-500 mt-1">制度建立 · 遭受挫折</p>
+                            </div>
+                        </div>
+
+                        <div class="ml-4">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">1949年11月</h4>
+                                <p class="text-sm text-gray-700 mb-2">中共中央决定成立<strong>中央纪律检查委员会</strong>，朱德任书记。</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">1955年3月</h4>
+                                <p class="text-sm text-gray-700 mb-2">党的全国代表会议决定成立<strong>中央和地方监察委员会</strong>，代替各级纪委，董必武任书记。</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">1969年4月：中共九大</h4>
+                                <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
+                                    <p class="text-sm text-gray-700">“文化大革命”期间，党的监察机关被撤销，党内监督工作中断。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第三部分：恢复与重建 -->
+                    <section id="part-3" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-green-700">
+                            <div class="w-10 h-10 bg-green-700 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-rotate-right"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">三、 恢复重建与改革开放 (1978-2012)</h3>
+                                <p class="text-sm text-gray-500 mt-1">拨乱反正 · 制度完善</p>
+                            </div>
+                        </div>
+
+                        <div class="ml-4">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">1978年12月：十一届三中全会</h4>
+                                <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                                    <strong class="text-red-800 block mb-1">里程碑事件：恢复重建中央纪律检查委员会</strong>
+                                    <p class="text-sm text-gray-700">陈云任第一书记。全会指出：“为了维护党规党法，切实搞好党风，选举产生了中央纪律检查委员会。”</p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">1982年9月：中共十二大</h4>
+                                <p class="text-sm text-gray-700 mb-2">通过新党章，规定“党的中央纪律检查委员会在党的中央委员会领导下进行工作”。</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">1993年1月</h4>
+                                <p class="text-sm text-gray-700 mb-2">党中央、国务院决定<strong>中央纪委与监察部合署办公</strong>，实行一套工作机构、两个机关名称。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第四部分：新时代变革 -->
+                    <section id="part-4" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-blue-800">
+                            <div class="w-10 h-10 bg-blue-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-landmark"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">四、 新时代全面深化改革 (2012-至今)</h3>
+                                <p class="text-sm text-gray-500 mt-1">自我革命 · 国家监察</p>
+                            </div>
+                        </div>
+
+                        <div class="ml-4">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">2012年11月：中共十八大</h4>
+                                <p class="text-sm text-gray-700 mb-2">开启全面从严治党新征程，提出“老虎”、“苍蝇”一起打。</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">2016年11月</h4>
+                                <p class="text-sm text-gray-700 mb-2">在<strong>北京、山西、浙江</strong>开展国家监察体制改革试点。</p>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">2018年3月：十三届全国人大一次会议</h4>
+                                <div class="bg-blue-50 p-4 rounded-lg border border-blue-100">
+                                    <strong class="text-blue-800 block mb-1">里程碑事件：通过《中华人民共和国监察法》</strong>
+                                    <p class="text-sm text-gray-700"><strong>国家监察委员会</strong>正式揭牌成立，与中央纪委合署办公。标志着中国特色国家监察体制已经形成。</p>
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h4 class="font-bold text-gray-900 mb-1">2022年10月：中共二十大</h4>
+                                <p class="text-sm text-gray-700 mb-2">提出“完善党的自我革命制度规范体系”，强调“健全党统一领导、全面覆盖、权威高效的监督体系”。</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 自测小练习 -->
+                    <section id="part-quiz" class="scroll-mt-32">
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-10">
+                            <h3 class="text-lg font-bold text-yellow-800 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-pen-to-square"></i> 历史知识自测（点击查看答案）
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="cursor-pointer group" onclick="this.classList.toggle('show-answer')">
+                                    <p class="text-sm text-gray-800 font-bold mb-2">1. 党的第一个中央监察机构是哪一年成立的？</p>
+                                    <div class="hidden group-[.show-answer]:block text-sm text-green-700 bg-green-50 p-2 rounded">
+                                        答案：1927年（中共五大）。
+                                    </div>
+                                    <div class="text-xs text-gray-400 group-[.show-answer]:hidden">点击显示答案</div>
+                                </div>
+                                <div class="cursor-pointer group" onclick="this.classList.toggle('show-answer')">
+                                    <p class="text-sm text-gray-800 font-bold mb-2">2. 中央纪委与监察部合署办公始于哪一年？</p>
+                                    <div class="hidden group-[.show-answer]:block text-sm text-green-700 bg-green-50 p-2 rounded">
+                                        答案：1993年。
+                                    </div>
+                                    <div class="text-xs text-gray-400 group-[.show-answer]:hidden">点击显示答案</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>内容整理自：中国共产党历史、中央纪委国家监委网站</p>
+                    <p>仅供内部学习参考</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ul text-red-800"></i> 历史脉络
+                        </div>
+                        <nav class="max-h-[60vh] overflow-y-auto text-sm" id="tocNav">
+                            <a href="#part-1" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">1. 初创与探索(1927-1949)</a>
+                            <a href="#part-2" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-orange-600 transition-colors">2. 成立与曲折(1949-1978)</a>
+                            <a href="#part-3" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-green-700 transition-colors">3. 恢复与重建(1978-2012)</a>
+                            <a href="#part-4" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-blue-800 transition-colors">4. 新时代变革(2012-至今)</a>
+                            <a href="#part-quiz" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-yellow-600 transition-colors">5. 知识自测</a>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="scrollToTop()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印资料</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="scrollToTop()" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const proseDiv = document.querySelector('.prose');
+            
+            if (!window.originalContent) window.originalContent = proseDiv.innerHTML;
+            proseDiv.innerHTML = window.originalContent;
+
+            if (!keyword) {
+                document.getElementById('searchCount').style.opacity = '0';
+                return;
+            }
+
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            let matchCount = 0;
+            
+            const walker = document.createTreeWalker(proseDiv, NodeFilter.SHOW_TEXT, null, false);
+            const nodes = [];
+            while(walker.nextNode()) nodes.push(walker.currentNode);
+
+            const newHtml = window.originalContent.replace(regex, (match) => {
+                matchCount++;
+                return `<span class="highlight">${match}</span>`;
+            });
+            
+            proseDiv.innerHTML = newHtml;
+            
+            document.getElementById('searchCount').innerText = `${matchCount} 处匹配`;
+            document.getElementById('searchCount').style.opacity = '1';
+
+            const firstMatch = document.querySelector('.highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>保密知识 - 应知应会专题库</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;
+            --tech-blue: #1E3A8A;
+            --bg-light: #F8FAFC;
+            --security-blue: #0284c7; /* 调整为保密蓝 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* Hero 区域：改为淡蓝色背景 */
+        .hero-section {
+            /* 淡蓝色渐变：从 AliceBlue 到 SkyBlue */
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 50%, #bae6fd 100%);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px -5px rgba(0,0,0,0.1);
+        }
+        
+        .hero-pattern {
+            /* 使用深色纹理，降低不透明度 */
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%231e3a8a' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+
+        /* 浅色背景下的玻璃卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px 0 rgba(30, 58, 138, 0.1); /* 蓝色阴影 */
+            transition: transform 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 40px 0 rgba(30, 58, 138, 0.15);
+        }
+
+        /* 侧边导航 */
+        .nav-item.active {
+            color: var(--security-blue);
+            border-left: 3px solid var(--security-blue);
+            background-color: #E0F2FE;
+            font-weight: bold;
+        }
+
+        /* 警示条纹背景 */
+        .warning-stripe {
+            background: repeating-linear-gradient(
+                45deg,
+                #fef2f2,
+                #fef2f2 10px,
+                #fee2e2 10px,
+                #fee2e2 20px
+            );
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <div class="w-10 h-10 bg-blue-700 rounded-full flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-user-shield text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">保密知识专题</h1>
+                        <p class="text-xs text-gray-500 tracking-wider">应知应会 · 2025版</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="zsksy.html" class="text-gray-600 hover:text-blue-900 font-medium transition flex items-center gap-2">
+                        <i class="fa-solid fa-reply"></i> 返回专题库
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section: 核心概念与法规 (淡蓝色背景) -->
+    <section class="hero-section hero-pattern py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                <div class="w-full lg:w-2/3">
+                    <span class="inline-block py-1 px-3 rounded-full bg-blue-100 border border-blue-200 text-xs font-bold mb-4 text-blue-800">
+                        保守国家秘密 · 维护国家安全
+                    </span>
+                    <!-- 标语保持红色 -->
+                    <h2 class="text-4xl md:text-5xl font-bold serif-font mb-4 leading-tight text-red-600 drop-shadow-sm">
+                        保密工作无小事<br>言行举止系国安
+                    </h2>
+                    <!-- 说明文字改为深色 -->
+                    <p class="text-slate-600 text-lg mb-8 leading-relaxed font-light">
+                        深入学习贯彻新修订的《中华人民共和国保守国家秘密法》，坚持党管保密，实行积极防范、突出重点、依法管理的方针，筑牢新时代保密防线。
+                    </p>
+                    
+                    <!-- 核心考点看板 (浅色玻璃卡片) -->
+                    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                        
+                        <div class="glass-card rounded-lg p-5 border-t-4 border-t-red-500">
+                            <div class="flex justify-between items-start">
+                                <div class="text-xs text-red-600 uppercase tracking-wide font-bold">核心纪律</div>
+                                <i class="fa-solid fa-ban text-red-500 opacity-80"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-slate-800 mt-2">涉密载体</div>
+                            <div class="text-sm text-slate-500 mt-1">管理“六严禁”</div>
+                        </div>
+
+                        <div class="glass-card rounded-lg p-5 border-t-4 border-t-yellow-500">
+                            <div class="flex justify-between items-start">
+                                <div class="text-xs text-yellow-600 uppercase tracking-wide font-bold">高风险点</div>
+                                <i class="fa-solid fa-mobile-screen-button text-yellow-500 opacity-80"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-slate-800 mt-2">网络社交</div>
+                            <div class="text-sm text-slate-500 mt-1">微信/AI办公禁区</div>
+                        </div>
+
+                        <div class="glass-card rounded-lg p-5 border-t-4 border-t-blue-500">
+                            <div class="flex justify-between items-start">
+                                <div class="text-xs text-blue-600 uppercase tracking-wide font-bold">定密管理</div>
+                                <i class="fa-solid fa-file-shield text-blue-500 opacity-80"></i>
+                            </div>
+                            <div class="text-2xl font-bold text-slate-800 mt-2">三级密级</div>
+                            <div class="text-sm text-slate-500 mt-1">绝密 · 机密 · 秘密</div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <!-- 装饰图标 (调整颜色以适配浅色背景) -->
+                <div class="hidden lg:block w-1/3 text-right opacity-10">
+                    <i class="fa-solid fa-shield-halved text-[250px] text-blue-900"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- 侧边导航 -->
+            <aside class="w-full lg:w-64 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul text-blue-800"></i> 内容导航
+                    </div>
+                    <nav class="flex flex-col text-sm py-2">
+                        <a href="#new-law" class="nav-item active px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            1. 新《保密法》要点
+                        </a>
+                        <a href="#six-prohibitions" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            2. 涉密载体“六严禁”
+                        </a>
+                        <a href="#network" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            3. 网络与设备管理
+                        </a>
+                        <a href="#daily-work" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            4. 办公避坑指南
+                        </a>
+                        <a href="#warning" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            5. 典型案例警示
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- 主要内容区 -->
+            <main class="flex-1 space-y-12">
+
+                <!-- 1. 新《保密法》要点 -->
+                <section id="new-law" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-blue-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">新修订《保密法》重点解读</h2>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                        <div class="flex items-center gap-3 mb-6 bg-blue-50 p-4 rounded-lg text-blue-900 border border-blue-100">
+                            <i class="fa-solid fa-scale-balanced text-2xl"></i>
+                            <div>
+                                <h4 class="font-bold">实施时间</h4>
+                                <p class="text-sm opacity-80">2024年5月1日起施行</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <h3 class="font-bold text-gray-900 flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">1</span>
+                                    明确“党管保密”原则
+                                </h3>
+                                <p class="text-gray-600 text-sm mt-2 ml-8">
+                                    首次在法律层面明确坚持中国共产党对保密工作的领导。健全党管保密体制机制，各级保密委员会统筹协调本地区保密工作。
+                                </p>
+                            </div>
+                            
+                            <div>
+                                <h3 class="font-bold text-gray-900 flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">2</span>
+                                    定密管理“精准化”
+                                </h3>
+                                <p class="text-gray-600 text-sm mt-2 ml-8">
+                                    <strong class="text-blue-800">定密责任人制度：</strong>机关、单位主要负责人及其指定的人员为定密责任人，负责本机关、本单位的国家秘密确定、变更和解除工作。
+                                    <br><span class="text-xs text-gray-500 bg-gray-100 px-1">考点</span> 密级分为：<strong>绝密</strong>（最重要的国家秘密）、<strong>机密</strong>（重要的国家秘密）、<strong>秘密</strong>（一般的国家秘密）。
+                                </p>
+                            </div>
+
+                            <div>
+                                <h3 class="font-bold text-gray-900 flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-full bg-blue-600 text-white flex items-center justify-center text-xs">3</span>
+                                    科技创新与信息安全
+                                </h3>
+                                <p class="text-gray-600 text-sm mt-2 ml-8">
+                                    新增条款强调保密科技创新，支持保密科技产品研发。明确涉密信息系统应当按照规定进行分级保护，定期开展风险评估。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. 涉密载体“六严禁” (视觉重点) -->
+                <section id="six-prohibitions" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">涉密载体管理“六严禁”</h2>
+                        <span class="ml-3 px-2 py-1 bg-red-100 text-red-800 text-xs rounded font-bold">高频考点</span>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div class="bg-red-50 p-5 rounded-lg border-l-4 border-red-600 shadow-sm hover:shadow-md transition">
+                            <div class="flex gap-3">
+                                <i class="fa-solid fa-circle-xmark text-red-600 text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-red-900">严禁非法获取、持有</h4>
+                                    <p class="text-sm text-gray-700 mt-1">严禁非法获取、持有国家秘密载体。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-red-50 p-5 rounded-lg border-l-4 border-red-600 shadow-sm hover:shadow-md transition">
+                            <div class="flex gap-3">
+                                <i class="fa-solid fa-circle-xmark text-red-600 text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-red-900">严禁私自买卖、销毁</h4>
+                                    <p class="text-sm text-gray-700 mt-1">严禁买卖、转送或者私自销毁国家秘密载体。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-red-50 p-5 rounded-lg border-l-4 border-red-600 shadow-sm hover:shadow-md transition">
+                            <div class="flex gap-3">
+                                <i class="fa-solid fa-circle-xmark text-red-600 text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-red-900">严禁普通渠道传递</h4>
+                                    <p class="text-sm text-gray-700 mt-1">严禁通过普通邮政、快递等无保密措施的渠道传递国家秘密载体。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-red-50 p-5 rounded-lg border-l-4 border-red-600 shadow-sm hover:shadow-md transition">
+                            <div class="flex gap-3">
+                                <i class="fa-solid fa-circle-xmark text-red-600 text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-red-900">严禁违规携带外出</h4>
+                                    <p class="text-sm text-gray-700 mt-1">严禁邮寄、托运国家秘密载体出境；未经批准，不得携带涉密载体外出。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-red-50 p-5 rounded-lg border-l-4 border-red-600 shadow-sm hover:shadow-md transition">
+                            <div class="flex gap-3">
+                                <i class="fa-solid fa-circle-xmark text-red-600 text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-red-900">严禁非涉密设备处理</h4>
+                                    <p class="text-sm text-gray-700 mt-1">严禁在非涉密计算机或信息系统中存储、处理、传输国家秘密。</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-red-50 p-5 rounded-lg border-l-4 border-red-600 shadow-sm hover:shadow-md transition">
+                            <div class="flex gap-3">
+                                <i class="fa-solid fa-circle-xmark text-red-600 text-xl mt-1"></i>
+                                <div>
+                                    <h4 class="font-bold text-red-900">严禁涉密载体联网</h4>
+                                    <p class="text-sm text-gray-700 mt-1">严禁将涉密存储介质接入互联网及其他公共信息网络。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. 网络与设备管理 -->
+                <section id="network" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-blue-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">网络与设备管理</h2>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="grid md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-gray-200">
+                            <!-- 涉密计算机 -->
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4 text-blue-800">
+                                    <i class="fa-solid fa-desktop text-2xl"></i>
+                                    <h3 class="font-bold text-lg">涉密计算机管理</h3>
+                                </div>
+                                <ul class="space-y-3 text-sm text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                                        <span>必须设置复杂的口令，并定期更换。</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                                        <span>必须安装杀毒软件，并定期升级病毒库（通过光盘离线升级）。</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-triangle-exclamation text-red-500 mt-1 mr-2"></i>
+                                        <span class="font-bold text-red-700">物理隔离：</span>绝对禁止接入互联网。
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-triangle-exclamation text-red-500 mt-1 mr-2"></i>
+                                        <span>禁止使用无线键盘、鼠标、无线网卡。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            
+                            <!-- 移动存储介质 -->
+                            <div class="p-6">
+                                <div class="flex items-center gap-3 mb-4 text-blue-800">
+                                    <i class="fa-brands fa-usb text-2xl"></i>
+                                    <h3 class="font-bold text-lg">U盘/移动硬盘管理</h3>
+                                </div>
+                                <ul class="space-y-3 text-sm text-gray-600">
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-ban text-red-500 mt-1 mr-2"></i>
+                                        <span class="font-bold text-red-700">严禁交叉使用：</span>涉密U盘只能在涉密机上使用，非涉密U盘只能在互联网机上使用。
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                                        <span>涉密介质必须统一登记、编号、标识密级。</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check text-green-500 mt-1 mr-2"></i>
+                                        <span>外出携带需经审批，并采取加密措施。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. 办公避坑指南 (AI与微信) -->
+                <section id="daily-work" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-yellow-500 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">办公“避坑”指南</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 社交软件 -->
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                <i class="fa-brands fa-weixin text-green-600 text-xl"></i> 微信/钉钉/QQ 使用
+                            </h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="bg-red-50 p-3 rounded text-red-800">
+                                    <i class="fa-solid fa-circle-exclamation mr-1"></i> 
+                                    <strong>严禁</strong>通过社交软件发送、转发涉密文件或内部敏感信息（包括图片识别、文字）。
+                                </div>
+                                <div class="bg-red-50 p-3 rounded text-red-800">
+                                    <i class="fa-solid fa-circle-exclamation mr-1"></i> 
+                                    <strong>严禁</strong>在工作群中谈论国家秘密或工作秘密。
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded text-gray-600">
+                                    <i class="fa-solid fa-lightbulb mr-1 text-yellow-500"></i>
+                                    <strong>提示：</strong>“文件传输助手”也是云端存储，传输敏感信息同样违规。
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- AI与图文识别 -->
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-gray-200">
+                            <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-robot text-blue-600 text-xl"></i> AI工具与图文识别
+                            </h3>
+                            <div class="space-y-2 text-sm">
+                                <div class="bg-red-50 p-3 rounded text-red-800">
+                                    <i class="fa-solid fa-circle-exclamation mr-1"></i> 
+                                    <strong>严禁</strong>将涉密文件内容输入ChatGPT、文心一言等AI大模型进行润色或翻译。
+                                </div>
+                                <div class="bg-red-50 p-3 rounded text-red-800">
+                                    <i class="fa-solid fa-circle-exclamation mr-1"></i> 
+                                    <strong>严禁</strong>使用小程序、云端OCR工具扫描涉密文件图片转文字。
+                                </div>
+                                <div class="bg-gray-50 p-3 rounded text-gray-600">
+                                    <i class="fa-solid fa-lightbulb mr-1 text-yellow-500"></i>
+                                    <strong>提示：</strong>AI模型会收集输入数据用于训练，可能导致泄密。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. 典型案例警示 -->
+                <section id="warning" class="scroll-mt-24">
+                    <div class="warning-stripe p-6 rounded-xl border border-red-200">
+                        <div class="flex items-center mb-4">
+                            <i class="fa-solid fa-bell text-red-600 text-2xl mr-3 fa-shake"></i>
+                            <h2 class="text-xl font-bold text-red-900">警钟长鸣：典型泄密案例</h2>
+                        </div>
+                        <div class="space-y-4">
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <h4 class="font-bold text-gray-800 mb-1">案例一：微信群传达文件泄密</h4>
+                                <p class="text-sm text-gray-600">
+                                    某单位干部张某，为方便工作，将一份机密级文件拍照发到部门微信工作群，被群成员转发至互联网，造成大范围传播。
+                                    <br><span class="text-red-600 font-bold">处理结果：</span>张某受到党内严重警告处分，分管领导受到诫勉谈话。
+                                </p>
+                            </div>
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <h4 class="font-bold text-gray-800 mb-1">案例二：图文识别小程序泄密</h4>
+                                <p class="text-sm text-gray-600">
+                                    某机关工作人员李某，为将一份涉密纸质文件转为电子版，使用手机小程序“XX扫描王”进行OCR识别，数据上传至云端服务器，被网络监测系统发现。
+                                    <br><span class="text-red-600 font-bold">处理结果：</span>李某受到行政记过处分。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="text-center text-gray-400 text-sm pt-8 pb-12">
+                    <p>— 资料来源：国家保密局 / 中央保密办 —</p>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="bg-slate-900 text-white mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-slate-400">
+                <p class="mb-2">贵州联合纪委工作办公室 · 宣</p>
+                <p>&copy; 2025 All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 250) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            if (current) {
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href').includes(current)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

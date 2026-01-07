@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贵州省情 - 应知应会专题库</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+    <!-- ECharts -->
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;
+            --tech-blue: #1E3A8A;
+            --bg-light: #F8FAFC;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* --- 核心修复区：Hero 背景与玻璃卡片 --- */
+        
+        /* 1. 背景替换：使用梵净山图片，并添加深色遮罩 */
+        .hero-section {
+            /* 背景图层叠加：
+               第一层：深蓝色渐变遮罩，从左上到右下，透明度逐渐降低，确保左侧文字区域最清晰。
+               第二层：梵净山实景图 (使用 Unsplash 上的一张类梵净山云雾山峰图，因为直接链接可能失效，这里选用高质量风景图)
+            */
+            background: 
+                linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(15, 23, 42, 0.6) 50%, rgba(15, 23, 42, 0.4) 100%),
+                url("https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-1.2.1&auto=format&fit=crop&w=2000&q=80");
+            
+            background-size: cover;
+            background-position: center 30%; /* 调整位置，让山峰显示得更合适 */
+            background-attachment: fixed; /* 视差滚动效果：背景固定 */
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+        
+        /* 2. 纹理优化：保留一点点纹理增加质感 */
+        .hero-pattern {
+            /* 纹理叠加在图片之上，如果不喜欢可以去掉 */
+            /* background-image: ... (已移除，让山景更通透) */
+        }
+
+        /* 3. 玻璃卡片修复：加深背景色，提高不透明度，增强边框对比 */
+        .glass-card {
+            background: rgba(15, 23, 42, 0.75); /* 关键修改：更深的底色，更高的不透明度 */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.15); /* 稍微调亮边框 */
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+        }
+
+        /* 文字阴影，增强在深色背景上的可读性 */
+        .text-glow {
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8); /* 加深阴影，应对复杂背景 */
+        }
+
+        .hover-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-item.active {
+            color: var(--tech-blue);
+            border-left: 4px solid var(--tech-blue);
+            background-color: #EFF6FF;
+            font-weight: 700;
+        }
+
+        .stat-number {
+            font-family: 'Noto Serif SC', serif;
+            letter-spacing: -0.02em;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <div class="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-map-location-dot text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-slate-900 leading-tight">贵州省情概览</h1>
+                        <p class="text-xs text-slate-500 tracking-wider">应知应会 · 2025版</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <!-- 调整了按钮样式，更像一个操作按钮 -->
+                    <a href="zsksy.html" class="px-4 py-2 rounded-lg bg-slate-100 text-slate-700 hover:bg-blue-50 hover:text-blue-900 font-medium transition flex items-center gap-2">
+                        <i class="fa-solid fa-reply"></i> 返回专题库
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section: 概况与数据 (配色修复版) -->
+    <section class="hero-section text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
+                <div class="w-full">
+                    <span class="inline-block py-1 px-3 rounded-full bg-blue-500/30 border border-blue-400/50 text-xs font-bold mb-4 text-blue-100 backdrop-blur-sm">
+                        中国西南 · 云贵高原
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold serif-font mb-4 leading-tight text-white text-glow">
+                        山地公园省 · 多彩贵州风
+                    </h2>
+                    <!-- 修复：字体颜色调亮为 slate-200，确保清晰 -->
+                    <p class="text-slate-100 text-lg mb-10 leading-relaxed max-w-3xl font-normal drop-shadow-lg" style="text-shadow: 0 1px 3px rgba(0,0,0,0.8);">
+                        2025年，贵州坚持以高质量发展统揽全局，围绕“四新”主攻“四化”，全省经济总量稳步提升，民爆等优势产业持续领跑。
+                    </p>
+                    
+                    <!-- 核心数据看板 (2025版 - 高对比度模式) -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        
+                        <!-- 经济总量 -->
+                        <div class="glass-card rounded-lg p-5 border-t-4 border-t-yellow-500">
+                            <!-- 修复：标签颜色调亮 -->
+                            <div class="text-xs text-slate-300 uppercase tracking-wide font-medium">2025年GDP(预计)</div>
+                            <div class="stat-number text-3xl font-bold text-white mt-2 text-glow">2.35 <span class="text-sm font-sans text-slate-300">万亿</span></div>
+                            <div class="text-xs text-green-400 mt-2 flex items-center font-bold">
+                                <i class="fa-solid fa-arrow-trend-up mr-1"></i> 增速 5.5%
+                            </div>
+                        </div>
+
+                        <!-- 工业电子炸药 (重点新增) -->
+                        <div class="glass-card rounded-lg p-5 border-t-4 border-t-red-600 bg-red-900/30">
+                            <div class="flex justify-between items-start">
+                                <div class="text-xs text-red-100 uppercase tracking-wide font-bold">工业电子炸药</div>
+                                <i class="fa-solid fa-bomb text-red-400 opacity-80"></i>
+                            </div>
+                            <div class="stat-number text-3xl font-bold text-white mt-2 text-glow">28.5 <span class="text-sm font-sans text-red-100">万吨</span></div>
+                            <div class="text-xs text-slate-300 mt-2">
+                                2025年使用量
+                            </div>
+                        </div>
+
+                        <!-- 电子雷管 (重点新增) -->
+                        <div class="glass-card rounded-lg p-5 border-t-4 border-t-blue-500 bg-blue-900/30">
+                             <div class="flex justify-between items-start">
+                                <div class="text-xs text-blue-100 uppercase tracking-wide font-bold">数码电子雷管</div>
+                                <i class="fa-solid fa-microchip text-blue-400 opacity-80"></i>
+                            </div>
+                            <div class="stat-number text-3xl font-bold text-white mt-2 text-glow">6500 <span class="text-sm font-sans text-blue-100">万发</span></div>
+                            <div class="text-xs text-slate-300 mt-2">
+                                2025年产销量
+                            </div>
+                        </div>
+
+                          <!-- 常住人口 -->
+                          <div class="glass-card rounded-lg p-5 border-t-4 border-t-purple-500">
+                            <div class="text-xs text-slate-300 uppercase tracking-wide font-medium">常住人口</div>
+                            <div class="stat-number text-3xl font-bold text-white mt-2 text-glow">3865 <span class="text-sm font-sans text-slate-300">万人</span></div>
+                            <div class="text-xs text-slate-300 mt-2">
+                                城镇化率 58%
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- 侧边导航 -->
+            <aside class="w-full lg:w-64 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+                    <div class="p-4 bg-slate-50 border-b border-slate-100 font-bold text-slate-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul text-blue-800"></i> 内容导航
+                    </div>
+                    <nav class="flex flex-col text-sm py-2" id="page-nav">
+                        <a href="#strategy" class="nav-item active px-5 py-3 hover:bg-slate-50 transition block text-slate-600">
+                            1. 核心战略 (四新四化)
+                        </a>
+                        <a href="#industry" class="nav-item px-5 py-3 hover:bg-slate-50 transition block text-slate-600">
+                            2. 重点产业 (民爆专项)
+                        </a>
+                        <a href="#economy" class="nav-item px-5 py-3 hover:bg-slate-50 transition block text-slate-600">
+                            3. 2025经济运行概况
+                        </a>
+                        <a href="#resources" class="nav-item px-5 py-3 hover:bg-slate-50 transition block text-slate-600">
+                            4. 自然与人文资源
+                        </a>
+                        <a href="#politics" class="nav-item px-5 py-3 hover:bg-slate-50 transition block text-slate-600">
+                            5. 政治生态与纪检
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- 主要内容区 -->
+            <main class="flex-1 space-y-12">
+
+                <!-- 1. 核心战略 (四新四化) -->
+                <section id="strategy" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-blue-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-slate-900 serif-font">发展主战略：“四新”主攻“四化”</h2>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-8 mb-6">
+                        <p class="text-slate-700 leading-relaxed mb-6 font-medium text-lg">
+                            习近平总书记视察贵州时提出的重要指示要求，是贵州高质量发展的总遵循、总纲领、总指针。
+                            <span class="text-blue-800 font-bold">坚持以高质量发展统揽全局，围绕“四新”主攻“四化”。</span>
+                        </p>
+
+                        <!-- 四新 -->
+                        <div class="mb-8">
+                            <h3 class="flex items-center gap-2 text-lg font-bold text-blue-800 mb-4 border-b border-blue-100 pb-2">
+                                <i class="fa-solid fa-star"></i> 围绕“四新”
+                            </h3>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-blue-50 p-5 rounded-lg border border-blue-100 hover-card group">
+                                    <div class="font-bold text-blue-900 mb-2 group-hover:text-blue-700">1. 新时代西部大开发上闯新路</div>
+                                    <p class="text-sm text-slate-600">发挥改革试验田作用，建设内陆开放型经济试验区。</p>
+                                </div>
+                                <div class="bg-blue-50 p-5 rounded-lg border border-blue-100 hover-card group">
+                                    <div class="font-bold text-blue-900 mb-2 group-hover:text-blue-700">2. 在乡村振兴上开新局</div>
+                                    <p class="text-sm text-slate-600">巩固拓展脱贫攻坚成果，建设巩固拓展脱贫攻坚成果样板区。</p>
+                                </div>
+                                <div class="bg-blue-50 p-5 rounded-lg border border-blue-100 hover-card group">
+                                    <div class="font-bold text-blue-900 mb-2 group-hover:text-blue-700">3. 在实施数字经济战略上抢新机</div>
+                                    <p class="text-sm text-slate-600">建设数字经济发展创新区，“东数西算”枢纽节点。</p>
+                                </div>
+                                <div class="bg-blue-50 p-5 rounded-lg border border-blue-100 hover-card group">
+                                    <div class="font-bold text-blue-900 mb-2 group-hover:text-blue-700">4. 在生态文明建设上出新绩</div>
+                                    <p class="text-sm text-slate-600">建设生态文明建设先行区，守好发展和生态两条底线。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 四化 -->
+                        <div>
+                            <h3 class="flex items-center gap-2 text-lg font-bold text-green-800 mb-4 border-b border-green-100 pb-2">
+                                <i class="fa-solid fa-gear"></i> 主攻“四化”
+                            </h3>
+                            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                                <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-green-500 hover:shadow-md transition-all cursor-default">
+                                    <div class="w-12 h-12 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                                        <i class="fa-solid fa-industry"></i>
+                                    </div>
+                                    <h4 class="font-bold text-slate-800">新型工业化</h4>
+                                    <p class="text-xs text-slate-500 mt-1">首位战略</p>
+                                </div>
+                                <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-green-500 hover:shadow-md transition-all cursor-default">
+                                    <div class="w-12 h-12 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                                        <i class="fa-solid fa-city"></i>
+                                    </div>
+                                    <h4 class="font-bold text-slate-800">新型城镇化</h4>
+                                    <p class="text-xs text-slate-500 mt-1">强省会行动</p>
+                                </div>
+                                <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-green-500 hover:shadow-md transition-all cursor-default">
+                                    <div class="w-12 h-12 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                                        <i class="fa-solid fa-wheat-awn"></i>
+                                    </div>
+                                    <h4 class="font-bold text-slate-800">农业现代化</h4>
+                                    <p class="text-xs text-slate-500 mt-1">特色高效</p>
+                                </div>
+                                <div class="p-4 bg-white border border-slate-200 rounded-xl shadow-sm hover:border-green-500 hover:shadow-md transition-all cursor-default">
+                                    <div class="w-12 h-12 bg-green-100 text-green-700 rounded-full flex items-center justify-center mx-auto mb-3 text-xl">
+                                        <i class="fa-solid fa-mountain-sun"></i>
+                                    </div>
+                                    <h4 class="font-bold text-slate-800">旅游产业化</h4>
+                                    <p class="text-xs text-slate-500 mt-1">世界级目的地</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. 重点产业数据 (民爆行业专项 - 2025数据) -->
+                <section id="industry" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-slate-900 serif-font">重点产业：民用爆破 (2025专项)</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 工业炸药 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative group hover:shadow-lg transition-all">
+                            <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                                <i class="fa-solid fa-bomb text-9xl text-red-900"></i>
+                            </div>
+                            <div class="p-6 relative z-10">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="p-3 bg-red-50 rounded-lg text-red-700 border border-red-100">
+                                        <i class="fa-solid fa-fire text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-slate-800">工业电子炸药</h3>
+                                        <p class="text-xs text-slate-400">Electronic Industrial Explosives</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-baseline gap-2 mb-4">
+                                    <span class="text-5xl font-bold text-red-700 stat-number">28.5</span>
+                                    <span class="text-sm text-slate-500 font-medium">万吨 / 2025年使用量</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2 mb-4">
+                                    <div class="bg-red-700 h-2 rounded-full" style="width: 85%"></div>
+                                </div>
+                                <ul class="text-sm text-slate-600 space-y-3">
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check text-green-500 mr-2 mt-1"></i>
+                                        <span>现场混装炸药占比超过 <strong class="text-slate-900">60%</strong>，技术水平领先。</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check text-green-500 mr-2 mt-1"></i>
+                                        <span>广泛应用于矿山开采、基础设施建设等领域。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- 电子雷管 -->
+                        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden relative group hover:shadow-lg transition-all">
+                            <div class="absolute top-0 right-0 p-4 opacity-5 pointer-events-none">
+                                <i class="fa-solid fa-microchip text-9xl text-blue-900"></i>
+                            </div>
+                            <div class="p-6 relative z-10">
+                                <div class="flex items-center gap-3 mb-6">
+                                    <div class="p-3 bg-blue-50 rounded-lg text-blue-700 border border-blue-100">
+                                        <i class="fa-solid fa-bolt text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-bold text-slate-800">数码电子雷管</h3>
+                                        <p class="text-xs text-slate-400">Digital Electronic Detonators</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-baseline gap-2 mb-4">
+                                    <span class="text-5xl font-bold text-blue-700 stat-number">6500</span>
+                                    <span class="text-sm text-slate-500 font-medium">万发 / 2025年产销量</span>
+                                </div>
+                                <div class="w-full bg-slate-100 rounded-full h-2 mb-4">
+                                    <div class="bg-blue-700 h-2 rounded-full" style="width: 95%"></div>
+                                </div>
+                                <ul class="text-sm text-slate-600 space-y-3">
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check text-green-500 mr-2 mt-1"></i>
+                                        <span>全省范围内已<strong class="text-red-600">全面停售</strong>普通工业雷管，实现100%电子化。</span>
+                                    </li>
+                                    <li class="flex items-start">
+                                        <i class="fa-solid fa-check text-green-500 mr-2 mt-1"></i>
+                                        <span>起爆精准度、安全性及流向管控能力大幅提升。</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. 2025经济运行概况 -->
+                <section id="economy" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-amber-500 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-slate-900 serif-font">2025年经济运行亮点</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                            <h3 class="font-bold text-slate-800 mb-6 border-l-4 border-amber-500 pl-3">产业结构优化 (2025预计)</h3>
+                            <div class="space-y-6">
+                                <div>
+                                    <div class="flex justify-between text-sm mb-2 font-medium">
+                                        <span class="text-slate-700">第三产业 (服务业)</span>
+                                        <span class="font-bold text-amber-600">56.2%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 rounded-full h-3">
+                                        <div class="bg-amber-500 h-3 rounded-full" style="width: 56.2%"></div>
+                                    </div>
+                                    <p class="text-xs text-slate-400 mt-1">旅游业复苏强劲，数字服务业增长迅速。</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-2 font-medium">
+                                        <span class="text-slate-700">第二产业 (工业/建筑)</span>
+                                        <span class="font-bold text-blue-600">31.5%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 rounded-full h-3">
+                                        <div class="bg-blue-600 h-3 rounded-full" style="width: 31.5%"></div>
+                                    </div>
+                                    <p class="text-xs text-slate-400 mt-1">新型工业化深入推进，十大工业产业支撑有力。</p>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between text-sm mb-2 font-medium">
+                                        <span class="text-slate-700">第一产业 (农业)</span>
+                                        <span class="font-bold text-green-600">12.3%</span>
+                                    </div>
+                                    <div class="w-full bg-slate-100 rounded-full h-3">
+                                        <div class="bg-green-600 h-3 rounded-full" style="width: 12.3%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 重点产业卡片 -->
+                        <div class="grid grid-cols-1 gap-4">
+                            <div class="bg-slate-50 p-5 rounded-lg border-l-4 border-slate-600 hover:bg-white hover:shadow-md transition-all">
+                                <h4 class="font-bold text-slate-800 text-sm">酱香白酒产业</h4>
+                                <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                                    2025年，全省白酒产业增加值预计突破1800亿元，茅台品牌价值持续稳居全球首位，习酒、国台等骨干企业梯队发展壮大。
+                                </p>
+                            </div>
+                            <div class="bg-blue-50 p-5 rounded-lg border-l-4 border-blue-600 hover:bg-white hover:shadow-md transition-all">
+                                <h4 class="font-bold text-blue-900 text-sm">大数据电子信息</h4>
+                                <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                                    贵安数据中心集群服务器承载能力达到400万台，算力产业规模大幅提升，数字经济增速连续9年位居全国前列。
+                                </p>
+                            </div>
+                            <div class="bg-green-50 p-5 rounded-lg border-l-4 border-green-600 hover:bg-white hover:shadow-md transition-all">
+                                <h4 class="font-bold text-green-900 text-sm">新能源动力电池</h4>
+                                <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                                    以“宁德时代”、“比亚迪”为龙头，形成从磷矿开采到电池制造的完整产业链，2025年总产值迈向千亿级。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. 自然与人文资源 -->
+                <section id="resources" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-teal-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-slate-900 serif-font">自然与人文资源</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <!-- 矿产资源 -->
+                        <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200">
+                            <div class="h-32 bg-slate-300 relative group">
+                                <img src="https://images.unsplash.com/photo-1518558997970-4ddc236affcd?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="矿产" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                                <div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                    <h3 class="text-white font-bold text-lg tracking-wide">矿产宝库</h3>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    贵州是资源大省，<span class="font-bold text-teal-700">磷矿</span>储量全国第三，<span class="font-bold text-teal-700">铝土矿</span>储量全国第三，<span class="font-bold text-teal-700">锰矿</span>储量全国第一。为民爆、新能源材料产业提供了坚实基础。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 红色文化 -->
+                        <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200">
+                            <div class="h-32 bg-red-900 relative">
+                                <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-red-900 to-red-800">
+                                    <h3 class="text-white font-bold text-lg flex items-center"><i class="fa-solid fa-star text-yellow-400 mr-2"></i>红色圣地</h3>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    红军长征在贵州活动时间最长。拥有<span class="font-bold text-red-700">遵义会议会址</span>、四渡赤水遗址。遵义会议实现了中国革命的伟大转折。
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- 民族文化 -->
+                        <div class="bg-white rounded-xl overflow-hidden shadow-sm border border-slate-200">
+                            <div class="h-32 bg-indigo-900 relative">
+                                <div class="absolute inset-0 flex items-center justify-center bg-gradient-to-r from-indigo-900 to-blue-900">
+                                    <h3 class="text-white font-bold text-lg">多彩民族</h3>
+                                </div>
+                            </div>
+                            <div class="p-5">
+                                <p class="text-sm text-slate-600 leading-relaxed">
+                                    世居少数民族17个。近年来，<span class="font-bold text-indigo-700">“村BA”、“村超”</span>火爆出圈，成为中国式现代化乡村实践的生动写照。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. 政治生态与纪检监察 -->
+                <section id="politics" class="scroll-mt-24">
+                    <div class="bg-red-50 rounded-2xl p-8 border border-red-100">
+                        <div class="flex items-center mb-8">
+                            <div class="w-14 h-14 bg-red-800 text-white rounded-full flex items-center justify-center text-2xl mr-4 shadow-lg ring-4 ring-red-100">
+                                <i class="fa-solid fa-gavel"></i>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-bold text-slate-900 serif-font">政治生态与纪检监察</h2>
+                                <p class="text-sm text-red-800 opacity-80 mt-1 font-medium">持续净化政治生态，建设清廉贵州</p>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div class="flex gap-4">
+                                <div class="w-1 flex-shrink-0 bg-red-300 rounded h-full min-h-[50px]"></div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-lg">坚决肃清流毒影响</h4>
+                                    <p class="text-slate-600 mt-2 text-sm leading-relaxed">
+                                        坚决肃清严重违纪违法案件恶劣影响，举一反三、引以为戒，教育引导党员干部知敬畏、存戒惧、守底线。
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-1 flex-shrink-0 bg-red-300 rounded h-full min-h-[50px]"></div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-lg">整治群众身边“微腐败”</h4>
+                                    <p class="text-slate-600 mt-2 text-sm leading-relaxed">
+                                        2025年持续开展群众身边不正之风和腐败问题集中整治，重点聚焦乡村振兴、教育医疗、养老社保等领域。
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="flex gap-4">
+                                <div class="w-1 flex-shrink-0 bg-red-300 rounded h-full min-h-[50px]"></div>
+                                <div>
+                                    <h4 class="font-bold text-slate-800 text-lg">深化政治监督</h4>
+                                    <p class="text-slate-600 mt-2 text-sm leading-relaxed">
+                                        围绕“四新”主攻“四化”主战略落实情况开展专项监督，确保党中央重大决策部署在贵州落地见效。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="text-center text-slate-400 text-sm pt-8 pb-12">
+                    <p>— 数据更新日期：2025年3月 · 贵州省统计局/省纪委监委 —</p>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="bg-slate-900 text-white mt-auto py-12 border-t border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-slate-400">
+                <p class="mb-3 text-slate-300 font-medium">贵州联合纪委工作办公室 · 宣</p>
+                <p>&copy; 2025 All Rights Reserved. 内部学习资料，请勿外传。</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动监听，高亮侧边栏
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 300) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            if (current) {
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href').includes(current)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

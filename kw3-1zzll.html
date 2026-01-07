@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>应知应会·政治理论 - 纪检监察系统</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+            --card-bg: #FFFFFF;
+            --section-bg: #FFF5F5;       /* 浅红背景 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 理论卡片样式 */
+        .theory-card {
+            border-top: 4px solid var(--primary-red);
+            transition: transform 0.2s;
+        }
+        .theory-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+            .theory-card { break-inside: avoid; border: 1px solid #eee; margin-bottom: 1rem; box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="zsksy.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-book-open-reader text-red-800"></i> 应知应会·政治理论
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">纪检监察系统 · 核心考点库</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字（如：两个维护、十个明确）..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 头部标题区 -->
+                <div class="text-center border-b-2 border-red-800/10 pb-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-red-900 mb-4 serif-font">纪检监察干部政治理论应知应会</h2>
+                    <div class="text-sm text-gray-500 space-y-2">
+                        <p>武装头脑 · 指导实践 · 推动工作</p>
+                    </div>
+                </div>
+
+                <!-- 正文内容 (Prose) -->
+                <div class="prose prose-slate max-w-none text-justify space-y-12 leading-relaxed text-gray-800">
+                    
+                    <!-- 第一部分：习近平新时代中国特色社会主义思想 -->
+                    <section id="part-1" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-red-800">
+                            <div class="w-10 h-10 bg-red-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-star"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">一、 习近平新时代中国特色社会主义思想</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-6">
+                            <!-- 十个明确 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded mr-2">核心内容</span>
+                                    “十个明确”
+                                </h4>
+                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-2">
+                                    <li>明确中国特色社会主义最本质的特征是<strong>中国共产党领导</strong>，中国特色社会主义制度的最大优势是中国共产党领导，党是最高政治领导力量。</li>
+                                    <li>明确坚持和发展中国特色社会主义，总任务是<strong>实现社会主义现代化和中华民族伟大复兴</strong>。</li>
+                                    <li>明确新时代我国社会主要矛盾是<strong>人民日益增长的美好生活需要和不平衡不充分的发展之间的矛盾</strong>。</li>
+                                    <li>明确中国特色社会主义事业总体布局是<strong>“五位一体”</strong>、战略布局是<strong>“四个全面”</strong>。</li>
+                                    <li>明确全面深化改革总目标是<strong>完善和发展中国特色社会主义制度、推进国家治理体系和治理能力现代化</strong>。</li>
+                                    <li>明确全面推进依法治国总目标是<strong>建设中国特色社会主义法治体系、建设社会主义法治国家</strong>。</li>
+                                    <li>明确必须坚持和完善<strong>社会主义基本经济制度</strong>，使市场在资源配置中起决定性作用，更好发挥政府作用。</li>
+                                    <li>明确党在新时代的强军目标是<strong>建设一支听党指挥、能打胜仗、作风优良的人民军队</strong>，把人民军队建设成为世界一流军队。</li>
+                                    <li>明确中国特色大国外交要服务民族复兴、促进人类进步，推动<strong>建设新型国际关系，推动构建人类命运共同体</strong>。</li>
+                                    <li>明确全面从严治党的战略方针，提出新时代党的建设总要求，全面推进党的政治建设、思想建设、组织建设、作风建设、纪律建设，把制度建设贯穿其中，深入推进反腐败斗争，落实管党治党政治责任，以<strong>伟大自我革命</strong>引领伟大社会革命。</li>
+                                </ul>
+                            </div>
+
+                            <!-- 十四个坚持 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded mr-2">基本方略</span>
+                                    “十四个坚持”
+                                </h4>
+                                <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-700">
+                                    <p>1. 坚持党对一切工作的领导。</p>
+                                    <p>2. 坚持以人民为中心。</p>
+                                    <p>3. 坚持全面深化改革。</p>
+                                    <p>4. 坚持新发展理念。</p>
+                                    <p>5. 坚持人民当家作主。</p>
+                                    <p>6. 坚持全面依法治国。</p>
+                                    <p>7. 坚持社会主义核心价值体系。</p>
+                                    <p>8. 坚持在发展中保障和改善民生。</p>
+                                    <p>9. 坚持人与自然和谐共生。</p>
+                                    <p>10. 坚持总体国家安全观。</p>
+                                    <p>11. 坚持党对人民军队的绝对领导。</p>
+                                    <p>12. 坚持“一国两制”和推进祖国统一。</p>
+                                    <p>13. 坚持推动构建人类命运共同体。</p>
+                                    <p>14. 坚持全面从严治党。</p>
+                                </div>
+                            </div>
+
+                            <!-- 六个必须坚持 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-3 flex items-center">
+                                    <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded mr-2">世界观和方法论</span>
+                                    “六个必须坚持”
+                                </h4>
+                                <div class="grid md:grid-cols-3 gap-3 text-sm font-bold text-center">
+                                    <div class="bg-red-50 p-3 rounded text-red-800">必须坚持人民至上</div>
+                                    <div class="bg-red-50 p-3 rounded text-red-800">必须坚持自信自立</div>
+                                    <div class="bg-red-50 p-3 rounded text-red-800">必须坚持守正创新</div>
+                                    <div class="bg-red-50 p-3 rounded text-red-800">必须坚持问题导向</div>
+                                    <div class="bg-red-50 p-3 rounded text-red-800">必须坚持系统观念</div>
+                                    <div class="bg-red-50 p-3 rounded text-red-800">必须坚持胸怀天下</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第二部分：党的二十大精神 -->
+                    <section id="part-2" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-yellow-600">
+                            <div class="w-10 h-10 bg-yellow-600 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-landmark"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">二、 党的二十大精神</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-6">
+                            <!-- 中心任务 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-3">党的中心任务</h4>
+                                <p class="text-sm text-gray-700 leading-relaxed">
+                                    从现在起，中国共产党的中心任务就是团结带领全国各族人民全面建成社会主义现代化强国、实现第二个百年奋斗目标，以<strong>中国式现代化</strong>全面推进中华民族伟大复兴。
+                                </p>
+                            </div>
+
+                            <!-- 中国式现代化的特征 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-3">中国式现代化的五个特征</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                    <li>人口规模巨大的现代化</li>
+                                    <li>全体人民共同富裕的现代化</li>
+                                    <li>物质文明和精神文明相协调的现代化</li>
+                                    <li>人与自然和谐共生的现代化</li>
+                                    <li>走和平发展道路的现代化</li>
+                                </ul>
+                            </div>
+
+                            <!-- 两个确立、两个维护 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-3">“两个确立”与“两个维护”</h4>
+                                <div class="space-y-3 text-sm text-gray-700">
+                                    <div>
+                                        <span class="font-bold text-red-800">“两个确立”：</span>确立习近平同志党中央的核心、全党的核心地位，确立习近平新时代中国特色社会主义思想的指导地位。
+                                    </div>
+                                    <div>
+                                        <span class="font-bold text-red-800">“两个维护”：</span>坚决维护习近平总书记党中央的核心、全党的核心地位，坚决维护党中央权威和集中统一领导。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第三部分：党章党规党纪 -->
+                    <section id="part-3" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-green-700">
+                            <div class="w-10 h-10 bg-green-700 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-book"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">三、 党章党规党纪</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-6">
+                            <!-- 四个意识、四个自信 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 mb-2">“四个意识”</h4>
+                                        <p class="text-sm text-gray-700">政治意识、大局意识、核心意识、看齐意识。</p>
+                                    </div>
+                                    <div>
+                                        <h4 class="font-bold text-gray-900 mb-2">“四个自信”</h4>
+                                        <p class="text-sm text-gray-700">道路自信、理论自信、制度自信、文化自信。</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 党的六大纪律 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-3">党的六大纪律</h4>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="bg-gray-100 px-3 py-1 rounded text-sm text-gray-800 font-bold border border-gray-200">政治纪律</span>
+                                    <span class="bg-gray-100 px-3 py-1 rounded text-sm text-gray-800 font-bold border border-gray-200">组织纪律</span>
+                                    <span class="bg-gray-100 px-3 py-1 rounded text-sm text-gray-800 font-bold border border-gray-200">廉洁纪律</span>
+                                    <span class="bg-gray-100 px-3 py-1 rounded text-sm text-gray-800 font-bold border border-gray-200">群众纪律</span>
+                                    <span class="bg-gray-100 px-3 py-1 rounded text-sm text-gray-800 font-bold border border-gray-200">工作纪律</span>
+                                    <span class="bg-gray-100 px-3 py-1 rounded text-sm text-gray-800 font-bold border border-gray-200">生活纪律</span>
+                                </div>
+                                <p class="text-xs text-gray-500 mt-2">注：政治纪律是各级党组织和全体党员在政治方向、政治立场、政治言论、政治行为方面必须遵守的刚性约束，是打头、管总的纪律。</p>
+                            </div>
+
+                            <!-- 监督执纪“四种形态” -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-3">监督执纪“四种形态”</h4>
+                                <ul class="list-none text-sm text-gray-700 space-y-2">
+                                    <li><span class="font-bold text-red-800">第一种：</span>党内关系要正常化，批评和自我批评要经常开展，让咬耳扯袖、红脸出汗成为常态。</li>
+                                    <li><span class="font-bold text-red-800">第二种：</span>党纪轻处分和组织处理要成为大多数。</li>
+                                    <li><span class="font-bold text-red-800">第三种：</span>对严重违纪的重处分、作出重大职务调整应当是少数。</li>
+                                    <li><span class="font-bold text-red-800">第四种：</span>严重违纪涉嫌违法立案审查的只能是极少数。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第四部分：全面从严治党 -->
+                    <section id="part-4" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-blue-800">
+                            <div class="w-10 h-10 bg-blue-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-gavel"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">四、 全面从严治党</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-6">
+                            <!-- 两个责任 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-2">全面从严治党“两个责任”</h4>
+                                <p class="text-sm text-gray-700">党委负<strong>主体责任</strong>，纪委负<strong>监督责任</strong>。</p>
+                            </div>
+
+                            <!-- 三不腐 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-3">一体推进“三不腐”</h4>
+                                <div class="grid md:grid-cols-3 gap-4 text-center">
+                                    <div class="bg-blue-50 p-3 rounded">
+                                        <div class="font-bold text-blue-900">不敢腐</div>
+                                        <div class="text-xs text-gray-500 mt-1">侧重于惩治和震慑</div>
+                                    </div>
+                                    <div class="bg-blue-50 p-3 rounded">
+                                        <div class="font-bold text-blue-900">不能腐</div>
+                                        <div class="text-xs text-gray-500 mt-1">侧重于制约和监督</div>
+                                    </div>
+                                    <div class="bg-blue-50 p-3 rounded">
+                                        <div class="font-bold text-blue-900">不想腐</div>
+                                        <div class="text-xs text-gray-500 mt-1">侧重于教育和引导</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 三个区分开来 -->
+                            <div class="theory-card bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                                <h4 class="font-bold text-gray-900 mb-3">“三个区分开来”</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-700 space-y-1">
+                                    <li>把干部在推进改革中因缺乏经验、先行先试出现的失误和错误，同明知故犯的违纪违法行为区分开来；</li>
+                                    <li>把上级尚无明确限制的探索性试验中的失误和错误，同上级明令禁止后依然我行我素的违纪违法行为区分开来；</li>
+                                    <li>把为推动发展的无意过失，同为谋取私利的违纪违法行为区分开来。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 自测小练习 -->
+                    <section id="part-quiz" class="scroll-mt-32">
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-10">
+                            <h3 class="text-lg font-bold text-yellow-800 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-pen-to-square"></i> 理论自测（点击查看答案）
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="cursor-pointer group" onclick="this.classList.toggle('show-answer')">
+                                    <p class="text-sm text-gray-800 font-bold mb-2">1. 党的最高理想和最终目标是？</p>
+                                    <div class="hidden group-[.show-answer]:block text-sm text-green-700 bg-green-50 p-2 rounded">
+                                        答案：实现共产主义。
+                                    </div>
+                                    <div class="text-xs text-gray-400 group-[.show-answer]:hidden">点击显示答案</div>
+                                </div>
+                                <div class="cursor-pointer group" onclick="this.classList.toggle('show-answer')">
+                                    <p class="text-sm text-gray-800 font-bold mb-2">2. 中国共产党人的初心和使命是？</p>
+                                    <div class="hidden group-[.show-answer]:block text-sm text-green-700 bg-green-50 p-2 rounded">
+                                        答案：为中国人民谋幸福，为中华民族谋复兴。
+                                    </div>
+                                    <div class="text-xs text-gray-400 group-[.show-answer]:hidden">点击显示答案</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>内容整理自：中国共产党章程、党的二十大报告及相关党内法规</p>
+                    <p>仅供内部学习参考</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ul text-red-800"></i> 知识导航
+                        </div>
+                        <nav class="max-h-[60vh] overflow-y-auto text-sm" id="tocNav">
+                            <a href="#part-1" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">一、习思想</a>
+                            <a href="#part-2" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">二、二十大精神</a>
+                            <a href="#part-3" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">三、党章党规党纪</a>
+                            <a href="#part-4" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">四、全面从严治党</a>
+                            <a href="#part-quiz" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-yellow-600 transition-colors">五、理论自测</a>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="scrollToTop()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印资料</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="scrollToTop()" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const proseDiv = document.querySelector('.prose');
+            
+            if (!window.originalContent) window.originalContent = proseDiv.innerHTML;
+            proseDiv.innerHTML = window.originalContent;
+
+            if (!keyword) {
+                document.getElementById('searchCount').style.opacity = '0';
+                return;
+            }
+
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            let matchCount = 0;
+            
+            const walker = document.createTreeWalker(proseDiv, NodeFilter.SHOW_TEXT, null, false);
+            const nodes = [];
+            while(walker.nextNode()) nodes.push(walker.currentNode);
+
+            const newHtml = window.originalContent.replace(regex, (match) => {
+                matchCount++;
+                return `<span class="highlight">${match}</span>`;
+            });
+            
+            proseDiv.innerHTML = newHtml;
+            
+            document.getElementById('searchCount').innerText = `${matchCount} 处匹配`;
+            document.getElementById('searchCount').style.opacity = '1';
+
+            const firstMatch = document.querySelector('.highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
