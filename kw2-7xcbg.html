@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>如何撰写巡察工作情况汇报 - 学习资料库</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 写作模板卡片 */
+        .template-card {
+            border: 1px dashed #cbd5e1;
+            background-color: #f8fafc;
+        }
+        
+        /* 聚焦板块样式 */
+        .focus-section {
+            transition: all 0.2s;
+        }
+        .focus-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 错误示例样式 */
+        .bad-example {
+            background-color: #FEF2F2;
+            border-left: 4px solid #EF4444;
+            color: #991B1B;
+        }
+        
+        /* 正确示例样式 */
+        .good-example {
+            background-color: #F0FDF4;
+            border-left: 4px solid #22C55E;
+            color: #166534;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+            .template-card, .bad-example, .good-example, .focus-section { break-inside: avoid; margin-bottom: 1rem; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="zsksy.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-pen-nib text-red-800"></i> 巡察报告撰写指南
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">政治体检的“诊断书” · 深度实务教程</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字（如：政治画像、底稿）..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 头部标题区 -->
+                <div class="text-center border-b-2 border-red-800/10 pb-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-red-900 mb-4 serif-font">如何撰写巡察工作情况汇报</h2>
+                    <div class="text-sm text-gray-500 space-y-2">
+                        <p>核心部分深度解析 · 附实战词条库</p>
+                    </div>
+                </div>
+
+                <!-- 正文内容 (Prose) -->
+                <div class="prose prose-slate max-w-none text-justify space-y-10 leading-relaxed text-gray-800">
+                    
+                    <!-- 1. 总体要求 -->
+                    <section id="sec-1" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b border-gray-200">
+                            <div class="w-8 h-8 bg-red-800 text-white rounded flex items-center justify-center font-bold">1</div>
+                            <h3 class="text-xl font-bold text-gray-900 m-0">总体要求与定位</h3>
+                        </div>
+                        <p>巡察报告是政治体检的“诊断书”，要透过业务看政治，系统梳理被巡察党组织存在的深层次问题。一份高质量的报告应具备以下特征：</p>
+                        <ul class="list-disc list-inside bg-gray-50 p-4 rounded-lg text-sm space-y-2">
+                            <li><strong>政治性强：</strong>紧扣“四个聚焦”，从政治高度发现和分析问题。</li>
+                            <li><strong>画像精准：</strong>“见人见事见思想”，避免千人一面。</li>
+                            <li><strong>支撑有力：</strong>严格执行底稿制度，凡写进报告的问题必须有数据、有事例、有依据。</li>
+                            <li><strong>篇幅适中：</strong>一般控制在 <strong class="text-red-800">5000字左右</strong>（不含问题线索）。</li>
+                        </ul>
+                    </section>
+
+                    <!-- 2. 报告七大板块详解 -->
+                    <section id="sec-2" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b border-gray-200">
+                            <div class="w-8 h-8 bg-red-800 text-white rounded flex items-center justify-center font-bold">2</div>
+                            <h3 class="text-xl font-bold text-gray-900 m-0">报告七大组成板块详解</h3>
+                        </div>
+                        
+                        <div class="space-y-8">
+                            <!-- 标题、导语、基本情况 (略写，保持原样) -->
+                            <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
+                                <div class="bg-gray-50 p-4 rounded">
+                                    <h4 class="font-bold text-gray-800 mb-2">（一）标题</h4>
+                                    关于巡察 XX 党委（党组）的情况报告<br>
+                                    <span class="text-xs">（注明：县委第 XX 巡察组）</span>
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded">
+                                    <h4 class="font-bold text-gray-800 mb-2">（二）导语</h4>
+                                    简述巡察依据、时间、对象、方式及工作开展情况（听取汇报XX次，谈话XX人...）。
+                                </div>
+                                <div class="bg-gray-50 p-4 rounded md:col-span-2">
+                                    <h4 class="font-bold text-gray-800 mb-2">（三）基本情况和总体评价</h4>
+                                    性质、职能、编制、成绩。评价客观公正，肯定成绩<strong class="text-red-800">不超过500字</strong>。
+                                </div>
+                            </div>
+
+                            <!-- 发现的主要问题 (深度扩展核心) -->
+                            <div id="sec-core">
+                                <h4 class="font-bold text-red-800 mb-4 flex items-center gap-2 text-xl border-l-4 border-red-800 pl-3">
+                                    （四）发现的主要问题（深度解析版）
+                                </h4>
+                                <p class="text-sm mb-6 text-gray-600 bg-red-50 p-3 rounded border border-red-100">
+                                    此部分为报告灵魂，篇幅应占 <strong>80%</strong> 以上。必须紧扣“四个聚焦”，坚持问题导向，突出“关键少数”，做到“言之有物”。
+                                </p>
+                                
+                                <div class="space-y-8">
+                                    
+                                    <!-- 聚焦一 -->
+                                    <div class="focus-section bg-white border-l-4 border-blue-600 shadow-sm p-6 rounded-r-lg">
+                                        <h5 class="text-lg font-bold text-blue-800 mb-3 flex items-center">
+                                            <span class="bg-blue-100 text-blue-800 w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">1</span>
+                                            聚焦党中央决策部署在基层的落实情况
+                                        </h5>
+                                        <div class="space-y-4 text-sm">
+                                            <div class="bg-blue-50 p-3 rounded">
+                                                <strong class="block text-blue-900 mb-1">🎯 核心关注：</strong>
+                                                <p class="text-gray-600">政治立场、政治态度、政治担当。看是否“温差、落差、偏差”。</p>
+                                            </div>
+                                            <div class="grid md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <strong class="text-gray-800">🔍 重点查什么：</strong>
+                                                    <ul class="list-disc list-inside text-gray-600 mt-1 space-y-1">
+                                                        <li>学习贯彻习近平新时代中国特色社会主义思想（是否流于形式）。</li>
+                                                        <li>履行核心职能责任（是否偏离主业）。</li>
+                                                        <li>防范化解重大风险（是否底线失守）。</li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <strong class="text-gray-800">📝 常用高频词：</strong>
+                                                    <div class="flex flex-wrap gap-2 mt-1">
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">学用脱节</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">温差落差</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">政绩观错位</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">主业不聚焦</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="border-t border-blue-100 pt-3 mt-2">
+                                                <strong class="block text-blue-900 mb-1">✍️ 范例参考：</strong>
+                                                <p class="text-gray-700"><strong>贯彻落实上级决策部署有差距。</strong>（观点）党委对“XX战略”研究不深，20XX年以来仅在XX会议上传达过1次，未制定具体实施方案；XX项目推进缓慢，至今未实质性开工。（事实）存在“以会议贯彻会议”的形式主义倾向，未能发挥XX领域的引领作用。（定性）</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 聚焦二 -->
+                                    <div class="focus-section bg-white border-l-4 border-orange-500 shadow-sm p-6 rounded-r-lg">
+                                        <h5 class="text-lg font-bold text-orange-800 mb-3 flex items-center">
+                                            <span class="bg-orange-100 text-orange-800 w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">2</span>
+                                            聚焦群众身边腐败问题和不正之风
+                                        </h5>
+                                        <div class="space-y-4 text-sm">
+                                            <div class="bg-orange-50 p-3 rounded">
+                                                <strong class="block text-orange-900 mb-1">🎯 核心关注：</strong>
+                                                <p class="text-gray-600">“四风”问题、民生痛点、微腐败。看是否有“特权思想、衙门作风”。</p>
+                                            </div>
+                                            <div class="grid md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <strong class="text-gray-800">🔍 重点查什么：</strong>
+                                                    <ul class="list-disc list-inside text-gray-600 mt-1 space-y-1">
+                                                        <li>形式主义、官僚主义（文山会海、推诿扯皮）。</li>
+                                                        <li>惠民政策落实（截留挪用、优亲厚友）。</li>
+                                                        <li>“三公”经费及津补贴发放。</li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <strong class="text-gray-800">📝 常用高频词：</strong>
+                                                    <div class="flex flex-wrap gap-2 mt-1">
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">吃拿卡要</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">雁过拔毛</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">虚报冒领</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">私设小金库</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="border-t border-orange-100 pt-3 mt-2">
+                                                <strong class="block text-orange-900 mb-1">✍️ 范例参考：</strong>
+                                                <p class="text-gray-700"><strong>服务群众意识淡薄，存在“门难进”现象。</strong>（观点）办事大厅XX窗口长期无人值守，群众办事需多次往返；20XX年收到关于XX问题的投诉15起，均以“正在研究”为由敷衍答复。（事实）严重损害了党群干群关系，背离了为人民服务的宗旨。（定性）</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 聚焦三 -->
+                                    <div class="focus-section bg-white border-l-4 border-green-500 shadow-sm p-6 rounded-r-lg">
+                                        <h5 class="text-lg font-bold text-green-800 mb-3 flex items-center">
+                                            <span class="bg-green-100 text-green-800 w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">3</span>
+                                            聚焦基层党组织建设情况
+                                        </h5>
+                                        <div class="space-y-4 text-sm">
+                                            <div class="bg-green-50 p-3 rounded">
+                                                <strong class="block text-green-900 mb-1">🎯 核心关注：</strong>
+                                                <p class="text-gray-600">班子战斗力、选人用人风气、党建基础。看是否“软弱涣散、任人唯亲”。</p>
+                                            </div>
+                                            <div class="grid md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <strong class="text-gray-800">🔍 重点查什么：</strong>
+                                                    <ul class="list-disc list-inside text-gray-600 mt-1 space-y-1">
+                                                        <li>领导班子建设（民主集中制执行、“一言堂”）。</li>
+                                                        <li>选人用人（程序违规、带病提拔、混编混岗）。</li>
+                                                        <li>基层党建（三会一课造假、党费收缴不规范）。</li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <strong class="text-gray-800">📝 常用高频词：</strong>
+                                                    <div class="flex flex-wrap gap-2 mt-1">
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">重业务轻党建</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">一言堂</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">近亲繁殖</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">灯下黑</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="border-t border-green-100 pt-3 mt-2">
+                                                <strong class="block text-green-900 mb-1">✍️ 范例参考：</strong>
+                                                <p class="text-gray-700"><strong>党内政治生活不严肃。</strong>（观点）20XX年民主生活会相互批评意见多为“学习不够”“下基层少”等以工作建议代替批评意见；XX党支部“三会一课”记录本存在同一笔迹突击补录现象。（事实）党组织生活流于形式，政治性、战斗性不强。（定性）</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- 聚焦四 -->
+                                    <div class="focus-section bg-white border-l-4 border-purple-500 shadow-sm p-6 rounded-r-lg">
+                                        <h5 class="text-lg font-bold text-purple-800 mb-3 flex items-center">
+                                            <span class="bg-purple-100 text-purple-800 w-6 h-6 rounded-full flex items-center justify-center text-xs mr-2">4</span>
+                                            聚焦巡察整改落实情况
+                                        </h5>
+                                        <div class="space-y-4 text-sm">
+                                            <div class="bg-purple-50 p-3 rounded">
+                                                <strong class="block text-purple-900 mb-1">🎯 核心关注：</strong>
+                                                <p class="text-gray-600">整改责任、整改实效。看是否“新官不理旧账、纸上整改”。</p>
+                                            </div>
+                                            <div class="grid md:grid-cols-2 gap-4">
+                                                <div>
+                                                    <strong class="text-gray-800">🔍 重点查什么：</strong>
+                                                    <ul class="list-disc list-inside text-gray-600 mt-1 space-y-1">
+                                                        <li>主体责任落实（是否专题研究、主要领导是否过问）。</li>
+                                                        <li>问题整改情况（是否对账销号、是否反弹回潮）。</li>
+                                                        <li>长效机制建立（是否举一反三）。</li>
+                                                    </ul>
+                                                </div>
+                                                <div>
+                                                    <strong class="text-gray-800">📝 常用高频词：</strong>
+                                                    <div class="flex flex-wrap gap-2 mt-1">
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">敷衍整改</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">边改边犯</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">过关心态</span>
+                                                        <span class="bg-gray-100 px-2 py-1 rounded text-xs text-gray-600">数字整改</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="border-t border-purple-100 pt-3 mt-2">
+                                                <strong class="block text-purple-900 mb-1">✍️ 范例参考：</strong>
+                                                <p class="text-gray-700"><strong>上轮巡察反馈问题整改不彻底。</strong>（观点）针对上轮巡察指出的“财务报销不规范”问题，虽然完善了制度，但抽查发现20XX年仍存在5笔无明细清单的报销凭证。（事实）整改责任压实不够，存在“一阵风”现象，长效机制未真正落地。（定性）</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- 问题线索、意见建议、落款 (略写) -->
+                            <div class="bg-gray-50 p-4 rounded text-sm text-gray-600">
+                                <h4 class="font-bold text-gray-800 mb-2">后续板块简述</h4>
+                                <ul class="list-disc list-inside space-y-1">
+                                    <li><strong>（五）问题线索：</strong>只陈述事实，不作定性。例：收到反映XX同志涉嫌违规XX的问题线索...</li>
+                                    <li><strong>（六）意见建议：</strong>对应前文问题提出3-5条建议，要具体可操作。</li>
+                                    <li><strong>（七）落款：</strong>巡察组名称 + 日期。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 3. 问题定性政治对照表 (新增) -->
+                    <section id="sec-3" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b border-gray-200">
+                            <div class="w-8 h-8 bg-red-800 text-white rounded flex items-center justify-center font-bold">3</div>
+                            <h3 class="text-xl font-bold text-gray-900 m-0">常见问题政治定性对照表</h3>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-sm text-left text-gray-600 border border-gray-200">
+                                <thead class="bg-gray-50 text-gray-700 uppercase">
+                                    <tr>
+                                        <th class="px-4 py-3 border-b">具体业务表现</th>
+                                        <th class="px-4 py-3 border-b">建议政治定性（上升高度）</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-4 py-2">只传达不研究，工作推不动</td>
+                                        <td class="px-4 py-2 text-red-800 font-bold">贯彻落实党中央决策部署不坚决，政治执行力不强</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-2">违规报销、公车私用</td>
+                                        <td class="px-4 py-2 text-red-800 font-bold">违反中央八项规定精神，廉洁纪律防线不牢</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-2">三重一大不上会，书记说了算</td>
+                                        <td class="px-4 py-2 text-red-800 font-bold">违反民主集中制原则，组织纪律观念淡薄</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-2">党费收缴不齐，三会一课造假</td>
+                                        <td class="px-4 py-2 text-red-800 font-bold">基层党组织建设弱化、虚化、边缘化</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-4 py-2">群众投诉多，办事推诿</td>
+                                        <td class="px-4 py-2 text-red-800 font-bold">宗旨意识淡漠，漠视群众利益</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- 4. 写作实务技巧 -->
+                    <section id="sec-4" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b border-gray-200">
+                            <div class="w-8 h-8 bg-red-800 text-white rounded flex items-center justify-center font-bold">4</div>
+                            <h3 class="text-xl font-bold text-gray-900 m-0">问题描述“三段式”实战</h3>
+                        </div>
+                        
+                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-5 mb-6">
+                            <p class="font-bold text-blue-900 text-lg mb-2">标准公式：观点 + 事实 + 定性</p>
+                            <p class="text-sm text-blue-800">
+                                <strong>第一句（观点）：</strong>高度概括问题性质（小标题）。<br>
+                                <strong>第二句（事实）：</strong>列举具体事例、数据支撑（时间、地点、人物、事件、后果）。<br>
+                                <strong>第三句（定性）：</strong>违反了什么规定或造成了什么影响。
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="bad-example p-4 rounded-lg">
+                                <h5 class="font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-circle-xmark"></i> 错误示例（空洞无物）</h5>
+                                <p class="text-sm">该单位行政执法不规范，案卷制作粗糙，部分案件没有记录表，还有的案件没有法制审核，存在随意性。</p>
+                                <p class="text-xs mt-2 text-red-700 font-bold">点评：缺乏数据支撑，模糊不清。</p>
+                            </div>
+                            
+                            <div class="good-example p-4 rounded-lg">
+                                <h5 class="font-bold mb-2 flex items-center gap-2"><i class="fa-solid fa-circle-check"></i> 正确示例（详实有力）</h5>
+                                <p class="text-sm"><strong>行政执法程序不规范。</strong>（观点）抽查20XX年以来办理的120个行政处罚案卷发现，有35个案卷未附《案件线索来源登记表》；12个重大处罚案件未见法制审核意见书。（事实）上述行为违反了《行政处罚法》关于全过程记录和重大执法决定法制审核的规定，存在执法廉洁风险。（定性）</p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 5. 公文排版规范 -->
+                    <section id="sec-5" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b border-gray-200">
+                            <div class="w-8 h-8 bg-red-800 text-white rounded flex items-center justify-center font-bold">5</div>
+                            <h3 class="text-xl font-bold text-gray-900 m-0">公文格式排版规范</h3>
+                        </div>
+                        
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full text-sm text-left text-gray-600 border border-gray-200">
+                                <thead class="bg-gray-50 text-gray-700 uppercase bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3">要素</th>
+                                        <th class="px-6 py-3">字体字号要求</th>
+                                        <th class="px-6 py-3">备注</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    <tr>
+                                        <td class="px-6 py-4 font-bold">大标题</td>
+                                        <td class="px-6 py-4">方正小标宋简体，二号</td>
+                                        <td class="px-6 py-4">居中</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-bold">署名</td>
+                                        <td class="px-6 py-4">楷体，三号</td>
+                                        <td class="px-6 py-4">大标题下，加圆括号，居中</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-bold">正文</td>
+                                        <td class="px-6 py-4">仿宋_GB2312，三号</td>
+                                        <td class="px-6 py-4">行间距一般设为28磅</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="px-6 py-4 font-bold">一级标题</td>
+                                        <td class="px-6 py-4">黑体，三号</td>
+                                        <td class="px-6 py-4">例：一、...</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
+
+                    <!-- 6. 避坑指南 -->
+                    <section id="sec-6" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b border-gray-200">
+                            <div class="w-8 h-8 bg-red-800 text-white rounded flex items-center justify-center font-bold">6</div>
+                            <h3 class="text-xl font-bold text-gray-900 m-0">常见问题避坑指南</h3>
+                        </div>
+                        <ul class="grid md:grid-cols-2 gap-4">
+                            <li class="bg-gray-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                                <strong class="block text-gray-800 mb-1">忌“穿靴戴帽”</strong>
+                                <span class="text-sm text-gray-600">特别是总体评价部分，不要大篇幅歌功颂德，成绩点到为止，把篇幅留给问题。</span>
+                            </li>
+                            <li class="bg-gray-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                                <strong class="block text-gray-800 mb-1">忌“政治像业务”</strong>
+                                <span class="text-sm text-gray-600">不要把巡察报告写成业务检查报告或审计报告，要善于从业务问题中提炼政治偏差。</span>
+                            </li>
+                            <li class="bg-gray-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                                <strong class="block text-gray-800 mb-1">忌“定性不准”</strong>
+                                <span class="text-sm text-gray-600">不要随意扣“帽子”，定性要有法规依据，拿不准的宁可写具体事实也不要乱定性。</span>
+                            </li>
+                            <li class="bg-gray-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                                <strong class="block text-gray-800 mb-1">忌“千人一面”</strong>
+                                <span class="text-sm text-gray-600">避免使用“学习不够深入”、“重业务轻党建”等万能套话，要写出该单位的个性化问题。</span>
+                            </li>
+                        </ul>
+                    </section>
+                    
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>内容整理自：如何撰写巡察工作情况汇报？.pdf</p>
+                    <p>仅供内部学习参考，撰写报告请结合单位实际情况</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ul text-red-800"></i> 导航目录
+                        </div>
+                        <nav class="max-h-[60vh] overflow-y-auto text-sm" id="tocNav">
+                            <a href="#sec-1" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">1. 总体要求</a>
+                            <a href="#sec-2" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">2. 七大板块详解</a>
+                            <a href="#sec-core" class="toc-link block px-8 py-2 text-xs text-gray-500 hover:text-red-800 transition-colors border-l-4 border-transparent">└ 发现的主要问题</a>
+                            <a href="#sec-3" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">3. 政治定性对照表</a>
+                            <a href="#sec-4" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">4. “三段式”写法</a>
+                            <a href="#sec-5" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">5. 公文排版规范</a>
+                            <a href="#sec-6" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">6. 避坑指南</a>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="scrollToTop()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印指南</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="scrollToTop()" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const proseDiv = document.querySelector('.prose');
+            
+            if (!window.originalContent) window.originalContent = proseDiv.innerHTML;
+            proseDiv.innerHTML = window.originalContent;
+
+            if (!keyword) {
+                document.getElementById('searchCount').style.opacity = '0';
+                return;
+            }
+
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            let matchCount = 0;
+            
+            const walker = document.createTreeWalker(proseDiv, NodeFilter.SHOW_TEXT, null, false);
+            const nodes = [];
+            while(walker.nextNode()) nodes.push(walker.currentNode);
+
+            const newHtml = window.originalContent.replace(regex, (match) => {
+                matchCount++;
+                return `<span class="highlight">${match}</span>`;
+            });
+            
+            proseDiv.innerHTML = newHtml;
+            
+            document.getElementById('searchCount').innerText = `${matchCount} 处匹配`;
+            document.getElementById('searchCount').style.opacity = '1';
+
+            const firstMatch = document.querySelector('.highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

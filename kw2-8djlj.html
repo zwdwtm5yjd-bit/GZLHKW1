@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>党建联建推动巡察整改专题 - 学习资料库</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+            --plan-blue: #1E3A8A;        /* 方案深蓝 */
+            --accent-gold: #D97706;      /* 点缀金 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 页面切换动画 */
+        .page-section {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .page-section.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 方案卡片样式 - 增强版 */
+        .feature-card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid #E5E7EB;
+            overflow: hidden;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            border-color: var(--plan-blue);
+        }
+        .feature-header {
+            background: linear-gradient(to right, #eff6ff, #ffffff);
+            padding: 1rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+
+        /* 流程步骤样式 */
+        .step-box {
+            position: relative;
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid #e5e7eb;
+            text-align: center;
+            z-index: 10;
+        }
+        .step-arrow {
+            position: absolute;
+            top: 50%;
+            right: -20px;
+            transform: translateY(-50%);
+            color: #9CA3AF;
+            z-index: 1;
+        }
+
+        /* 成果数据卡片 */
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+            border: 1px solid #dcfce7;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+            .page-section { display: block !important; break-before: page; }
+            .tab-nav { display: none !important; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="zsksy.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-handshake text-red-800"></i> 党建联建推动巡察整改
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">抓巡察 · 促整改 · 深融合 · 提效能</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字（如：五联五促、闭环）..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 顶部切换标签 (Tab Navigation) -->
+                <div class="tab-nav flex border-b border-gray-200 mb-8 no-print">
+                    <button onclick="switchTab('plan')" id="btn-plan" class="px-6 py-3 font-bold text-blue-800 border-b-2 border-blue-800 hover:bg-blue-50 transition-colors flex items-center gap-2">
+                        <i class="fa-solid fa-book-open"></i> 第一部分：方案细化解读
+                    </button>
+                    <button onclick="switchTab('result')" id="btn-result" class="px-6 py-3 font-medium text-gray-500 hover:text-green-700 hover:border-green-300 hover:bg-green-50 transition-colors flex items-center gap-2 border-b-2 border-transparent">
+                        <i class="fa-solid fa-chart-line"></i> 第二部分：工作完成情况
+                    </button>
+                </div>
+
+                <!-- ================== 页面一：方案细化解读 ================== -->
+                <div id="page-plan" class="page-section active">
+                    <!-- 标题区 -->
+                    <div class="mb-10 text-center relative">
+                        <span class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-bold tracking-wider">行动纲领</span>
+                        <h2 class="text-3xl font-bold text-gray-900 mb-4 serif-font">“党建联建”巡察整改实施方案</h2>
+                        <div class="flex justify-center gap-4 text-sm text-gray-500">
+                            <span class="flex items-center gap-1"><i class="fa-regular fa-file-alt"></i> 依据：党建联建活动工作措施</span>
+                            <span class="flex items-center gap-1"><i class="fa-solid fa-crosshairs"></i> 目标：整改与治理双提升</span>
+                        </div>
+                    </div>
+
+                    <!-- 总体思路 -->
+                    <div class="bg-gradient-to-r from-blue-900 to-blue-800 p-6 rounded-xl text-white shadow-lg mb-10">
+                        <h3 class="text-xl font-bold mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-route"></i> 总体工作思路
+                        </h3>
+                        <p class="text-blue-100 leading-relaxed opacity-90">
+                            紧扣“抓巡察、促整改、深融合、提效能”主题，坚持以<strong>“五联五促”</strong>为统领，建立<strong>“三同步”</strong>工作机制，构建<strong>“六步闭环”</strong>管理链条，推动巡察整改从“单打独斗”向“联合作战”转变，实现以巡促改、以巡促建、以巡促治。
+                        </p>
+                    </div>
+
+                    <!-- 核心内容：五联五促 -->
+                    <section id="plan-core" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg">1</div>
+                            <h3 class="text-2xl font-bold text-gray-900">核心举措：“五联五促”</h3>
+                        </div>
+                        
+                        <div class="grid md:grid-cols-2 gap-6 mb-12">
+                            <!-- 联学 -->
+                            <div class="feature-card">
+                                <div class="feature-header flex justify-between items-center">
+                                    <h4 class="font-bold text-blue-900">1. 理论联学促思想统一</h4>
+                                    <i class="fa-solid fa-book-reader text-blue-200 text-xl"></i>
+                                </div>
+                                <div class="p-5 text-sm text-gray-600 space-y-3">
+                                    <p class="flex gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i> <span><strong>第一议题联学：</strong>巡察办与被巡察党组织共同学习习近平总书记关于巡视工作重要论述，对标对表。</span></p>
+                                    <p class="flex gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i> <span><strong>专题党课辅导：</strong>纪检监察干部送课下基层，剖析典型案例，明确整改政治要求。</span></p>
+                                    <p class="flex gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i> <span><strong>微课堂阵地：</strong>开设“巡察整改微课堂”，定期推送政策解读与整改指引。</span></p>
+                                </div>
+                            </div>
+
+                            <!-- 联建 -->
+                            <div class="feature-card">
+                                <div class="feature-header flex justify-between items-center">
+                                    <h4 class="font-bold text-blue-900">2. 队伍联建促能力提升</h4>
+                                    <i class="fa-solid fa-users-gear text-blue-200 text-xl"></i>
+                                </div>
+                                <div class="p-5 text-sm text-gray-600 space-y-3">
+                                    <p class="flex gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i> <span><strong>实施“青蓝工程”：</strong>选派业务骨干与年轻干部结对，以干代训，在一线锻炼队伍。</span></p>
+                                    <p class="flex gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i> <span><strong>跟班学习机制：</strong>组织被巡察单位人员到巡察办跟班，参与整改审核，提升实操能力。</span></p>
+                                </div>
+                            </div>
+
+                            <!-- 联享 -->
+                            <div class="feature-card">
+                                <div class="feature-header flex justify-between items-center">
+                                    <h4 class="font-bold text-blue-900">3. 资源联享促业务融合</h4>
+                                    <i class="fa-solid fa-share-nodes text-blue-200 text-xl"></i>
+                                </div>
+                                <div class="p-5 text-sm text-gray-600 space-y-3">
+                                    <p class="flex gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i> <span><strong>制度模板共享：</strong>统筹梳理整改台账、报告模板，形成统一规范的“工具包”。</span></p>
+                                    <p class="flex gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i> <span><strong>典型案例库：</strong>建立共性问题清单和优秀整改案例库，提供参考借鉴。</span></p>
+                                </div>
+                            </div>
+
+                            <!-- 联抓 -->
+                            <div class="feature-card">
+                                <div class="feature-header flex justify-between items-center">
+                                    <h4 class="font-bold text-blue-900">4. 服务联抓促执行提效</h4>
+                                    <i class="fa-solid fa-hand-holding-heart text-blue-200 text-xl"></i>
+                                </div>
+                                <div class="p-5 text-sm text-gray-600 space-y-3">
+                                    <p class="flex gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i> <span><strong>指导前移：</strong>推动监督力量下沉，对整改方案制定、专题民主生活会等关键环节开展驻点指导。</span></p>
+                                    <p class="flex gap-2"><i class="fa-solid fa-check text-blue-500 mt-1"></i> <span><strong>现场答疑：</strong>面对面解决整改中的政策困惑和操作难题。</span></p>
+                                </div>
+                            </div>
+
+                            <!-- 联解 -->
+                            <div class="feature-card md:col-span-2">
+                                <div class="feature-header flex justify-between items-center">
+                                    <h4 class="font-bold text-blue-900">5. 问题联解促治理转化</h4>
+                                    <i class="fa-solid fa-wand-magic-sparkles text-blue-200 text-xl"></i>
+                                </div>
+                                <div class="p-5 text-sm text-gray-600 flex flex-col md:flex-row gap-6">
+                                    <div class="flex-1">
+                                        <p class="font-bold text-gray-800 mb-2">集中攻坚机制：</p>
+                                        <p>紧盯历史遗留问题和体制机制顽疾，成立联合攻坚小组，整合多部门力量，“会诊”开方，打通堵点。</p>
+                                    </div>
+                                    <div class="border-l border-gray-200 md:pl-6 flex-1">
+                                        <p class="font-bold text-gray-800 mb-2">提级督办机制：</p>
+                                        <p>对重点难点问题实行提级办理，通过发函督办、现地督查等方式，确保问题见底清零。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 保障机制：三同步与六闭环 -->
+                    <section id="plan-mech" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg">2</div>
+                            <h3 class="text-2xl font-bold text-gray-900">保障机制：“三同步”与“六步闭环”</h3>
+                        </div>
+
+                        <div class="bg-gray-50 rounded-xl p-6 border border-gray-200 mb-8">
+                            <h4 class="font-bold text-gray-800 mb-4 border-l-4 border-blue-500 pl-3">“三同步”工作机制</h4>
+                            <div class="grid md:grid-cols-3 gap-4">
+                                <div class="bg-white p-4 rounded shadow-sm text-center">
+                                    <div class="text-blue-600 font-bold mb-1">同步谋划</div>
+                                    <div class="text-xs text-gray-500">党建与整改同部署</div>
+                                </div>
+                                <div class="bg-white p-4 rounded shadow-sm text-center">
+                                    <div class="text-blue-600 font-bold mb-1">同步推进</div>
+                                    <div class="text-xs text-gray-500">过程管控一体化</div>
+                                </div>
+                                <div class="bg-white p-4 rounded shadow-sm text-center">
+                                    <div class="text-blue-600 font-bold mb-1">同步考核</div>
+                                    <div class="text-xs text-gray-500">结果运用双挂钩</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-6 border border-blue-200 shadow-sm">
+                            <h4 class="font-bold text-gray-800 mb-6 border-l-4 border-blue-500 pl-3">整改闭环管理链条</h4>
+                            <!-- 流程图 -->
+                            <div class="hidden md:flex justify-between items-center text-xs font-bold text-gray-600">
+                                <div class="step-box">1. 问题<br>交办</div>
+                                <i class="fa-solid fa-arrow-right text-gray-300"></i>
+                                <div class="step-box">2. 方案<br>审核</div>
+                                <i class="fa-solid fa-arrow-right text-gray-300"></i>
+                                <div class="step-box">3. 集中<br>整改</div>
+                                <i class="fa-solid fa-arrow-right text-gray-300"></i>
+                                <div class="step-box">4. 督导<br>检查</div>
+                                <i class="fa-solid fa-arrow-right text-gray-300"></i>
+                                <div class="step-box">5. 销号<br>评估</div>
+                                <i class="fa-solid fa-arrow-right text-gray-300"></i>
+                                <div class="step-box bg-blue-50 border-blue-200 text-blue-700">6. 成果<br>转化</div>
+                            </div>
+                            <!-- 移动端列表 -->
+                            <div class="md:hidden space-y-2 text-sm text-gray-600">
+                                <div class="p-2 bg-gray-50 rounded">1. 问题清单式交办</div>
+                                <div class="p-2 bg-gray-50 rounded">2. 整改方案多维审核</div>
+                                <div class="p-2 bg-gray-50 rounded">3. 挂图作战集中整改</div>
+                                <div class="p-2 bg-gray-50 rounded">4. 动态跟踪督导检查</div>
+                                <div class="p-2 bg-gray-50 rounded">5. 严格标准销号评估</div>
+                                <div class="p-2 bg-blue-50 text-blue-800 font-bold rounded">6. 举一反三成果转化</div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- ================== 页面二：工作完成情况 ================== -->
+                <div id="page-result" class="page-section">
+                    <!-- 标题区 -->
+                    <div class="mb-10 text-center">
+                        <h2 class="text-3xl font-bold text-gray-900 mb-2 serif-font">党建联建工作成效单</h2>
+                        <div class="text-sm text-gray-500">数据统计时间截至：2025年8月</div>
+                    </div>
+
+                    <!-- 核心指标卡片 -->
+                    <div class="grid grid-cols-2 gap-4 mb-10">
+                        <div class="stat-card p-6 rounded-xl text-center shadow-sm">
+                            <div class="text-4xl font-bold text-green-700 mb-2">100%</div>
+                            <div class="text-sm font-bold text-gray-600">组织领导覆盖率</div>
+                            <div class="text-xs text-gray-400 mt-1">整改领导小组全覆盖</div>
+                        </div>
+                        <div class="stat-card p-6 rounded-xl text-center shadow-sm">
+                            <div class="text-4xl font-bold text-green-700 mb-2">22<span class="text-lg">项</span></div>
+                            <div class="text-sm font-bold text-gray-600">细化整改措施</div>
+                            <div class="text-xs text-gray-400 mt-1">针对反馈问题制定</div>
+                        </div>
+                    </div>
+
+                    <!-- 详细完成情况列表 -->
+                    <section id="result-list" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-green-700">
+                            <div class="w-10 h-10 bg-green-700 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900">重点任务落实情况清单</h3>
+                        </div>
+
+                        <div class="space-y-6">
+                            <!-- 任务一 -->
+                            <div class="result-card bg-white p-6 rounded-lg shadow-sm">
+                                <div class="flex items-start gap-4">
+                                    <div class="mt-1 text-green-600"><i class="fa-solid fa-sitemap text-xl"></i></div>
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-900 text-lg mb-2">1. 组织领导与责任体系</h4>
+                                        <div class="space-y-2 text-sm text-gray-600">
+                                            <p class="flex items-start gap-2">
+                                                <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                                                <span><strong>组织架构搭建：</strong>毕节联合党总支成立了以书记为组长的巡察整改领导小组，下设办公室负责日常统筹。</span>
+                                            </p>
+                                            <p class="flex items-start gap-2">
+                                                <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                                                <span><strong>会议部署：</strong>召开了“抓巡察、促整改、深融合、提效能”党建联建工作会暨巡察整改工作指导会。</span>
+                                            </p>
+                                            <p class="flex items-start gap-2">
+                                                <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                                                <span><strong>方案制定：</strong>印发了《关于贵州联合党委巡察反馈意见的整改落实方案》，明确了责任领导、责任部门和完成时限。</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 任务二 -->
+                            <div class="result-card bg-white p-6 rounded-lg shadow-sm">
+                                <div class="flex items-start gap-4">
+                                    <div class="mt-1 text-green-600"><i class="fa-solid fa-brain text-xl"></i></div>
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-900 text-lg mb-2">2. 思想武装与理论学习</h4>
+                                        <div class="space-y-2 text-sm text-gray-600">
+                                            <p class="flex items-start gap-2">
+                                                <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                                                <span><strong>第一议题落实：</strong>严格执行“第一议题”制度，深入学习习近平总书记关于巡视工作重要论述。</span>
+                                            </p>
+                                            <p class="flex items-start gap-2">
+                                                <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                                                <span><strong>专题党课：</strong>举办了巡察整改专题党课，统一全员思想，强化政治整改自觉。</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 任务三 -->
+                            <div class="result-card bg-white p-6 rounded-lg shadow-sm">
+                                <div class="flex items-start gap-4">
+                                    <div class="mt-1 text-green-600"><i class="fa-solid fa-hammer text-xl"></i></div>
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-900 text-lg mb-2">3. 具体问题整改推进</h4>
+                                        <div class="bg-gray-50 p-3 rounded border border-gray-100 mb-2">
+                                            <p class="text-xs font-bold text-gray-500 mb-1">专项整改案例：劳务派遣管理不规范问题</p>
+                                            <ul class="list-disc list-inside text-sm text-gray-700">
+                                                <li>完成对派遣单位履约情况的全覆盖核查。</li>
+                                                <li>督促派遣公司补缴了社保欠费。</li>
+                                                <li>规范了岗位设置和人员准入条件。</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 任务四 -->
+                            <div class="result-card bg-white p-6 rounded-lg shadow-sm">
+                                <div class="flex items-start gap-4">
+                                    <div class="mt-1 text-green-600"><i class="fa-solid fa-user-graduate text-xl"></i></div>
+                                    <div class="flex-1">
+                                        <h4 class="font-bold text-gray-900 text-lg mb-2">4. 队伍能力建设</h4>
+                                        <div class="space-y-2 text-sm text-gray-600">
+                                            <p class="flex items-start gap-2">
+                                                <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                                                <span><strong>青蓝工程：</strong>选派了业务骨干与年轻干部进行结对帮扶，在整改实战中练兵。</span>
+                                            </p>
+                                            <p class="flex items-start gap-2">
+                                                <i class="fa-solid fa-check text-green-500 mt-1"></i>
+                                                <span><strong>跟班实训：</strong>组织纪检干部到巡察办跟班学习，提升了发现问题和推动整改的专业能力。</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>内容来源：毕节联合党总支整改方案及党建联建相关文件</p>
+                    <p>仅供内部学习参考</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ul text-red-800"></i> 页面导航
+                        </div>
+                        <nav class="max-h-[60vh] overflow-y-auto text-sm" id="tocNav">
+                            <!-- 方案页导航 -->
+                            <div id="nav-plan">
+                                <div class="px-4 py-2 text-xs font-bold text-gray-400 bg-gray-50 uppercase">方案解读</div>
+                                <a href="#plan-core" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-blue-800 transition-colors">五联五促</a>
+                                <a href="#plan-mech" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-blue-800 transition-colors">闭环机制</a>
+                            </div>
+                            <!-- 成果页导航 -->
+                            <div id="nav-result" style="display:none;">
+                                <div class="px-4 py-2 text-xs font-bold text-gray-400 bg-gray-50 uppercase">完成情况</div>
+                                <a href="#result-list" class="toc-link block px-4 py-2 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-green-800 transition-colors">重点任务清单</a>
+                            </div>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="scrollToTop()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印本页</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="scrollToTop()" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        // 页面切换逻辑
+        function switchTab(tabId) {
+            // 隐藏所有页面
+            document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
+            // 显示目标页面
+            document.getElementById('page-' + tabId).classList.add('active');
+            
+            // 更新Tab按钮样式
+            const btnPlan = document.getElementById('btn-plan');
+            const btnResult = document.getElementById('btn-result');
+            
+            if (tabId === 'plan') {
+                btnPlan.className = "px-6 py-3 font-bold text-blue-800 border-b-2 border-blue-800 hover:bg-blue-50 transition-colors flex items-center gap-2";
+                btnResult.className = "px-6 py-3 font-medium text-gray-500 hover:text-green-700 hover:border-green-300 hover:bg-green-50 transition-colors flex items-center gap-2 border-b-2 border-transparent";
+                document.getElementById('nav-plan').style.display = 'block';
+                document.getElementById('nav-result').style.display = 'none';
+            } else {
+                btnPlan.className = "px-6 py-3 font-medium text-gray-500 hover:text-blue-800 hover:border-blue-300 hover:bg-blue-50 transition-colors flex items-center gap-2 border-b-2 border-transparent";
+                btnResult.className = "px-6 py-3 font-bold text-green-700 border-b-2 border-green-700 hover:bg-green-50 transition-colors flex items-center gap-2";
+                document.getElementById('nav-plan').style.display = 'none';
+                document.getElementById('nav-result').style.display = 'block';
+            }
+        }
+
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const activePage = document.querySelector('.page-section.active');
+            
+            // 简单的搜索高亮实现
+            // 注意：这会重置页面HTML，可能会影响事件绑定，仅作演示
+            // 生产环境建议使用 mark.js 等库
+            
+            // 这里仅做简单的文本匹配统计
+            if (!keyword) {
+                document.getElementById('searchCount').style.opacity = '0';
+                return;
+            }
+
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            const textContent = activePage.innerText;
+            const matches = textContent.match(regex);
+            const count = matches ? matches.length : 0;
+            
+            document.getElementById('searchCount').innerText = `${count} 处匹配 (当前页)`;
+            document.getElementById('searchCount').style.opacity = '1';
+        }
+
+        // 目录滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 250) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

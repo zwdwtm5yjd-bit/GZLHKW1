@@ -1,0 +1,494 @@
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>巡视巡察重点关注问题清单 - 学习资料库</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 问题卡片样式 */
+        .issue-card {
+            transition: all 0.2s ease;
+            border-left: 4px solid transparent;
+        }
+        .issue-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-left-color: var(--primary-red);
+        }
+
+        /* 风险标签样式 */
+        .tag-risk {
+            background-color: #FEF2F2;
+            color: #991B1B;
+            font-size: 0.75rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid #FECACA;
+            margin-right: 6px;
+            font-weight: 600;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+            .issue-card { break-inside: avoid; border: 1px solid #eee; margin-bottom: 1rem; box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="zsksy.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-triangle-exclamation text-red-800"></i> 巡视重点关注问题清单
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">基于《巡视巡察工作学习手册》整理</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字（如：财务造假、围标串标）..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 头部标题区 -->
+                <div class="text-center border-b-2 border-red-800/10 pb-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-red-900 mb-4 serif-font">巡视巡察重点关注问题一览表</h2>
+                    <div class="text-sm text-gray-500 space-y-2">
+                        <p>六大维度 · 30类常见问题 · 精准画像</p>
+                    </div>
+                </div>
+
+                <!-- 正文内容 (Prose) -->
+                <div class="prose prose-slate max-w-none text-justify space-y-12 leading-relaxed text-gray-800">
+                    
+                    <!-- 第一部分：主责主业 -->
+                    <section id="part-1" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-red-800">
+                            <div class="w-10 h-10 bg-red-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">一、 履行主责主业与高质量发展</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4">
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">1. 坚守主责主业情况</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>是否专注主业，明确发展方向、战略定位、经营重点。</li>
+                                    <li><span class="tag-risk">高风险</span>是否存在<strong>重短期轻长期、重规模轻质量</strong>等思想。</li>
+                                    <li><span class="tag-risk">高风险</span>是否存在<strong>盲目扩张、脱实向虚</strong>。</li>
+                                    <li><span class="tag-risk">红线</span>是否存在<strong>财务造假、粉饰太平</strong>等问题。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">2. 做强做优做大情况</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>是否进一步转变发展方式，推动企业向<strong>质量型效益型</strong>转变。</li>
+                                    <li>是否围绕“一利五率”，推动实现“一增一稳四提升”。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">3. 落实国家战略情况</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>服务构建新发展格局力度，落实“三新一高”要求。</li>
+                                    <li>助力高水平科技自立自强、“一带一路”建设情况。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第二部分：企业治理 -->
+                    <section id="part-2" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-blue-800">
+                            <div class="w-10 h-10 bg-blue-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-sitemap"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">二、 推进企业治理体系现代化</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4">
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">1. 深化国企改革</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>党委是否勇于担当、主动作为，改革有没有成效。</li>
+                                    <li>是否坚持有进有退，推进布局优化和结构调整。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">2. 健全市场化经营机制</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>是否持续深化<strong>劳动、人事、分配三项制度改革</strong>。</li>
+                                    <li>是否真正实现管理人员能上能下、员工能进能出、收入能增能减。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">3. 现代企业治理制度落实</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>是否将党的领导内嵌到公司治理各个环节。</li>
+                                    <li>能不能发挥内审、风控等机制作用，对违反制度的行为有没有追究责任。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第三部分：风险防范 -->
+                    <section id="part-3" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-orange-600">
+                            <div class="w-10 h-10 bg-orange-600 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">三、 防范化解重大风险</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4">
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">1. 潜亏情况</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>企业亏损、潜亏及预亏金额是多少。</li>
+                                    <li>党委是否担当作为，积极消化亏损和化解风险。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">2. 境外业务风险管控</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li><span class="tag-risk">重点</span>重大项目投资决策前是否尽调。</li>
+                                    <li>是否做好佣金管理。</li>
+                                    <li>财务人员是否应派尽派并发挥作用。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">3. 企业经营风险</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>是否积极压减“两金”。</li>
+                                    <li><span class="tag-risk">红线</span>是否存在<strong>违规融资性贸易</strong>。</li>
+                                    <li><span class="tag-risk">红线</span>是否存在<strong>统计数据造假</strong>行为。</li>
+                                    <li>是否存在违规投资经营问题。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第四部分：全面从严治党 -->
+                    <section id="part-4" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-purple-800">
+                            <div class="w-10 h-10 bg-purple-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-gavel"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">四、 全面从严治党与反腐败</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4">
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">1. “两个责任”落实</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>主体责任是否落到“关键少数”上。</li>
+                                    <li>纪检机构履行监督责任情况。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">2. 重点领域廉洁风险</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li><span class="tag-risk">高发</span>工程建设领域：<strong>围标串标、违法分包转包、出借资质</strong>。</li>
+                                    <li><span class="tag-risk">高发</span>向掮客支付中介费。</li>
+                                    <li>领导干部违规插手工程项目等。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">3. 违反八项规定精神与“四风”</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>超标准使用办公用房、超标准乘坐交通工具。</li>
+                                    <li>违规发放津补贴、私车公养。</li>
+                                    <li>公款吃喝、超标准接待。</li>
+                                    <li><span class="tag-risk">红线</span>私设<strong>“小金库”</strong>。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第五部分：组织建设 -->
+                    <section id="part-5" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-green-700">
+                            <div class="w-10 h-10 bg-green-700 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">五、 班子建设、选人用人与党建</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4">
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">1. 领导班子自身建设</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>班子战斗力、执行民主集中制情况。</li>
+                                    <li>开展党内政治生活情况。</li>
+                                    <li>对企业工作规律的驾驭和把握情况。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">2. 干部人才队伍建设</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>是否坚持党管干部、党管人才。</li>
+                                    <li><span class="tag-risk">红线</span>是否<strong>违规用人</strong>。</li>
+                                    <li>是否存在领导干部个人有关事项<strong>瞒报、漏报</strong>。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">3. 基层党组织建设</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>加强政治引领和分类指导不到位。</li>
+                                    <li>落实“四同步”“四对接”要求有差距等问题。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 第六部分：整改落实 -->
+                    <section id="part-6" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-teal-600">
+                            <div class="w-10 h-10 bg-teal-600 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-check-double"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">六、 巡视审计整改落实</h3>
+                            </div>
+                        </div>
+
+                        <div class="grid gap-4">
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">1. 落实整改责任不到位</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>是不是亲自抓、亲自督。</li>
+                                    <li>有没有<strong>“新官不理旧账”</strong>、“只挂帅不出征”等问题。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">2. 重点难点整改任务落实不到位</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>有没有敷衍应付、避重就轻。</li>
+                                    <li><span class="tag-risk">红线</span>有没有<strong>纸面整改、数字整改、虚假整改</strong>。</li>
+                                </ul>
+                            </div>
+                            <div class="issue-card bg-gray-50 p-5 rounded-lg border border-gray-200">
+                                <h4 class="font-bold text-gray-800 mb-2">3. 建立长效机制不到位</h4>
+                                <ul class="list-disc list-inside text-sm text-gray-600 space-y-1">
+                                    <li>长期任务是否分阶段明确目标。</li>
+                                    <li>是否前紧后松、边改边犯。</li>
+                                    <li>是否举一反三，加强整治。</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </section>
+                    
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>内容来源：巡视巡察工作学习小手册</p>
+                    <p>仅供内部学习参考，作为巡察发现问题的重要指引</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ul text-red-800"></i> 快速导航
+                        </div>
+                        <nav class="max-h-[60vh] overflow-y-auto text-sm" id="tocNav">
+                            <a href="#part-1" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">一、主责主业</a>
+                            <a href="#part-2" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">二、企业治理</a>
+                            <a href="#part-3" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">三、风险防范</a>
+                            <a href="#part-4" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">四、从严治党</a>
+                            <a href="#part-5" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">五、组织建设</a>
+                            <a href="#part-6" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">六、整改落实</a>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="scrollToTop()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印清单</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="scrollToTop()" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const proseDiv = document.querySelector('.prose');
+            
+            // 清除上次高亮
+            if (!window.originalContent) window.originalContent = proseDiv.innerHTML;
+            proseDiv.innerHTML = window.originalContent;
+
+            if (!keyword) {
+                document.getElementById('searchCount').style.opacity = '0';
+                return;
+            }
+
+            // 执行搜索与高亮
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            let matchCount = 0;
+            
+            // 简单遍历替换
+            const walker = document.createTreeWalker(proseDiv, NodeFilter.SHOW_TEXT, null, false);
+            const nodes = [];
+            while(walker.nextNode()) nodes.push(walker.currentNode);
+
+            const newHtml = window.originalContent.replace(regex, (match) => {
+                matchCount++;
+                return `<span class="highlight">${match}</span>`;
+            });
+            
+            proseDiv.innerHTML = newHtml;
+            
+            document.getElementById('searchCount').innerText = `${matchCount} 处匹配`;
+            document.getElementById('searchCount').style.opacity = '1';
+
+            const firstMatch = document.querySelector('.highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // 目录滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

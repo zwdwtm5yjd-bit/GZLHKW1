@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>巡察整改情况统计 - 贵州联合纪委工作办公室</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-red: #8B1C1C; /* 庄重的纪委红 */
+            --tech-blue: #1E3A8A;   /* 科技深蓝 */
+            --bg-light: #F8FAFC;    /* 极淡的灰白背景 */
+            --card-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            color: #334155;
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 顶部统计卡片渐变背景 */
+        .stats-header-bg {
+            background: linear-gradient(135deg, var(--primary-red) 0%, #6b1414 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stats-header-bg::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        /* 单位卡片样式 */
+        .unit-card {
+            background: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-top: 4px solid transparent;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .unit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--card-shadow);
+            border-top-color: var(--tech-blue);
+        }
+
+        /* 进度条动画 */
+        .progress-bar-fill {
+            transition: width 1.5s ease-out;
+            width: 0;
+        }
+
+        /* 状态徽章 */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-success { background-color: #DEF7EC; color: #03543F; }
+        .badge-warning { background-color: #FEF3C7; color: #92400E; }
+        .badge-blue { background-color: #DBEAFE; color: #1E40AF; }
+        .badge-gray { background-color: #F3F4F6; color: #4B5563; }
+
+        /* 统计数字动画 */
+        .counter-anim {
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* 文本截断优化 */
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='zy.html'">
+                    <div class="w-10 h-10 bg-red-900 rounded-full flex items-center justify-center text-white shadow-md">
+                        <i class="fa-solid fa-star text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">贵州联合纪委</h1>
+                        <p class="text-xs text-gray-500 tracking-wider"> 巡察整改专题</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="javascript:history.back()" class="text-gray-600 hover:text-red-900 font-medium transition"><i class="fa-solid fa-arrow-left mr-1"></i> 返回</a>
+                    <a href="#" class="text-red-900 font-bold border-b-2 border-red-900 transition">巡察整改</a>
+                    <a href="https://lcnb6ywyxip9.feishu.cn/base/KBmCbTUo8alJPVsOPxXc0Koeneh?table=tbl4XjXQy48SNOFO&view=vew26xXRQq" target="_blank" class="text-gray-600 hover:text-red-900 font-medium transition">督办台账</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- 页面内容 -->
+    <main class="flex-grow py-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
+        
+        <!-- 1. 抬头居中：巡察整改情况总体统计 -->
+        <section class="mb-10 animate-fade-in-up">
+            <div class="stats-header-bg rounded-2xl shadow-xl p-8 text-white relative">
+                <!-- 装饰性背景图标 -->
+                <i class="fa-solid fa-chart-pie absolute -right-10 -bottom-10 text-9xl text-white opacity-10 transform rotate-12"></i>
+
+                <div class="text-center mb-8 relative z-10">
+                    <h2 class="text-3xl md:text-4xl font-bold mb-2 tracking-wide serif-font">巡察整改情况总体统计</h2>
+                    <p class="text-red-100 opacity-90 text-sm">数据截止日期：2025年12月31日</p>
+                </div>
+
+                <!-- 核心指标网格 -->
+                <!-- 数据计算逻辑: 
+                     面上问题 = 11+6+7+7 = 31
+                     具体问题 = 21+17+22+23 = 83
+                     具体措施 = 44+29+22+0 = 95
+                     完成整改 = 44+29+7+0 = 80
+                     完成率 = 80/95 ≈ 84%
+                -->
+                <div class="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-8 relative z-10">
+                    
+                    <!-- 指标 1 -->
+                    <div class="text-center p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition">
+                        <div class="text-red-200 text-sm font-medium mb-1">面上问题数量</div>
+                        <div class="text-3xl md:text-4xl font-bold counter-anim">31</div>
+                        <div class="text-xs text-red-200 mt-1 opacity-70">个</div>
+                    </div>
+
+                    <!-- 指标 2 -->
+                    <div class="text-center p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition">
+                        <div class="text-red-200 text-sm font-medium mb-1">具体问题数量</div>
+                        <div class="text-3xl md:text-4xl font-bold counter-anim">83</div>
+                        <div class="text-xs text-red-200 mt-1 opacity-70">个</div>
+                    </div>
+
+                    <!-- 指标 3 -->
+                    <div class="text-center p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition">
+                        <div class="text-red-200 text-sm font-medium mb-1">具体措施数</div>
+                        <div class="text-3xl md:text-4xl font-bold counter-anim">95</div>
+                        <div class="text-xs text-red-200 mt-1 opacity-70">条</div>
+                    </div>
+
+                    <!-- 指标 4 -->
+                    <div class="text-center p-4 rounded-xl bg-white/10 backdrop-blur-sm border border-white/20 hover:bg-white/20 transition">
+                        <div class="text-red-200 text-sm font-medium mb-1">完成整改数</div>
+                        <div class="text-3xl md:text-4xl font-bold counter-anim">80</div>
+                        <div class="text-xs text-red-200 mt-1 opacity-70">个</div>
+                    </div>
+
+                    <!-- 指标 5：完成率 -->
+                    <div class="col-span-2 md:col-span-1 text-center p-4 rounded-xl bg-white text-red-900 shadow-lg transform md:scale-110">
+                        <div class="text-red-800 text-sm font-bold mb-1">总体完成率</div>
+                        <div class="text-4xl md:text-5xl font-extrabold flex items-center justify-center gap-1">
+                            84<span class="text-xl mt-4">%</span>
+                        </div>
+                        <div class="w-full bg-gray-200 rounded-full h-1.5 mt-2 overflow-hidden">
+                            <div class="bg-red-600 h-1.5 rounded-full" style="width: 84%"></div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. 四个小窗口：各家巡察整改完成情况 -->
+        <section>
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-xl font-bold text-gray-800 border-l-4 border-blue-800 pl-3">各被巡察单位整改详情</h3>
+                
+                <div class="flex gap-2 text-sm">
+                    <button class="px-3 py-1.5 bg-white border border-gray-300 rounded-md text-gray-600 hover:border-blue-800 hover:text-blue-800 transition">
+                        <i class="fa-solid fa-filter mr-1"></i> 筛选
+                    </button>
+                    <button class="px-3 py-1.5 bg-blue-50 border border-blue-200 rounded-md text-blue-800 font-medium">
+                        按完成率排序 <i class="fa-solid fa-arrow-down-short-wide ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+
+                <!-- 卡片 1: 九八五五生产分公司 -->
+                <article class="unit-card group">
+                    <div class="p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-blue-800 font-bold text-lg border border-blue-100 group-hover:bg-blue-800 group-hover:text-white transition-colors flex-shrink-0">
+                                    01
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h4 class="text-lg font-bold text-gray-900 line-clamp-2" title="保利联合化工控股集团股份有限公司九八五五生产分公司">保利联合化工控股集团股份有限公司九八五五生产分公司</h4>
+                                    <span class="badge badge-success mt-1"><i class="fa-solid fa-check-circle mr-1"></i> 已完成整改</span>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 relative w-14 h-14 flex items-center justify-center rounded-full bg-blue-50 text-blue-800 font-bold text-sm border-4 border-blue-200">
+                                100%
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6 bg-gray-50 p-3 rounded-lg text-sm">
+                            <div>
+                                <span class="text-gray-500 block text-xs mb-1"><i class="fa-regular fa-calendar text-gray-400"></i> 巡察时间</span>
+                                <span class="font-medium text-gray-800 text-xs">2024.6.17 - 2024.6.21</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 block text-xs mb-1"><i class="fa-regular fa-clock text-gray-400"></i> 计划完成时间</span>
+                                <span class="font-medium text-gray-800 text-xs">2024.7.18 - 2024.10.18</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-2 text-center mb-4 mt-auto">
+                            <div class="p-2">
+                                <div class="text-xl font-bold text-gray-800">11</div>
+                                <div class="text-xs text-gray-500 mt-1">面上问题</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100">
+                                <div class="text-xl font-bold text-gray-800">21</div>
+                                <div class="text-xs text-gray-500 mt-1">具体问题</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100">
+                                <div class="text-xl font-bold text-gray-800">44</div>
+                                <div class="text-xs text-gray-500 mt-1">具体措施</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100 bg-green-50 rounded-r-lg">
+                                <div class="text-xl font-bold text-green-700">44</div>
+                                <div class="text-xs text-green-700 mt-1">已完成</div>
+                            </div>
+                        </div>
+
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1 overflow-hidden">
+                            <div class="bg-blue-600 h-2.5 rounded-full progress-bar-fill" style="width: 0%" data-width="100%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>整改完成率</span>
+                            <span class="font-bold text-blue-600">100%</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 卡片 2: 六盘水钟水 -->
+                <article class="unit-card group">
+                    <div class="p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-blue-50 rounded-lg flex items-center justify-center text-blue-800 font-bold text-lg border border-blue-100 group-hover:bg-blue-800 group-hover:text-white transition-colors flex-shrink-0">
+                                    02
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h4 class="text-lg font-bold text-gray-900 line-clamp-2" title="六盘水钟水民爆器材经营有限责任公司">六盘水钟水民爆器材经营有限责任公司</h4>
+                                    <span class="badge badge-success mt-1"><i class="fa-solid fa-check-circle mr-1"></i> 已完成整改</span>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 relative w-14 h-14 flex items-center justify-center rounded-full bg-blue-50 text-blue-800 font-bold text-sm border-4 border-blue-200">
+                                100%
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6 bg-gray-50 p-3 rounded-lg text-sm">
+                            <div>
+                                <span class="text-gray-500 block text-xs mb-1"><i class="fa-regular fa-calendar text-gray-400"></i> 巡察时间</span>
+                                <span class="font-medium text-gray-800 text-xs">2024.10.28 - 2024.10.31</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 block text-xs mb-1"><i class="fa-regular fa-clock text-gray-400"></i> 计划完成时间</span>
+                                <span class="font-medium text-gray-800 text-xs">2025.1.1 - 2025.4.1</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-2 text-center mb-4 mt-auto">
+                            <div class="p-2">
+                                <div class="text-xl font-bold text-gray-800">6</div>
+                                <div class="text-xs text-gray-500 mt-1">面上问题</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100">
+                                <div class="text-xl font-bold text-gray-800">17</div>
+                                <div class="text-xs text-gray-500 mt-1">具体问题</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100">
+                                <div class="text-xl font-bold text-gray-800">29</div>
+                                <div class="text-xs text-gray-500 mt-1">具体措施</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100 bg-green-50 rounded-r-lg">
+                                <div class="text-xl font-bold text-green-700">29</div>
+                                <div class="text-xs text-green-700 mt-1">已完成</div>
+                            </div>
+                        </div>
+
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1 overflow-hidden">
+                            <div class="bg-blue-600 h-2.5 rounded-full progress-bar-fill" style="width: 0%" data-width="100%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>整改完成率</span>
+                            <span class="font-bold text-blue-600">100%</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 卡片 3: 毕节联合 -->
+                <article class="unit-card group">
+                    <div class="p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-amber-50 rounded-lg flex items-center justify-center text-amber-600 font-bold text-lg border border-amber-100 group-hover:bg-amber-600 group-hover:text-white transition-colors flex-shrink-0">
+                                    03
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h4 class="text-lg font-bold text-gray-900 line-clamp-2" title="毕节联合民爆器材经营有限责任公司">毕节联合民爆器材经营有限责任公司</h4>
+                                    <span class="badge badge-warning mt-1"><i class="fa-solid fa-spinner fa-spin mr-1"></i> 重点攻坚阶段</span>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 relative w-14 h-14 flex items-center justify-center rounded-full bg-amber-50 text-amber-700 font-bold text-sm border-4 border-amber-200">
+                                32%
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6 bg-gray-50 p-3 rounded-lg text-sm">
+                            <div>
+                                <span class="text-gray-500 block text-xs mb-1"><i class="fa-regular fa-calendar text-gray-400"></i> 巡察时间</span>
+                                <span class="font-medium text-gray-800 text-xs">2025.8.11 - 2025.8.15</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 block text-xs mb-1"><i class="fa-regular fa-clock text-gray-400"></i> 计划完成时间</span>
+                                <span class="font-medium text-gray-800 text-xs">2025.11.11 - 2026.4.1</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-2 text-center mb-4 mt-auto">
+                            <div class="p-2">
+                                <div class="text-xl font-bold text-gray-800">7</div>
+                                <div class="text-xs text-gray-500 mt-1">面上问题</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100">
+                                <div class="text-xl font-bold text-gray-800">22</div>
+                                <div class="text-xs text-gray-500 mt-1">具体问题</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100">
+                                <div class="text-xl font-bold text-gray-800">22</div>
+                                <div class="text-xs text-gray-500 mt-1">具体措施</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100 bg-amber-50 rounded-r-lg">
+                                <div class="text-xl font-bold text-amber-700">7</div>
+                                <div class="text-xs text-amber-700 mt-1">已完成</div>
+                            </div>
+                        </div>
+
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1 overflow-hidden">
+                            <div class="bg-amber-500 h-2.5 rounded-full progress-bar-fill" style="width: 0%" data-width="32%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>整改完成率</span>
+                            <span class="font-bold text-amber-600">32%</span>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- 卡片 4: 水城华建 -->
+                <article class="unit-card group">
+                    <div class="p-6 h-full flex flex-col">
+                        <div class="flex justify-between items-start mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center text-gray-600 font-bold text-lg border border-gray-200 group-hover:bg-gray-600 group-hover:text-white transition-colors flex-shrink-0">
+                                    04
+                                </div>
+                                <div class="overflow-hidden">
+                                    <h4 class="text-lg font-bold text-gray-900 line-clamp-2" title="水城华建民爆器材经营有限公司">水城华建民爆器材经营有限公司</h4>
+                                    <span class="badge badge-gray mt-1"><i class="fa-regular fa-clock mr-1"></i> 整改启动阶段</span>
+                                </div>
+                            </div>
+                            <div class="flex-shrink-0 relative w-14 h-14 flex items-center justify-center rounded-full bg-gray-100 text-gray-500 font-bold text-sm border-4 border-gray-200">
+                                0%
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4 mb-6 bg-gray-50 p-3 rounded-lg text-sm">
+                            <div>
+                                <span class="text-gray-500 block text-xs mb-1"><i class="fa-regular fa-calendar text-gray-400"></i> 巡察时间</span>
+                                <span class="font-medium text-gray-800 text-xs">2025.10.20 - 2025.10.24</span>
+                            </div>
+                            <div>
+                                <span class="text-gray-500 block text-xs mb-1"><i class="fa-regular fa-clock text-gray-400"></i> 计划完成时间</span>
+                                <span class="font-medium text-gray-800 text-xs">2025.2.1 - 2025.7.1</span>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-4 gap-2 text-center mb-4 mt-auto">
+                            <div class="p-2">
+                                <div class="text-xl font-bold text-gray-800">7</div>
+                                <div class="text-xs text-gray-500 mt-1">面上问题</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100">
+                                <div class="text-xl font-bold text-gray-800">23</div>
+                                <div class="text-xs text-gray-500 mt-1">具体问题</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100">
+                                <div class="text-xl font-bold text-gray-400">-</div>
+                                <div class="text-xs text-gray-400 mt-1">具体措施</div>
+                            </div>
+                            <div class="p-2 border-l border-gray-100 bg-gray-50 rounded-r-lg">
+                                <div class="text-xl font-bold text-gray-400">-</div>
+                                <div class="text-xs text-gray-400 mt-1">已完成</div>
+                            </div>
+                        </div>
+
+                        <div class="w-full bg-gray-200 rounded-full h-2.5 mb-1 overflow-hidden">
+                            <div class="bg-gray-400 h-2.5 rounded-full progress-bar-fill" style="width: 0%" data-width="0%"></div>
+                        </div>
+                        <div class="flex justify-between text-xs text-gray-400">
+                            <span>整改完成率</span>
+                            <span class="font-bold text-gray-600">0%</span>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+        
+        <!-- 说明备注 -->
+        <div class="mt-8 bg-yellow-50 border border-yellow-200 p-4 rounded-lg flex gap-3 text-sm text-yellow-800">
+            <i class="fa-solid fa-circle-info mt-1"></i>
+            <div>
+                <strong>统计说明：</strong>
+                <p>1. 数据统计截止至 2025年12月。</p>
+                <p>2. "完成整改数" 指已完成的整改措施数量；部分单位因刚启动整改，相关数据暂未录入。</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- 底部 Footer -->
+    <footer class="bg-slate-900 text-white mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-lg font-bold serif-font mb-1">贵州联合纪委工作办公室</h3>
+                    <p class="text-xs text-slate-400">Guizhou Joint Commission for Discipline Inspection Office</p>
+                </div>
+                <div class="text-sm text-slate-400 text-center md:text-right">
+                    <p class="mb-1">内部系统 · 仅限工作交流使用</p>
+                    <p>&copy; 2025 All Rights Reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // 简单的入场动画触发
+            const bars = document.querySelectorAll('.progress-bar-fill');
+            
+            // 使用 IntersectionObserver 确保元素可见时才播放动画
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bar = entry.target;
+                        // 延迟一点点让界面先渲染
+                        setTimeout(() => {
+                            bar.style.width = bar.getAttribute('data-width');
+                        }, 200);
+                        observer.unobserve(bar);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            bars.forEach(bar => observer.observe(bar));
+        });
+    </script>
+</body>
+</html>
