@@ -1,46 +1,74 @@
-<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>贵州联合纪委工作办公室 - 学习交流平台</title>
+    <title>学习知识库 - 贵州联合纪委工作办公室</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
 
     <style>
-        :root { --primary-red: #8B1C1C; --tech-blue: #1E3A8A; --bg-light: #F8FAFC; }
-        body { font-family: 'Noto Sans SC', sans-serif; background-color: var(--bg-light); overflow-x: hidden; }
-        h1, h2, h3, .serif-font { font-family: 'Noto Serif SC', serif; }
-        .hero-bg { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); position: relative; }
-        
-        /* 卡片基础样式 */
-        .nav-card { transition: all 0.4s; cursor: pointer; border-bottom: 4px solid transparent; }
-        .nav-card:hover { transform: translateY(-10px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-        .nav-card.red-theme:hover { border-color: var(--primary-red); }
-        .nav-card.blue-theme:hover { border-color: var(--tech-blue); }
-        .nav-card.feishu-theme:hover { border-color: #00D6B9; }
-        .nav-card.brand-theme:hover { border-color: #D97706; }
-        
-        /* 锁住的卡片样式 */
-        .nav-card.locked-theme { background-color: #f3f4f6; }
-        .nav-card.locked-theme:hover { border-color: #4b5563; }
-        
-        /* 弹窗样式 */
-        .modal-overlay { display: none; background-color: rgba(0,0,0,0.6); }
-        .modal-overlay.active { display: flex; }
+        :root {
+            --primary-red: #8B1C1C;
+            --tech-blue: #1E3A8A;
+            --bg-light: #F8FAFC;
+        }
 
-        /* 关键：用于JS控制显示/隐藏的工具类 */
-        .hidden-mode { display: none !important; }
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 侧边导航激活状态 */
+        .nav-link.active {
+            background-color: #FEF2F2; /* red-50 */
+            color: var(--primary-red);
+            border-right: 4px solid var(--primary-red);
+            font-weight: 700;
+        }
+
+        /* 知识卡片样式 */
+        .folder-card {
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid #E2E8F0;
+        }
+
+        .folder-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border-color: var(--tech-blue);
+        }
+
+        /* 文件夹顶部的小标签装饰 */
+        .folder-tab {
+            width: 40px;
+            height: 12px;
+            background-color: #E2E8F0;
+            border-radius: 4px 4px 0 0;
+            margin-bottom: -1px;
+            position: relative;
+            z-index: 10;
+        }
+        .folder-card:hover .folder-tab {
+            background-color: #DBEAFE; /* blue-100 */
+        }
     </style>
 </head>
 <body class="flex flex-col min-h-screen text-slate-800">
 
-    <!-- 1. 顶部导航栏 -->
+    <!-- 顶部导航栏 (保持与首页一致) -->
     <header class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center h-20">
-                <div class="flex items-center space-x-3">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
                     <div class="w-10 h-10 bg-red-900 rounded-full flex items-center justify-center text-white shadow-md">
                         <i class="fa-solid fa-star text-sm"></i>
                     </div>
@@ -49,283 +77,542 @@
                         <p class="text-xs text-gray-500 tracking-wider">工作办公室 · 学习交流平台</p>
                     </div>
                 </div>
-                <nav class="hidden md:flex space-x-8 items-center">
-                    <a href="#" class="text-gray-600 hover:text-red-900 font-medium">首页</a>
-                    
-                    <!-- 状态A: 已登录显示 (默认隐藏，JS控制) -->
-                    <div id="nav-logged-in" class="hidden-mode flex items-center gap-4">
-                        <span class="text-green-700 font-bold text-sm px-3 py-1 bg-green-50 rounded-full border border-green-200">
-                            <i class="fa-solid fa-user-check"></i> 管理员在线
-                        </span>
-                        <button onclick="doLogout()" class="text-gray-400 hover:text-red-600 text-sm transition">退出</button>
-                    </div>
-
-                    <!-- 状态B: 未登录显示 -->
-                    <div id="nav-guest">
-                        <span class="text-gray-400 text-sm bg-gray-100 px-3 py-1 rounded-full">访客模式</span>
-                    </div>
+                <nav class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-gray-600 hover:text-red-900 font-medium transition">
+                        <i class="fa-solid fa-arrow-left mr-1"></i> 返回首页
+                    </a>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- 2. 主视觉区域 -->
-    <section class="hero-bg py-16 md:py-24 relative overflow-hidden">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-16">
-                <h2 class="text-3xl md:text-5xl font-bold text-gray-900 mb-4 tracking-tight">忠诚 · 干净 · 担当</h2>
-                <p class="text-lg text-gray-600 max-w-2xl mx-auto">聚焦主责主业，深化数字赋能。</p>
-            </div>
+    <!-- 页面主体布局 -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- 面包屑导航 -->
+        <nav class="flex mb-8 text-sm text-gray-500" aria-label="Breadcrumb">
+            <ol class="inline-flex items-center space-x-1 md:space-x-3">
+                <li class="inline-flex items-center">
+                    <a href="index.html" class="hover:text-red-800">首页</a>
+                </li>
+                <li><i class="fa-solid fa-angle-right text-gray-400"></i></li>
+                <li class="font-medium text-gray-800">学习知识库</li>
+            </ol>
+        </nav>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                
-                <!-- === 核心卡片：学习知识库 (JS控制两套皮肤切换) === -->
-
-                <!-- 皮肤A：已登录 (解锁状态，默认隐藏) -->
-                <div id="card-unlocked" onclick="window.open('https://www.ericmm.com/zsksy.html', '_blank')" class="hidden-mode nav-card red-theme bg-white rounded-xl shadow-lg p-8 text-center group">
-                    <div class="w-16 h-16 mx-auto bg-red-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-red-100 transition-colors">
-                        <i class="fa-solid fa-book-open text-2xl text-red-800"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">学习知识库</h3>
-                    <p class="text-sm text-gray-500 mb-4">政策法规、业务指南汇编。</p>
-                    <span class="text-xs font-semibold text-red-800 flex items-center justify-center gap-1">
-                        点击进入 <i class="fa-solid fa-arrow-right"></i>
-                    </span>
-                </div>
-
-                <!-- 皮肤B：未登录 (锁住状态，默认显示) -->
-                <div id="card-locked" onclick="openModal()" class="nav-card locked-theme rounded-xl shadow-lg p-8 text-center group relative overflow-hidden">
-                    <div class="absolute -right-4 -bottom-4 text-gray-200 text-8xl opacity-30 rotate-12">
-                        <i class="fa-solid fa-lock"></i>
-                    </div>
-                    <div class="w-16 h-16 mx-auto bg-gray-200 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-gray-300 transition-colors">
-                        <i class="fa-solid fa-lock text-2xl text-gray-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-600 mb-2">学习知识库</h3>
-                    <p class="text-sm text-gray-400 mb-4">内部涉密资料，需权限。</p>
-                    <span class="text-xs font-semibold text-gray-500 flex items-center justify-center gap-1">
-                        点击登录解锁 <i class="fa-solid fa-key"></i>
-                    </span>
-                </div>
-
-                <!-- 其他卡片 (保持不变) -->
-                <div class="nav-card blue-theme bg-white rounded-xl shadow-lg p-8 text-center group">
-                    <div class="w-16 h-16 mx-auto bg-blue-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-blue-100 transition-colors">
-                        <i class="fa-solid fa-microchip text-2xl text-blue-800"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">AI数据库查询</h3>
-                    <p class="text-sm text-gray-500 mb-4">智能检索法规。</p>
-                </div>
-
-                <div onclick="window.open('https://lcnb6ywyxip9.feishu.cn/base/EO27bu9Q1a9ufwsmP3BcgKRjncc', '_blank')" class="nav-card feishu-theme bg-white rounded-xl shadow-lg p-8 text-center group">
-                    <div class="w-16 h-16 mx-auto bg-teal-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-teal-100 transition-colors">
-                        <i class="fa-solid fa-paper-plane text-2xl text-teal-600"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">飞书办公</h3>
-                    <p class="text-sm text-gray-500 mb-4">即时通讯、高效协同。</p>
-                </div>
-
-                <div onclick="window.open('https://www.ericmm.com/jjpp.html', '_blank')" class="nav-card brand-theme bg-white rounded-xl shadow-lg p-8 text-center group">
-                    <div class="w-16 h-16 mx-auto bg-amber-50 rounded-2xl flex items-center justify-center mb-6 group-hover:bg-amber-100 transition-colors">
-                        <i class="fa-solid fa-flag text-2xl text-amber-600"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-gray-900 mb-2">品牌建设</h3>
-                    <p class="text-sm text-gray-500 mb-4">清廉文化宣传展示。</p>
-                </div>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- 3. 内容展示区 (已恢复原始文章) -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between mb-8 border-b pb-4 border-gray-100">
-                <h2 class="text-2xl font-bold text-gray-900 border-l-4 border-red-800 pl-3">最新学习动态</h2>
-                <a href="#" class="text-sm text-gray-500 hover:text-red-800 transition">查看更多 <i class="fa-solid fa-angle-right"></i></a>
-            </div>
+        <div class="flex flex-col md:flex-row gap-8">
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <!-- 文章 1 -->
-                <a href="#" class="group block bg-gray-50 rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition duration-300">
-                    <div class="h-48 bg-gray-200 overflow-hidden relative">
-                        <img src="https://free.picui.cn/free/2025/12/25/694cff975645c.jpg" alt="廉政新闻" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-2 right-2 bg-red-800 text-white text-xs px-2 py-1 rounded">党风廉政</div>
+            <!-- 左侧：悬浮菜单 -->
+            <aside class="w-full md:w-64 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-100">
+                        <h3 class="font-bold text-gray-800"><i class="fa-solid fa-list-ul mr-2 text-red-800"></i>知识库目录</h3>
                     </div>
-                    <div class="p-6">
-                        <div class="flex items-center text-xs text-gray-500 mb-2 space-x-2">
-                            <span><i class="fa-regular fa-calendar"></i> 2025-3-5</span>
-                            <span><i class="fa-regular fa-eye"></i> 128 次阅读</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-800 group-hover:text-red-800 transition-colors line-clamp-2">
-                            贵州区域（贵州联合）召开2025年党风廉政建设和反腐败工作暨全面从严治党专题工作会议
-                        </h3>
-                        <p class="mt-2 text-sm text-gray-600 line-clamp-2">
-                            为落实全面从严治党要求，纵深推进党风廉政建设和反腐败工作。3月5日...
-                        </p>
-                    </div>
-                </a>
-
-                <!-- 文章 2 -->
-                <a href="#" class="group block bg-gray-50 rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition duration-300">
-                    <div class="h-48 bg-gray-200 overflow-hidden relative">
-                        <img src="https://free.picui.cn/free/2025/12/25/694cff96f066a.jpg" alt="廉政建设" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-2 right-2 bg-blue-800 text-white text-xs px-2 py-1 rounded">AI赋能</div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center text-xs text-gray-500 mb-2 space-x-2">
-                            <span><i class="fa-regular fa-calendar"></i> 2025-4-29</span>
-                            <span><i class="fa-regular fa-eye"></i> 85 次阅读</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-800 group-hover:text-blue-800 transition-colors line-clamp-2">
-                            倡廉洁守红线 讲纪律强担当
-                        </h3>
-                        <p class="mt-2 text-sm text-gray-600 line-clamp-2">
-                            为深入贯彻落实党的二十大关于全面从严治党战略部署，持续强化党员干部纪律规矩意识，切实筑牢拒腐防变思想防线...
-                        </p>
-                    </div>
-                </a>
-
-                <!-- 文章 3 -->
-                <a href="#" class="group block bg-gray-50 rounded-lg overflow-hidden border border-gray-100 hover:shadow-md transition duration-300">
-                    <div class="h-48 bg-gray-200 overflow-hidden relative">
-                        <img src="https://free.picui.cn/free/2025/12/25/694d02a089d76.png" alt="品牌建设" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute top-2 right-2 bg-amber-600 text-white text-xs px-2 py-1 rounded">品牌风采</div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center text-xs text-gray-500 mb-2 space-x-2">
-                            <span><i class="fa-regular fa-calendar"></i> 2025-10-2</span>
-                            <span><i class="fa-regular fa-eye"></i> 203 次阅读</span>
-                        </div>
-                        <h3 class="text-lg font-bold text-gray-800 group-hover:text-amber-600 transition-colors line-clamp-2">
-                            思想筑廉、行动促廉、制度固廉、成果守廉
-                        </h3>
-                        <p class="mt-2 text-sm text-gray-600 line-clamp-2">
-                            logo以红蓝两色晕染基调，旨在发扬和传承保利集团“红蓝两大基因”，以红铸魂强基，承精神根脉；以蓝立身之本，载实干初心。两色交融，制定品牌魂骨...
-                        </p>
-                    </div>
-                </a>
-
-            </div>
-        </div>
-    </section>
-
-    <!-- 4. 登录弹窗 (纯 JS 控制) -->
-    <div id="loginModal" class="modal-overlay fixed inset-0 z-[60] items-center justify-center backdrop-blur-sm">
-        <div class="bg-white rounded-lg shadow-2xl p-8 w-full max-w-md relative border-t-4 border-red-900 animate-fade-in">
-            <button onclick="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
-                <i class="fa-solid fa-times text-xl"></i>
-            </button>
-
-            <div class="text-center mb-6">
-                <h3 class="text-2xl font-bold text-gray-900 serif-font">内部权限验证</h3>
-                <p class="text-sm text-gray-500 mt-1">请输入账号密码解锁知识库</p>
-                <!-- 错误提示 -->
-                <div id="error-msg" class="hidden-mode mt-3 p-2 bg-red-50 text-red-600 text-sm rounded border border-red-100 flex items-center justify-center">
-                    <i class="fa-solid fa-circle-exclamation mr-2"></i> 账号或密码错误
+                    <nav class="flex flex-col">
+                        <a href="#section-jijian" class="nav-link active px-6 py-4 text-gray-700 hover:bg-gray-50 transition border-r-4 border-transparent flex items-center justify-between group">
+                            <span>纪检知识库</span>
+                            <i class="fa-solid fa-scale-balanced text-gray-300 group-hover:text-red-800"></i>
+                        </a>
+                        <a href="#section-xuncha" class="nav-link px-6 py-4 text-gray-700 hover:bg-gray-50 transition border-r-4 border-transparent flex items-center justify-between group">
+                            <span>巡察知识库</span>
+                            <i class="fa-solid fa-magnifying-glass-location text-gray-300 group-hover:text-blue-800"></i>
+                        </a>
+                        <a href="#section-yingzhi" class="nav-link px-6 py-4 text-gray-700 hover:bg-gray-50 transition border-r-4 border-transparent flex items-center justify-between group">
+                            <span>应知应会</span>
+                            <i class="fa-solid fa-book-open-reader text-gray-300 group-hover:text-amber-600"></i>
+                        </a>
+                        <a href="#section-zhidu" class="nav-link px-6 py-4 text-gray-700 hover:bg-gray-50 transition border-r-4 border-transparent flex items-center justify-between group">
+                            <span>制度学习</span>
+                            <i class="fa-solid fa-folder-tree text-gray-300 group-hover:text-teal-700"></i>
+                        </a>
+                    </nav>
                 </div>
-            </div>
+            </aside>
 
-            <div class="space-y-4">
-                <input id="username-input" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-900 focus:border-red-900 outline-none transition" placeholder="账号">
-                <input id="password-input" type="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-900 focus:border-red-900 outline-none transition" placeholder="密码">
-                <button onclick="doLogin()" class="w-full bg-red-900 text-white py-2.5 rounded-lg hover:bg-red-800 transition shadow-lg mt-2 font-medium">
-                    确认解锁
-                </button>
-            </div>
-            
-            <p class="text-center text-xs text-gray-400 mt-4">仅供内部人员访问</p>
+            <!-- 右侧：内容区域 -->
+            <main class="flex-1 space-y-12">
+
+                <!-- 1. 纪检知识库 Section -->
+                <section id="section-jijian" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900">纪检知识库</h2>
+                        <span class="ml-3 px-2 py-0.5 bg-red-100 text-red-800 text-xs rounded font-medium">核心业务</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <!-- 生成10个卡片 -->
+                        <!-- 卡片 1 -->
+                        <a href="https://www.ericmm.com/kw1-1dangzhang.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-gavel"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">中国共产党章程</h4>
+                                <p class="text-xs text-gray-400">党章</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 2 -->
+                        <a href="https://www.ericmm.com/kw1-2dangji.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-scale-unbalanced"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">纪律处分条例</h4>
+                                <p class="text-xs text-gray-400">党纪</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 3 -->
+                        <a href="https://www.ericmm.com/kw1-3jdzj.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-eye"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1"> 监督执纪工作规则</h4>
+                                <p class="text-xs text-gray-400">监督执纪</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 4 -->
+                        <a href="https://www.ericmm.com/kw1-4zucff.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">政务处分法</h4>
+                                <p class="text-xs text-gray-400">公职人员</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 5 -->
+                        <a href="https://www.ericmm.com/kw1-5baolizhiji.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-file-contract"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">保利监督执纪</h4>
+                                <p class="text-xs text-gray-400">实施细则</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 6 -->
+                        <a href="https://www.ericmm.com/kw1-6qxcx.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <!-- 上方方框 (开始/过程) -->
+                                        <rect x="7" y="3" width="10" height="4" rx="1"></rect>
+                                        <!-- 连接线 -->
+                                        <path d="M12 7v3"></path>
+                                        <!-- 中间菱形 (判定) -->
+                                        <path d="M12 10l5 3l-5 3l-5-3z"></path>
+                                        <!-- 连接线 -->
+                                        <path d="M12 16v2"></path>
+                                        <!-- 下方方框 (结束/过程) -->
+                                        <rect x="7" y="18" width="10" height="4" rx="1"></rect>
+                                    </svg>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">违纪批准权限和程序</h4>
+                                <p class="text-xs text-gray-400">权限程序</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 7 -->
+                        <a href="https://www.ericmm.com/kw1-7balc.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-wind"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">监督执纪办案流程</h4>
+                                <p class="text-xs text-gray-400">办案流程</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 8 -->
+                        <a href="https://www.ericmm.com/kw1-8fmqd.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">'六大纪律'负面清单</h4>
+                                <p class="text-xs text-gray-400">负面清单</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 9 -->
+                        <a href="https://www.coze.cn/s/i3BYZYGyHLo/" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-regular fa-circle-question"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">纪检监察实务助手</h4>
+                                <p class="text-xs text-gray-400">智能办案</p>
+                            </div>
+                        </a>
+                        <!-- 卡片 10 -->
+                        <a href="https://www.ericmm.com/kw1-10wsmb.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-red-50 text-red-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                    <i class="fa-regular fa-file-word"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">常用文书</h4>
+                                <p class="text-xs text-gray-400">模板下载</p>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 2. 巡察知识库 Section -->
+                <section id="section-xuncha" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-blue-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900">巡察知识库</h2>
+                        <span class="ml-3 px-2 py-0.5 bg-blue-100 text-blue-800 text-xs rounded font-medium">利剑作用</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <!-- 10个栏目 -->
+                        <a href="https://www.ericmm.com/kw2-1xddxcls.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-quote-left"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">关于巡视巡察工作重要论述</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw2-2xsgzbf.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-sitemap"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">巡察制度体系</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw2-3xslc.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-list-check"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">工作流程指引</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw2-4xsxcjd.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-crosshairs"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">巡察监督重点</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw2-5fxwt.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-lightbulb"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">关注问题清单</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw2-6xczg.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-rotate"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">巡察整改</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw2-7xcbg.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-file-pen"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">巡察报告撰写</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw2-8djlj.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-users-gear"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">党建联建</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-laptop-code"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">信息化建设</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-blue-50 text-blue-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-comments"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">经验交流</h4>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 3. 应知应会知识库 Section -->
+                <section id="section-yingzhi" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-amber-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900">应知应会知识库</h2>
+                        <span class="ml-3 px-2 py-0.5 bg-amber-100 text-amber-800 text-xs rounded font-medium">综合素质</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                         <!-- 10个栏目 -->
+                         <a href="https://www.ericmm.com/kw3-1zzll.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-landmark"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">政治理论</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw3-2zyjh.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-microphone-lines"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">重要讲话</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw3-3hyjs.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-handshake"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">会议精神</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw3-4lsyg.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-clock-rotate-left"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">历史沿革</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw3-5gzsq.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-map-location-dot"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">贵州省情</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw3-6bmzs.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-user-secret"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">保密知识</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw3-7gwxz.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-pen-nib"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">公文写作</h4>
+                            </div>
+                        </a>
+                        <a href="https://www.ericmm.com/kw3-8jgdj.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">机关党建</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-briefcase"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">综合业务</h4>
+                            </div>
+                        </a>
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-amber-50 text-amber-600 rounded-lg flex items-center justify-center mb-3 group-hover:bg-amber-500 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-clipboard-question"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">每周一测</h4>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <!-- 4. 制度学习知识库 Section (新增) -->
+                <section id="section-zhidu" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-teal-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900">制度学习</h2>
+                        <span class="ml-3 px-2 py-0.5 bg-teal-100 text-teal-800 text-xs rounded font-medium">规范管理</span>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                        <!-- 1. 三重一大 -->
+                        <a href="https://www.ericmm.com/kwsanzhongyida.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-users-viewfinder"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">三重一大</h4>
+                            </div>
+                        </a>
+                        <!-- 2. 五责联动 -->
+                        <a href="http://www.ericmm.com/wzld.html" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-network-wired"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">五责联动</h4>
+                            </div>
+                        </a>
+                        <!-- 3. 财务管理 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-calculator"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">财务管理</h4>
+                            </div>
+                        </a>
+                        <!-- 4. 人事管理 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-id-card"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">人事管理</h4>
+                            </div>
+                        </a>
+                        <!-- 5. 考勤制度 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">考勤制度</h4>
+                            </div>
+                        </a>
+                        <!-- 6. 会议制度 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-handshake-simple"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">会议制度</h4>
+                            </div>
+                        </a>
+                        <!-- 7. 档案管理 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-box-archive"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">档案管理</h4>
+                            </div>
+                        </a>
+                        <!-- 8. 资产管理 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-laptop"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">资产管理</h4>
+                            </div>
+                        </a>
+                        <!-- 9. 印章管理 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-stamp"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">印章管理</h4>
+                            </div>
+                        </a>
+                        <!-- 10. 公务用车 -->
+                        <a href="#" class="folder-card bg-white p-4 rounded-lg block group relative">
+                            <div class="folder-tab absolute -top-3 left-4"></div>
+                            <div class="text-center pt-2">
+                                <div class="w-10 h-10 mx-auto bg-teal-50 text-teal-700 rounded-lg flex items-center justify-center mb-3 group-hover:bg-teal-700 group-hover:text-white transition-colors">
+                                    <i class="fa-solid fa-car-side"></i>
+                                </div>
+                                <h4 class="font-bold text-gray-800 text-sm mb-1">公务用车</h4>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <div class="text-center text-gray-400 text-sm pt-8 pb-12">
+                    <p>— 已经到底了 —</p>
+                </div>
+
+            </main>
         </div>
     </div>
 
     <script>
-        // === 纯 JavaScript 逻辑 ===
-        
-        // 1. 页面加载时：检查是否记得登录状态
-        document.addEventListener('DOMContentLoaded', function() {
-            const isLoggedIn = localStorage.getItem('gzjw_is_logged_in');
-            if (isLoggedIn === 'true') {
-                showLoggedInState();
-            } else {
-                showGuestState();
-            }
-        });
+        // 简单的脚本：滚动时更新左侧导航的激活状态
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            let current = '';
 
-        // 2. 切换界面到【已登录】状态
-        function showLoggedInState() {
-            // 顶部导航变化
-            document.getElementById('nav-logged-in').classList.remove('hidden-mode');
-            document.getElementById('nav-guest').classList.add('hidden-mode');
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
 
-            // 核心卡片变化：隐藏锁，显示入口
-            document.getElementById('card-unlocked').classList.remove('hidden-mode');
-            document.getElementById('card-locked').classList.add('hidden-mode');
-        }
-
-        // 3. 切换界面到【访客】状态
-        function showGuestState() {
-            // 顶部导航变化
-            document.getElementById('nav-logged-in').classList.add('hidden-mode');
-            document.getElementById('nav-guest').classList.remove('hidden-mode');
-
-            // 核心卡片变化：显示锁，隐藏入口
-            document.getElementById('card-unlocked').classList.add('hidden-mode');
-            document.getElementById('card-locked').classList.remove('hidden-mode');
-        }
-
-        // 4. 执行登录逻辑
-        function doLogin() {
-            var u = document.getElementById('username-input').value;
-            var p = document.getElementById('password-input').value;
-            var errorDiv = document.getElementById('error-msg');
-
-            // === 在这里修改账号密码 ===
-            if (u === 'gzlhjwb' && p === '20250101') {
-                // 登录成功
-                localStorage.setItem('gzjw_is_logged_in', 'true'); // 记在本机浏览器里
-                
-                closeModal();
-                showLoggedInState();
-                
-                // 清理输入框
-                document.getElementById('username-input').value = '';
-                document.getElementById('password-input').value = '';
-                errorDiv.classList.add('hidden-mode');
-                
-            } else {
-                // 登录失败
-                errorDiv.classList.remove('hidden-mode');
-            }
-        }
-
-        // 5. 执行退出逻辑
-        function doLogout() {
-            if(confirm('确定要退出登录吗？')) {
-                localStorage.removeItem('gzjw_is_logged_in'); // 清除记录
-                showGuestState(); // 变回访客状态
-            }
-        }
-
-        // 6. 弹窗控制逻辑
-        const modal = document.getElementById('loginModal');
-        function openModal() {
-            modal.classList.add('active');
-            document.getElementById('error-msg').classList.add('hidden-mode'); // 每次打开清除错误信息
-        }
-        function closeModal() {
-            modal.classList.remove('active');
-        }
-        // 点击遮罩层关闭
-        modal.addEventListener('click', function(e) {
-            if (e.target === modal) closeModal();
-        });
-        
-        // 支持回车键登录
-        document.getElementById('password-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                doLogin();
-            }
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
         });
     </script>
 </body>
