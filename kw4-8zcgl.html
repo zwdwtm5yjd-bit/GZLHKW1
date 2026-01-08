@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资产管理 - 应知应会专题库</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --asset-green: #15803d; /* 资产绿 */
+            --asset-gold: #B45309;  /* 增值金 */
+            --asset-red: #991B1B;   /* 制度红 */
+            --bg-light: #F0FDF4;    /* 极淡绿背景 */
+            --text-main: #14532d;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+            color: var(--text-main);
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* --- Hero Section: 资产管理背景 --- */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, rgba(21, 128, 61, 0.9) 0%, rgba(153, 27, 27, 0.8) 100%),
+                        url('https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+            box-shadow: 0 4px 20px -5px rgba(0,0,0,0.3);
+        }
+
+        /* 玻璃质感卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--asset-gold);
+        }
+
+        /* 侧边导航 */
+        .nav-item.active {
+            color: var(--asset-green);
+            border-left: 4px solid var(--asset-green);
+            background-color: #DCFCE7; /* Green-100 */
+            font-weight: 700;
+        }
+
+        /* 资产卡片 */
+        .asset-card {
+            background: white;
+            border-top: 4px solid var(--asset-green);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .asset-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 流程步骤 */
+        .step-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--asset-green);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        /* === 步骤1：复制这部分到 style 里面 === */
+.login-bg-animate { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); position: relative; }
+.hidden-mode { display: none !important; } /* 这是最关键的：隐藏开关 */
+.fade-in { animation: fadeIn 0.5s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- === 步骤2：登录门禁代码 (放在 body 刚开始的地方) === -->
+<div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center login-bg-animate">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-t-4 border-red-900 z-10 fade-in mx-4">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">内部权限验证</h1>
+            <p class="text-sm text-gray-500 mt-1">请输入内部账号访问</p>
+        </div>
+        <!-- 错误提示 -->
+        <div id="login-error" class="hidden-mode mb-4 p-3 bg-red-50 text-red-700 text-sm rounded border border-red-100 flex items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i> <span>账号或密码错误</span>
+        </div>
+        <div class="space-y-5">
+            <input id="username-input" type="text" class="pl-4 block w-full rounded-lg border-gray-300 border p-2.5 outline-none" placeholder="账号">
+            <input id="password-input" type="password" class="pl-4 block w-full rounded-lg border-gray-300 border p-2.5 outline-none" placeholder="密码">
+            <button onclick="attemptLogin()" class="w-full bg-red-900 text-white py-3 rounded-lg hover:bg-red-800 transition shadow-lg">安全登录</button>
+        </div>
+    </div>
+</div>
+<div id="main-content" class="hidden-mode"></div>
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <div class="w-10 h-10 bg-green-900 rounded-full flex items-center justify-center text-white shadow-md border-2 border-green-200">
+                        <i class="fa-solid fa-boxes-stacked text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">资产管理制度</h1>
+                        <p class="text-xs text-gray-500 tracking-wider">应知应会 · 2025版</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="zsksy.html" class="text-gray-600 hover:text-green-900 font-medium transition flex items-center gap-2">
+                        <i class="fa-solid fa-reply"></i> 返回专题库
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+                <div class="w-full lg:w-2/3">
+                    <span class="inline-block py-1 px-3 rounded-full bg-green-900/50 border border-green-400/50 text-xs font-bold mb-4 text-green-100 backdrop-blur-sm">
+                        <i class="fa-solid fa-chart-line mr-1"></i> 统一规定 · 分级管理 · 科学处置
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold serif-font mb-6 leading-tight drop-shadow-xl">
+                        摸清家底 规范管理<br>
+                        <span class="text-yellow-400">确保国有资产保值增值</span>
+                    </h2>
+                    <p class="text-green-50 text-lg mb-10 leading-relaxed font-light max-w-2xl">
+                        明确固定资产投资、购置、验收、使用及处置全流程管理规范，落实资产管理责任，提高资产使用效率。
+                    </p>
+                    
+                    <!-- 核心数据看板 -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-ruler-combined text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">资产标准</div>
+                            <div class="text-xs text-white/60">>2000元/1年</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-cart-shopping text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">申购管理</div>
+                            <div class="text-xs text-white/60">预算内/外审批</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-clipboard-check text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">定期盘点</div>
+                            <div class="text-xs text-white/60">每年至少一次</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-recycle text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">处置规范</div>
+                            <div class="text-xs text-white/60">严格审批/评估</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- 侧边导航 -->
+            <aside class="w-full lg:w-64 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul text-green-900"></i> 内容导航
+                    </div>
+                    <nav class="flex flex-col text-sm py-2">
+                        <a href="#definition" class="nav-item active px-5 py-3 hover:bg-green-50 transition block border-l-4 border-transparent">
+                            1. 定义与管理体制
+                        </a>
+                        <a href="#purchase" class="nav-item px-5 py-3 hover:bg-green-50 transition block border-l-4 border-transparent">
+                            2. 申购与验收流程
+                        </a>
+                        <a href="#daily" class="nav-item px-5 py-3 hover:bg-green-50 transition block border-l-4 border-transparent">
+                            3. 日常管理与盘点
+                        </a>
+                        <a href="#disposal" class="nav-item px-5 py-3 hover:bg-green-50 transition block border-l-4 border-transparent">
+                            4. 资产处置与报废
+                        </a>
+                        <a href="#responsibility" class="nav-item px-5 py-3 hover:bg-green-50 transition block border-l-4 border-transparent">
+                            5. 管理责任与追究
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- 主要内容区 -->
+            <main class="flex-1 space-y-12">
+
+                <!-- 1. 定义与管理体制 -->
+                <section id="definition" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-green-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">定义与管理体制</h2>
+                        <span class="ml-3 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">固定资产管理制度</span>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h3 class="font-bold text-green-900 mb-3 flex items-center">
+                                <i class="fa-solid fa-quote-left mr-2"></i> 固定资产定义
+                            </h3>
+                            <div class="text-sm text-gray-600 leading-relaxed bg-green-50 p-4 rounded-lg">
+                                <p class="mb-2">指使用期限超过一年的房屋、建筑物、机器、机械、运输工具以及其他与生产、经营有关的设备、器具、工具等。</p>
+                                <p class="font-bold text-green-800">
+                                    不属于生产、经营主要设备的物品，单位价值在 <span class="text-red-600 text-lg">2000元</span> 以上，且使用期限超过两年的，也应当作为固定资产。
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h3 class="font-bold text-green-900 mb-3 flex items-center">
+                                <i class="fa-solid fa-sitemap mr-2"></i> 管理职责分工
+                            </h3>
+                            <ul class="text-sm space-y-3">
+                                <li class="flex items-start">
+                                    <span class="font-bold text-gray-800 min-w-[5em]">企业管理部</span>
+                                    <span class="text-gray-600">牵头部门。负责制定制度、建立实物台账、审核投资项目、资产调剂、报废处置等。</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="font-bold text-gray-800 min-w-[5em]">财务管理部</span>
+                                    <span class="text-gray-600">价值管理部门。负责财务核算、计提折旧、资产清查盘点核对等。</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="font-bold text-gray-800 min-w-[5em]">使用部门</span>
+                                    <span class="text-gray-600">实物管理责任人。负责日常维护、保养，确保资产安全完整。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. 申购与验收流程 -->
+                <section id="purchase" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-blue-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">申购与验收流程</h2>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                        <!-- 申购流程图 -->
+                        <div class="mb-8">
+                            <h3 class="font-bold text-gray-800 mb-4 text-sm">购置审批流程</h3>
+                            <div class="flex flex-col md:flex-row justify-between items-start gap-4">
+                                <div class="flex-1 text-center group">
+                                    <div class="step-circle mx-auto">1</div>
+                                    <div class="text-xs font-bold text-gray-700">需求部门申请</div>
+                                    <p class="text-[10px] text-gray-500 mt-1">OA填报《固定资产购置申请表》</p>
+                                </div>
+                                <div class="hidden md:block w-8 h-8 flex items-center justify-center text-gray-300"><i class="fa-solid fa-arrow-right"></i></div>
+                                <div class="flex-1 text-center group">
+                                    <div class="step-circle mx-auto">2</div>
+                                    <div class="text-xs font-bold text-gray-700">归口部门初审</div>
+                                    <p class="text-[10px] text-gray-500 mt-1">企管部/财务部审核预算/库存</p>
+                                </div>
+                                <div class="hidden md:block w-8 h-8 flex items-center justify-center text-gray-300"><i class="fa-solid fa-arrow-right"></i></div>
+                                <div class="flex-1 text-center group">
+                                    <div class="step-circle mx-auto">3</div>
+                                    <div class="text-xs font-bold text-gray-700">分级审批</div>
+                                    <p class="text-[10px] text-gray-500 mt-1">分管领导/总经理/董事长审批</p>
+                                </div>
+                                <div class="hidden md:block w-8 h-8 flex items-center justify-center text-gray-300"><i class="fa-solid fa-arrow-right"></i></div>
+                                <div class="flex-1 text-center group">
+                                    <div class="step-circle mx-auto">4</div>
+                                    <div class="text-xs font-bold text-gray-700">实施采购</div>
+                                    <p class="text-[10px] text-gray-500 mt-1">按《采购管理办法》执行</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 p-3 bg-blue-50 text-xs text-blue-800 rounded border border-blue-100">
+                                <strong>审批权限：</strong><br>
+                                预算内：≤1万元(分管领导) → ≤10万元(总经理) → >10万元(董事长)<br>
+                                预算外：<2000元(分管领导) → <5万元(总经理) → <10万元(董事长) → ≥10万元(总办会/党委会/董事会)
+                            </div>
+                        </div>
+
+                        <!-- 验收流程 -->
+                        <div class="border-t border-gray-100 pt-6">
+                            <h3 class="font-bold text-gray-800 mb-4 text-sm">验收与入账</h3>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
+                                <div class="flex gap-3">
+                                    <div class="w-8 h-8 bg-gray-100 rounded flex items-center justify-center text-gray-500 shrink-0"><i class="fa-solid fa-check"></i></div>
+                                    <div>
+                                        <span class="font-bold text-gray-800">联合验收：</span>由采购部门、使用部门、企业管理部共同验收，填写《固定资产验收单》。
+                                    </div>
+                                </div>
+                                <div class="flex gap-3">
+                                    <div class="w-8 h-8 bg-gray-100 rounded flex items-center justify-center text-gray-500 shrink-0"><i class="fa-solid fa-tag"></i></div>
+                                    <div>
+                                        <span class="font-bold text-gray-800">建卡贴标：</span>企业管理部建立实物台账，打印资产标签，粘贴于资产明显位置。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. 日常管理与盘点 -->
+                <section id="daily" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-yellow-500 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">日常管理与盘点</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 变动管理 -->
+                        <div class="asset-card p-6">
+                            <h3 class="font-bold text-gray-800 mb-3 flex items-center">
+                                <i class="fa-solid fa-right-left text-yellow-600 mr-2"></i> 内部调拨与保管
+                            </h3>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li><strong>内部调拨：</strong>部门间转移资产，须填写《固定资产调拨单》，经双方部门负责人、企管部审核后办理。</li>
+                                <li><strong>个人保管：</strong>笔记本电脑、相机等个人保管资产，领用人需签字确认，离职时必须归还，丢失照价赔偿。</li>
+                                <li><strong>维护保养：</strong>使用部门负责日常维护，大型设备需建立运行维修记录。</li>
+                            </ul>
+                        </div>
+
+                        <!-- 盘点制度 -->
+                        <div class="asset-card p-6 border-t-yellow-500">
+                            <h3 class="font-bold text-gray-800 mb-3 flex items-center">
+                                <i class="fa-solid fa-list-check text-yellow-600 mr-2"></i> 清查盘点
+                            </h3>
+                            <div class="space-y-3 text-sm">
+                                <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                    <span>频次</span>
+                                    <span class="font-bold text-gray-900">每年至少一次（通常年末）</span>
+                                </div>
+                                <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                                    <span>组织者</span>
+                                    <span class="font-bold text-gray-900">财务部牵头，企管部配合</span>
+                                </div>
+                                <div>
+                                    <p class="font-bold text-gray-900 mb-1">盘点结果处理：</p>
+                                    <p class="text-gray-600 text-xs">做到账账、账卡、账实相符。对盘盈、盘亏资产，查明原因，分清责任，按规定程序审批后进行账务处理。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. 资产处置与报废 -->
+                <section id="disposal" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">资产处置与报废</h2>
+                        <span class="ml-3 px-2 py-1 bg-red-100 text-red-800 text-xs rounded font-bold">红线管理</span>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <div class="mb-4">
+                            <strong class="text-red-800 text-sm block mb-2">处置范围：</strong>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">闲置资产</span>
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">报废资产</span>
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">盘亏资产</span>
+                                <span class="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded">非正常损失</span>
+                            </div>
+                        </div>
+
+                        <div class="bg-red-50 p-4 rounded-lg border border-red-100">
+                            <h4 class="font-bold text-red-900 text-sm mb-3">处置流程与权限</h4>
+                            <div class="space-y-3 text-sm text-gray-700">
+                                <p><strong>1. 提出申请：</strong>使用部门提出处置申请，说明原因（技术淘汰、损坏无法修复等），企管部组织技术鉴定。</p>
+                                <p><strong>2. 资产评估：</strong>对于转让、出售的资产，原则上应进行资产评估，以评估价为参考底价。</p>
+                                <p><strong>3. 决策审批：</strong></p>
+                                <ul class="list-disc list-inside pl-4 text-xs text-gray-600">
+                                    <li><strong>低值/常规报废：</strong>按公司内部权限审批（分管/总经理/董事长）。</li>
+                                    <li><strong>重大资产处置：</strong>必须经总经理办公会、党委会、董事会研究决定。涉及国有资产转让的，需按国资监管规定进场交易。</li>
+                                </ul>
+                                <p><strong>4. 账务处理：</strong>财务部依据审批文件进行账务核销。严禁私自处置资产。</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. 管理责任与追究 -->
+                <section id="responsibility" class="scroll-mt-24">
+                    <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-gavel text-gray-700 text-xl"></i>
+                            <h3 class="font-bold text-gray-900">责任追究</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            因管理不善、玩忽职守、违反操作规程等原因，造成固定资产损坏、丢失的，视情节轻重，追究当事人和相关领导责任，并照价赔偿。
+                        </p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+                            <div class="bg-white p-3 rounded shadow-sm border-l-4 border-red-500">
+                                <strong>擅自处置：</strong>未经批准擅自变卖、出租、出借固定资产的，从严处理；构成犯罪的，移交司法机关。
+                            </div>
+                            <div class="bg-white p-3 rounded shadow-sm border-l-4 border-orange-500">
+                                <strong>隐瞒不报：</strong>盘盈、盘亏不及时上报，或弄虚作假的，追究部门负责人责任。
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="text-center text-gray-400 text-sm pt-8 pb-12">
+                    <p>— 资料来源：贵州联合民爆固定资产管理制度（2025版） —</p>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="bg-slate-900 text-white mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-slate-400">
+                <p class="mb-2">贵州联合纪委工作办公室 · 宣</p>
+                <p>&copy; 2025 All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 250) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            if (current) {
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href').includes(current)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script><!-- === 步骤4：保安脚本 (放在 /body 结束标签之前) === -->
+<script>
+    // 1. 账号名单
+    const userDatabase = [
+        { u: 'yehua',      p: '19891117', name: 'Yehua' },
+        { u: 'duannie',    p: '469273',   name: 'Duannie' },
+        { u: 'hejunxian',  p: '116828',   name: 'Hejunxian' },
+        { u: 'gewei',      p: '321870',   name: 'Gewei' },
+        { u: 'admin',      p: '123456',   name: '管理员' }
+    ];
+
+    // 2. 判断是哪种页面 (找 main-content 还是 root)
+    function getContentId() {
+        return document.getElementById('root') ? 'root' : 'main-content';
+    }
+
+    // 3. 页面一加载，先检查有没有“通行证”
+    document.addEventListener('DOMContentLoaded', function() {
+        if (localStorage.getItem('gzjw_logged_in') === 'true') {
+            // 有通行证：隐藏登录框，显示内容
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            const content = document.getElementById(getContentId());
+            if(content) content.classList.remove('hidden-mode');
+            
+            // 如果页面上有显示名字的地方，顺便更新一下
+            const savedName = localStorage.getItem('gzjw_user_name');
+            if(savedName && document.getElementById('display-name')) {
+                document.getElementById('display-name').innerText = savedName;
+            }
+        }
+    });
+
+    // 4. 点击登录按钮时触发
+    function attemptLogin() {
+        const u = document.getElementById('username-input').value;
+        const p = document.getElementById('password-input').value;
+        
+        // 去名单里查
+        const foundUser = userDatabase.find(user => user.u === u && user.p === p);
+
+        if (foundUser) {
+            // 查到了：发通行证，放行
+            localStorage.setItem('gzjw_logged_in', 'true');
+            localStorage.setItem('gzjw_user_name', foundUser.name);
+            
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            const content = document.getElementById(getContentId());
+            if(content) content.classList.remove('hidden-mode');
+            
+            // 更新名字
+            if(document.getElementById('display-name')) {
+                document.getElementById('display-name').innerText = foundUser.name;
+            }
+        } else {
+            // 没查到：报错
+            document.getElementById('login-error').classList.remove('hidden-mode');
+        }
+    }
+    
+    // 支持回车键登录
+    document.getElementById('password-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') attemptLogin();
+    });
+</script>
+</body>
+</html>

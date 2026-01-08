@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>会议管理 - 应知应会专题库</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --meet-blue: #1e40af;  /* 商务蓝 */
+            --meet-red: #991B1B;   /* 纪律红 */
+            --meet-gold: #B45309;  /* 重点金 */
+            --bg-light: #F8FAFC;   /* 极淡灰白 */
+            --text-main: #1e293b;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+            color: var(--text-main);
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* --- Hero Section: 高端会议室背景 --- */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, rgba(30, 58, 138, 0.9) 0%, rgba(153, 27, 27, 0.8) 100%),
+                        url('https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+            box-shadow: 0 4px 20px -5px rgba(0,0,0,0.3);
+        }
+
+        /* 玻璃质感卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--meet-gold);
+        }
+
+        /* 侧边导航 */
+        .nav-item.active {
+            color: var(--meet-blue);
+            border-left: 4px solid var(--meet-blue);
+            background-color: #EFF6FF; /* Blue-50 */
+            font-weight: 700;
+        }
+
+        /* 会议类型卡片 */
+        .type-card {
+            background: white;
+            border-top: 4px solid var(--meet-blue);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .type-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 流程节点样式 */
+        .process-step {
+            position: relative;
+            padding-left: 2rem;
+            border-left: 2px solid #e2e8f0;
+            padding-bottom: 2rem;
+        }
+        .process-step:last-child { border-left: none; }
+        .process-dot {
+            position: absolute;
+            left: -0.6rem;
+            top: 0;
+            width: 1.2rem;
+            height: 1.2rem;
+            border-radius: 50%;
+            background: white;
+            border: 4px solid var(--meet-blue);
+        }
+        /* === 步骤1：复制这部分到 style 里面 === */
+.login-bg-animate { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); position: relative; }
+.hidden-mode { display: none !important; } /* 这是最关键的：隐藏开关 */
+.fade-in { animation: fadeIn 0.5s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- === 步骤2：登录门禁代码 (放在 body 刚开始的地方) === -->
+<div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center login-bg-animate">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-t-4 border-red-900 z-10 fade-in mx-4">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">内部权限验证</h1>
+            <p class="text-sm text-gray-500 mt-1">请输入内部账号访问</p>
+        </div>
+        <!-- 错误提示 -->
+        <div id="login-error" class="hidden-mode mb-4 p-3 bg-red-50 text-red-700 text-sm rounded border border-red-100 flex items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i> <span>账号或密码错误</span>
+        </div>
+        <div class="space-y-5">
+            <input id="username-input" type="text" class="pl-4 block w-full rounded-lg border-gray-300 border p-2.5 outline-none" placeholder="账号">
+            <input id="password-input" type="password" class="pl-4 block w-full rounded-lg border-gray-300 border p-2.5 outline-none" placeholder="密码">
+            <button onclick="attemptLogin()" class="w-full bg-red-900 text-white py-3 rounded-lg hover:bg-red-800 transition shadow-lg">安全登录</button>
+        </div>
+    </div>
+</div>
+<div id="main-content" class="hidden-mode"></div>
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <div class="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center text-white shadow-md border-2 border-white">
+                        <i class="fa-solid fa-users-rectangle text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">会议管理制度</h1>
+                        <p class="text-xs text-gray-500 tracking-wider">应知应会 · 2025版</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="zsksy.html" class="text-gray-600 hover:text-blue-900 font-medium transition flex items-center gap-2">
+                        <i class="fa-solid fa-reply"></i> 返回专题库
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+                <div class="w-full lg:w-2/3">
+                    <span class="inline-block py-1 px-3 rounded-full bg-blue-800/50 border border-blue-400/50 text-xs font-bold mb-4 text-blue-100 backdrop-blur-sm">
+                        <i class="fa-solid fa-gavel mr-1"></i> 科学决策 · 规范高效
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold serif-font mb-6 leading-tight drop-shadow-xl">
+                        精简会议提效率<br>
+                        <span class="text-yellow-400">严肃纪律抓落实</span>
+                    </h2>
+                    <p class="text-blue-100 text-lg mb-10 leading-relaxed font-light max-w-2xl">
+                        规范公司会议管理，提高会议质量和效率，确保各项决策部署落地生根。坚持“开短会、讲短话、重实效”的原则。
+                    </p>
+                    
+                    <!-- 核心数据看板 -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-sitemap text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">会议分类</div>
+                            <div class="text-xs text-white/60">七大类</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-regular fa-clock text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">纪要时限</div>
+                            <div class="text-xs text-white/60">3个工作日内</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-mobile-screen-button text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">会场纪律</div>
+                            <div class="text-xs text-white/60">手机静音/震动</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-list-check text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">决策落实</div>
+                            <div class="text-xs text-white/60">督办反馈</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- 侧边导航 -->
+            <aside class="w-full lg:w-64 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul text-blue-800"></i> 内容导航
+                    </div>
+                    <nav class="flex flex-col text-sm py-2">
+                        <a href="#types" class="nav-item active px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            1. 会议分类与职责
+                        </a>
+                        <a href="#process" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            2. 会议组织流程
+                        </a>
+                        <a href="#discipline" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            3. 会场纪律 (六严禁)
+                        </a>
+                        <a href="#minutes" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            4. 纪要与督办
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- 主要内容区 -->
+            <main class="flex-1 space-y-12">
+
+                <!-- 1. 会议分类与职责 -->
+                <section id="types" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-blue-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">会议分类与层级</h2>
+                        <span class="ml-3 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">本部会议管理办法</span>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 年度/半年度工作会 -->
+                        <div class="type-card p-6 rounded-lg">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="font-bold text-gray-800 text-lg">年度/半年度工作会</h3>
+                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded font-bold">最高层级</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>召集人：</strong>总经理</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>频次：</strong>次年年初 / 年中</p>
+                            <p class="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                                总结工作、部署任务、签订责任状、表彰先进。所属企业主要负责人现场参会。
+                            </p>
+                        </div>
+
+                        <!-- 经营形势分析会 -->
+                        <div class="type-card p-6 rounded-lg border-t-yellow-500">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="font-bold text-gray-800 text-lg">经营形势分析会</h3>
+                                <span class="bg-yellow-100 text-yellow-800 text-xs px-2 py-1 rounded font-bold">每两月</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>召集人：</strong>总经理</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>时间：</strong>双月次月第一周</p>
+                            <p class="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                                坚持问题导向，分析指标完成情况，研究解决经营短板。材料需提前报送。
+                            </p>
+                        </div>
+
+                        <!-- 月度经营会议 -->
+                        <div class="type-card p-6 rounded-lg border-t-green-500">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="font-bold text-gray-800 text-lg">月度经营会议</h3>
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded font-bold">每月</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>召集人：</strong>总经理</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>时间：</strong>次月第一周</p>
+                            <p class="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                                检查月度工作，通报指标，安排下月重点。包含专项分享环节（表彰与鞭策）。
+                            </p>
+                        </div>
+
+                        <!-- 总经理办公会 -->
+                        <div class="type-card p-6 rounded-lg border-t-red-600">
+                            <div class="flex justify-between items-start mb-3">
+                                <h3 class="font-bold text-gray-800 text-lg">总经理办公会</h3>
+                                <span class="bg-red-100 text-red-800 text-xs px-2 py-1 rounded font-bold">决策机构</span>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-2"><strong>召集人：</strong>总经理</p>
+                            <p class="text-sm text-gray-600 mb-2"><strong>频次：</strong>根据需要随时召开</p>
+                            <p class="text-xs text-gray-500 bg-gray-50 p-2 rounded">
+                                研究落实党委会/董事会决议，决策日常经营重大事项（如大额资金使用、人事调整建议等）。
+                            </p>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 flex gap-4">
+                        <div class="flex-1 bg-gray-50 p-4 rounded border border-gray-200">
+                            <h4 class="font-bold text-gray-800 text-sm mb-2">其他会议类型</h4>
+                            <ul class="text-xs text-gray-600 list-disc list-inside space-y-1">
+                                <li><strong>专题会议：</strong>解决特定问题，由分管领导召集。</li>
+                                <li><strong>部门协调会：</strong>跨部门协同，牵头部门召集。</li>
+                                <li><strong>部门周例会：</strong>部门内部总结计划，每周一次。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. 会议组织流程 -->
+                <section id="process" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-teal-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">会议组织流程</h2>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                        <div class="ml-4">
+                            <div class="process-step">
+                                <div class="process-dot"></div>
+                                <h4 class="font-bold text-gray-800">1. 议题征集与审批</h4>
+                                <p class="text-sm text-gray-600 mt-1">
+                                    主办部门提前准备议题材料（需分管领导审核）。涉及决策事项需完善前置程序（如法律审核、合规审查）。
+                                    <br><span class="text-xs text-red-500">注：严禁临时动议。</span>
+                                </p>
+                            </div>
+                            <div class="process-step">
+                                <div class="process-dot"></div>
+                                <h4 class="font-bold text-gray-800">2. 会议通知</h4>
+                                <p class="text-sm text-gray-600 mt-1">
+                                    综合办公室（或主办部门）提前发送通知，明确时间、地点、议题、参会人员。
+                                    <br><span class="text-xs text-gray-400">材料一般应提前送达参会领导阅研。</span>
+                                </p>
+                            </div>
+                            <div class="process-step">
+                                <div class="process-dot"></div>
+                                <h4 class="font-bold text-gray-800">3. 会议召开</h4>
+                                <p class="text-sm text-gray-600 mt-1">
+                                    主持人主持，汇报人简明扼要（多用数据、图表），参会人员充分讨论，主持人总结形成决议。
+                                </p>
+                            </div>
+                            <div class="process-step">
+                                <div class="process-dot"></div>
+                                <h4 class="font-bold text-gray-800">4. 纪要签发与归档</h4>
+                                <p class="text-sm text-gray-600 mt-1">
+                                    会议结束后 <span class="font-bold text-blue-600">3个工作日内</span> 完成纪要编制。
+                                    按权限报主持人或主要领导签发。纪要及会议材料交档案室归档。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. 会场纪律 (六严禁) -->
+                <section id="discipline" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">会场纪律“六要求”</h2>
+                        <span class="ml-3 px-2 py-1 bg-red-100 text-red-800 text-xs rounded font-bold">红线管理</span>
+                    </div>
+
+                    <div class="bg-red-50 rounded-xl p-6 border border-red-100">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-red-200 text-red-800 flex items-center justify-center font-bold shrink-0">1</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-sm">严守时间</h4>
+                                    <p class="text-xs text-gray-600">提前 <span class="font-bold">5分钟</span> 入场，不迟到早退。不能参会须履行请假手续。</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-red-200 text-red-800 flex items-center justify-center font-bold shrink-0">2</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-sm">通讯管控</h4>
+                                    <p class="text-xs text-gray-600">手机调至 <span class="font-bold">静音或震动</span>。严禁在会场内接打电话，确有急事应出场接听。</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-red-200 text-red-800 flex items-center justify-center font-bold shrink-0">3</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-sm">会议秩序</h4>
+                                    <p class="text-xs text-gray-600">严禁交头接耳、随意走动、频繁出入。前排有空位应优先就座。</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-red-200 text-red-800 flex items-center justify-center font-bold shrink-0">4</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-sm">发言规范</h4>
+                                    <p class="text-xs text-gray-600">未经允许不随意发言。发言时使用普通话，表达清晰，言简意赅。</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-red-200 text-red-800 flex items-center justify-center font-bold shrink-0">5</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-sm">保密要求</h4>
+                                    <p class="text-xs text-gray-600">未公开的会议内容（人事、重大经营决策等）严禁外传。涉密会议严禁录音录像。</p>
+                                </div>
+                            </div>
+                            <div class="flex gap-3">
+                                <div class="w-8 h-8 rounded-full bg-red-200 text-red-800 flex items-center justify-center font-bold shrink-0">6</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-sm">会后清场</h4>
+                                    <p class="text-xs text-gray-600">带走个人物品及垃圾，座椅归位，保持会场整洁。</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. 纪要与督办 -->
+                <section id="minutes" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-indigo-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">会议纪要与督办落实</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                            <h3 class="font-bold text-indigo-900 mb-3 flex items-center">
+                                <i class="fa-solid fa-file-pen mr-2"></i> 会议纪要规范
+                            </h3>
+                            <ul class="space-y-3 text-sm text-gray-600">
+                                <li class="flex justify-between border-b border-gray-100 pb-2">
+                                    <span>完成时限</span>
+                                    <span class="font-bold text-indigo-600">3个工作日内</span>
+                                </li>
+                                <li class="flex justify-between border-b border-gray-100 pb-2">
+                                    <span>编号规则</span>
+                                    <span>按年度统一编期（如：第X期）</span>
+                                </li>
+                                <li class="flex justify-between border-b border-gray-100 pb-2">
+                                    <span>必备要素</span>
+                                    <span>时间、地点、主持、参会、议题、决定</span>
+                                </li>
+                                <li class="text-xs text-gray-400 pt-1">
+                                    注：董事会纪要由董事会办公室负责；总办会/专题会由综合办公室负责。
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-white p-6 rounded-xl border border-gray-200 shadow-sm">
+                            <h3 class="font-bold text-green-800 mb-3 flex items-center">
+                                <i class="fa-solid fa-clipboard-check mr-2"></i> 决议督办闭环
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-1 h-8 bg-green-500 rounded"></div>
+                                    <div class="text-sm">
+                                        <div class="font-bold text-gray-800">任务分解</div>
+                                        <div class="text-xs text-gray-500">将会议决议分解为具体任务，明确责任部门、责任人、完成时限。</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-1 h-8 bg-green-500 rounded"></div>
+                                    <div class="text-sm">
+                                        <div class="font-bold text-gray-800">跟踪反馈</div>
+                                        <div class="text-xs text-gray-500">综合办公室定期收集执行进度，重要事项列入督办台账。</div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <div class="w-1 h-8 bg-green-500 rounded"></div>
+                                    <div class="text-sm">
+                                        <div class="font-bold text-gray-800">通报考核</div>
+                                        <div class="text-xs text-gray-500">落实情况纳入月度/年度考核。执行不力者将被问责。</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="text-center text-gray-400 text-sm pt-8 pb-12">
+                    <p>— 资料来源：贵州联合民爆本部会议管理办法（2025版） —</p>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="bg-slate-900 text-white mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-slate-400">
+                <p class="mb-2">贵州联合纪委工作办公室 · 宣</p>
+                <p>&copy; 2025 All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 250) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            if (current) {
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href').includes(current)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+    <!-- === 步骤4：保安脚本 (放在 /body 结束标签之前) === -->
+<script>
+    // 1. 账号名单
+    const userDatabase = [
+        { u: 'yehua',      p: '19891117', name: 'Yehua' },
+        { u: 'duannie',    p: '469273',   name: 'Duannie' },
+        { u: 'hejunxian',  p: '116828',   name: 'Hejunxian' },
+        { u: 'gewei',      p: '321870',   name: 'Gewei' },
+        { u: 'admin',      p: '123456',   name: '管理员' }
+    ];
+
+    // 2. 判断是哪种页面 (找 main-content 还是 root)
+    function getContentId() {
+        return document.getElementById('root') ? 'root' : 'main-content';
+    }
+
+    // 3. 页面一加载，先检查有没有“通行证”
+    document.addEventListener('DOMContentLoaded', function() {
+        if (localStorage.getItem('gzjw_logged_in') === 'true') {
+            // 有通行证：隐藏登录框，显示内容
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            const content = document.getElementById(getContentId());
+            if(content) content.classList.remove('hidden-mode');
+            
+            // 如果页面上有显示名字的地方，顺便更新一下
+            const savedName = localStorage.getItem('gzjw_user_name');
+            if(savedName && document.getElementById('display-name')) {
+                document.getElementById('display-name').innerText = savedName;
+            }
+        }
+    });
+
+    // 4. 点击登录按钮时触发
+    function attemptLogin() {
+        const u = document.getElementById('username-input').value;
+        const p = document.getElementById('password-input').value;
+        
+        // 去名单里查
+        const foundUser = userDatabase.find(user => user.u === u && user.p === p);
+
+        if (foundUser) {
+            // 查到了：发通行证，放行
+            localStorage.setItem('gzjw_logged_in', 'true');
+            localStorage.setItem('gzjw_user_name', foundUser.name);
+            
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            const content = document.getElementById(getContentId());
+            if(content) content.classList.remove('hidden-mode');
+            
+            // 更新名字
+            if(document.getElementById('display-name')) {
+                document.getElementById('display-name').innerText = foundUser.name;
+            }
+        } else {
+            // 没查到：报错
+            document.getElementById('login-error').classList.remove('hidden-mode');
+        }
+    }
+    
+    // 支持回车键登录
+    document.getElementById('password-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') attemptLogin();
+    });
+</script>
+</body>
+</html>

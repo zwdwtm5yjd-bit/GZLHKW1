@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>车辆管理 - 应知应会专题库</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --car-blue: #0369a1;   /* 交通蓝 */
+            --car-dark: #0c4a6e;   /* 深海蓝 */
+            --car-gold: #B45309;   /* 警示金 */
+            --car-red: #991B1B;    /* 红线红 */
+            --bg-road: #F0F9FF;    /* 极淡蓝背景 */
+            --text-main: #164e63;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-road);
+            scroll-behavior: smooth;
+            color: var(--text-main);
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* --- Hero Section: 车队出行背景 --- */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, rgba(12, 74, 110, 0.9) 0%, rgba(3, 105, 161, 0.8) 100%),
+                        url('https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+            box-shadow: 0 4px 20px -5px rgba(0,0,0,0.3);
+        }
+
+        /* 玻璃质感卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--car-gold);
+        }
+
+        /* 侧边导航 */
+        .nav-item.active {
+            color: var(--car-blue);
+            border-left: 4px solid var(--car-blue);
+            background-color: #E0F2FE; /* Sky-100 */
+            font-weight: 700;
+        }
+
+        /* 仪表盘风格卡片 */
+        .dash-card {
+            background: white;
+            border-top: 4px solid var(--car-blue);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            transition: transform 0.2s;
+        }
+        .dash-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 红绿灯圆点 */
+        .traffic-light {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        .light-red { background-color: #ef4444; box-shadow: 0 0 5px #ef4444; }
+        .light-green { background-color: #22c55e; box-shadow: 0 0 5px #22c55e; }
+        .light-yellow { background-color: #eab308; box-shadow: 0 0 5px #eab308; }
+        /* === 步骤1：复制这部分到 style 里面 === */
+.login-bg-animate { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); position: relative; }
+.hidden-mode { display: none !important; } /* 这是最关键的：隐藏开关 */
+.fade-in { animation: fadeIn 0.5s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- === 步骤2：登录门禁代码 (放在 body 刚开始的地方) === -->
+<div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center login-bg-animate">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-t-4 border-red-900 z-10 fade-in mx-4">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">内部权限验证</h1>
+            <p class="text-sm text-gray-500 mt-1">请输入内部账号访问</p>
+        </div>
+        <!-- 错误提示 -->
+        <div id="login-error" class="hidden-mode mb-4 p-3 bg-red-50 text-red-700 text-sm rounded border border-red-100 flex items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i> <span>账号或密码错误</span>
+        </div>
+        <div class="space-y-5">
+            <input id="username-input" type="text" class="pl-4 block w-full rounded-lg border-gray-300 border p-2.5 outline-none" placeholder="账号">
+            <input id="password-input" type="password" class="pl-4 block w-full rounded-lg border-gray-300 border p-2.5 outline-none" placeholder="密码">
+            <button onclick="attemptLogin()" class="w-full bg-red-900 text-white py-3 rounded-lg hover:bg-red-800 transition shadow-lg">安全登录</button>
+        </div>
+    </div>
+</div>
+<div id="main-content" class="hidden-mode"></div>
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <div class="w-10 h-10 bg-blue-900 rounded-full flex items-center justify-center text-white shadow-md border-2 border-sky-300">
+                        <i class="fa-solid fa-car-side text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">公务车辆管理</h1>
+                        <p class="text-xs text-gray-500 tracking-wider">应知应会 · 2025版</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="zsksy.html" class="text-gray-600 hover:text-blue-900 font-medium transition flex items-center gap-2">
+                        <i class="fa-solid fa-reply"></i> 返回专题库
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+                <div class="w-full lg:w-2/3">
+                    <span class="inline-block py-1 px-3 rounded-full bg-sky-900/50 border border-sky-400/50 text-xs font-bold mb-4 text-sky-200 backdrop-blur-sm">
+                        <i class="fa-solid fa-road mr-1"></i> 集中管理 · 统一调度 · 保障安全
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold serif-font mb-6 leading-tight drop-shadow-xl">
+                        规范用车秩序<br>
+                        <span class="text-yellow-400">严守行车安全底线</span>
+                    </h2>
+                    <p class="text-sky-100 text-lg mb-10 leading-relaxed font-light max-w-2xl">
+                        严格执行“先申请、后派车”制度，落实“一车一卡”管理，严禁公车私用，确保公务出行高效、节约、合规。
+                    </p>
+                    
+                    <!-- 核心数据看板 -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-file-signature text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">派车原则</div>
+                            <div class="text-xs text-white/60">先急后缓/同向拼车</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-screwdriver-wrench text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">维修审批</div>
+                            <div class="text-xs text-white/60">定点维修/分级审批</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-gas-pump text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">油卡管理</div>
+                            <div class="text-xs text-white/60">一车一卡/车号绑定</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-triangle-exclamation text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">严禁酒驾</div>
+                            <div class="text-xs text-white/60">一经发现/解除合同</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- 侧边导航 -->
+            <aside class="w-full lg:w-64 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul text-sky-900"></i> 内容导航
+                    </div>
+                    <nav class="flex flex-col text-sm py-2">
+                        <a href="#dispatch" class="nav-item active px-5 py-3 hover:bg-sky-50 transition block border-l-4 border-transparent">
+                            1. 用车申请与调度
+                        </a>
+                        <a href="#maintenance" class="nav-item px-5 py-3 hover:bg-sky-50 transition block border-l-4 border-transparent">
+                            2. 维修保养规范
+                        </a>
+                        <a href="#cost" class="nav-item px-5 py-3 hover:bg-sky-50 transition block border-l-4 border-transparent">
+                            3. 费用与保险管理
+                        </a>
+                        <a href="#discipline" class="nav-item px-5 py-3 hover:bg-sky-50 transition block border-l-4 border-transparent">
+                            4. 驾驶员纪律与处罚
+                        </a>
+                        <a href="#accident" class="nav-item px-5 py-3 hover:bg-sky-50 transition block border-l-4 border-transparent">
+                            5. 事故与违章处理
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- 主要内容区 -->
+            <main class="flex-1 space-y-12">
+
+                <!-- 1. 用车申请与调度 -->
+                <section id="dispatch" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-sky-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">用车申请与调度</h2>
+                        <span class="ml-3 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">制度编号：贵州联合〔2025〕71 号</span>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <div class="mb-6 bg-sky-50 p-4 rounded border border-sky-100">
+                            <h4 class="font-bold text-sky-900 mb-2 flex items-center">
+                                <i class="fa-solid fa-ban text-red-500 mr-2"></i> 不予派车范围
+                            </h4>
+                            <p class="text-sm text-gray-700">
+                                公司附近（观山湖区）、地铁线路能到达的地方，原则上不派车。已实行社会化出行保障的，在贵阳市区（三县一市除外）自行出行。
+                            </p>
+                        </div>
+
+                        <div class="relative">
+                            <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+                            <div class="space-y-6 ml-10">
+                                <div class="relative">
+                                    <div class="absolute -left-[2.35rem] w-8 h-8 bg-blue-500 rounded-full text-white flex items-center justify-center font-bold text-sm">1</div>
+                                    <h4 class="font-bold text-gray-800">申请 (OA填报)</h4>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        使用部门提前规划，填报《用车申请审批单》。紧急情况可先口头申请，<span class="text-red-600 font-bold">1日内</span>补办手续。
+                                    </p>
+                                </div>
+                                <div class="relative">
+                                    <div class="absolute -left-[2.35rem] w-8 h-8 bg-blue-500 rounded-full text-white flex items-center justify-center font-bold text-sm">2</div>
+                                    <h4 class="font-bold text-gray-800">审批 (分级审核)</h4>
+                                    <div class="text-sm text-gray-600 mt-1 bg-gray-50 p-2 rounded border border-gray-100">
+                                        <div class="flex justify-between border-b border-gray-200 pb-1 mb-1">
+                                            <span>贵阳市范围内</span>
+                                            <span class="font-bold">部门负责人审核</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span>贵阳市以外</span>
+                                            <span class="font-bold text-blue-700">分管领导批准</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative">
+                                    <div class="absolute -left-[2.35rem] w-8 h-8 bg-green-500 rounded-full text-white flex items-center justify-center font-bold text-sm">3</div>
+                                    <h4 class="font-bold text-gray-800">调度与回车</h4>
+                                    <p class="text-sm text-gray-600 mt-1">
+                                        综合办公室统一调度。任务结束后，车辆须停放至<span class="text-red-600 font-bold">公司指定地点</span>，严禁在外过夜。
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. 维修保养规范 -->
+                <section id="maintenance" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-yellow-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">维修保养规范</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="dash-card p-6 rounded-lg">
+                            <h3 class="font-bold text-gray-800 mb-3 flex items-center">
+                                <i class="fa-solid fa-wrench text-yellow-600 mr-2"></i> 定点维修管理
+                            </h3>
+                            <ul class="text-sm text-gray-600 space-y-2">
+                                <li class="flex items-start">
+                                    <span class="text-yellow-500 mr-2">●</span>
+                                    <span>必须在公司指定的<strong>定点维修厂</strong>进行，该厂须具备二类以上资质。</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-yellow-500 mr-2">●</span>
+                                    <span>异地急修：需电话请示，批准后就近维修，且必须<strong>拍照取证</strong>并带回旧件。</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="dash-card p-6 rounded-lg border-t-red-500">
+                            <h3 class="font-bold text-gray-800 mb-3 flex items-center">
+                                <i class="fa-solid fa-file-invoice-dollar text-red-600 mr-2"></i> 维修审批权限
+                            </h3>
+                            <div class="bg-red-50 p-3 rounded text-sm text-gray-700">
+                                <div class="mb-2">
+                                    <strong>< 3000 元：</strong><br>
+                                    管理员审核 → 部门负责人审核 → <span class="text-red-700">部门主要负责人批准</span>
+                                </div>
+                                <div>
+                                    <strong>≥ 3000 元：</strong><br>
+                                    管理员审核 → 部门负责人审核 → 主要负责人审核 → <span class="text-red-700 font-bold">分管领导批准</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. 费用与保险管理 -->
+                <section id="cost" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-green-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">费用与保险管理</h2>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="grid md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-gray-100">
+                            <!-- 油卡 -->
+                            <div class="p-6 text-center">
+                                <i class="fa-solid fa-gas-pump text-3xl text-green-600 mb-3"></i>
+                                <h4 class="font-bold text-gray-800 mb-2">油卡管理</h4>
+                                <p class="text-xs text-gray-500">
+                                    实行<strong>“一车一卡”</strong>，卡号与车牌绑定。加油时据实记录里程与金额。
+                                </p>
+                            </div>
+                            <!-- ETC -->
+                            <div class="p-6 text-center">
+                                <i class="fa-solid fa-road text-3xl text-green-600 mb-3"></i>
+                                <h4 class="font-bold text-gray-800 mb-2">通行卡(ETC)</h4>
+                                <p class="text-xs text-gray-500">
+                                    统一配置ETC。无ETC路段凭票据实报销。严禁随意拆卸、压折。
+                                </p>
+                            </div>
+                            <!-- 保险 -->
+                            <div class="p-6 text-center">
+                                <i class="fa-solid fa-shield-halved text-3xl text-green-600 mb-3"></i>
+                                <h4 class="font-bold text-gray-800 mb-2">保险配置</h4>
+                                <p class="text-xs text-gray-500 text-left pl-4">
+                                    1. 第三者责任险 ≥ <strong>100万</strong><br>
+                                    2. 司乘险 ≥ <strong>10万/座</strong><br>
+                                    3. 包含医保外用药险
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. 驾驶员纪律与处罚 -->
+                <section id="discipline" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">驾驶员纪律与处罚</h2>
+                        <span class="ml-3 px-2 py-1 bg-red-100 text-red-800 text-xs rounded font-bold">负面清单</span>
+                    </div>
+
+                    <div class="bg-red-50 rounded-xl p-6 border border-red-100">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <h4 class="font-bold text-red-900 mb-3 border-b border-red-200 pb-1">严禁行为 (50元/次)</h4>
+                                <ul class="text-sm text-gray-700 space-y-2">
+                                    <li><i class="traffic-light light-red"></i> 未携带证件 (驾驶证/行驶证)</li>
+                                    <li><i class="traffic-light light-red"></i> 车容脏乱差</li>
+                                    <li><i class="traffic-light light-red"></i> 不按规定着装/仪容不整</li>
+                                    <li><i class="traffic-light light-red"></i> 未按规定停放车辆</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-red-900 mb-3 border-b border-red-200 pb-1">重罚行为</h4>
+                                <ul class="text-sm text-gray-700 space-y-2">
+                                    <li><i class="traffic-light light-red"></i> <strong>未锁车门/窗：</strong>罚款 100元/次</li>
+                                    <li><i class="traffic-light light-red"></i> <strong>单方责任事故(损失≤5000)：</strong>罚款 100元</li>
+                                    <li><i class="traffic-light light-red"></i> <strong>负主责/全责事故：</strong>罚款 500元</li>
+                                    <li><i class="traffic-light light-red"></i> <strong>酒后驾车：</strong>一律解除劳动合同</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. 事故与违章处理 -->
+                <section id="accident" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-gray-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">事故与违章处理</h2>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <div class="flex gap-4">
+                            <div class="shrink-0 bg-gray-100 p-3 rounded h-fit">
+                                <i class="fa-solid fa-car-burst text-2xl text-gray-600"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-gray-800 mb-2">违章处理</h4>
+                                <p class="text-sm text-gray-600 mb-4">
+                                    驾驶员因违反交通法规导致的<strong>罚款及扣分</strong>，均由驾驶员<span class="text-red-600 font-bold">自行承担</span>。
+                                </p>
+                                
+                                <h4 class="font-bold text-gray-800 mb-2">事故处置流程</h4>
+                                <ol class="list-decimal list-inside text-sm text-gray-600 space-y-1">
+                                    <li>立即停车，开启危险报警闪光灯。</li>
+                                    <li>抢救伤员（如有），保护现场。</li>
+                                    <li>立即报警（110/122）并通知保险公司。</li>
+                                    <li>立即报告公司公务车辆管理员及部门领导。</li>
+                                    <li><strong>严禁</strong>私下“了难”或逃逸。</li>
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="text-center text-gray-400 text-sm pt-8 pb-12">
+                    <p>— 资料来源：贵州联合民爆公务车辆管理办法（2025版） —</p>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="bg-slate-900 text-white mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-slate-400">
+                <p class="mb-2">贵州联合纪委工作办公室 · 宣</p>
+                <p>&copy; 2025 All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 250) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            if (current) {
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href').includes(current)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+    <!-- === 步骤4：保安脚本 (放在 /body 结束标签之前) === -->
+<script>
+    // 1. 账号名单
+    const userDatabase = [
+        { u: 'yehua',      p: '19891117', name: 'Yehua' },
+        { u: 'duannie',    p: '469273',   name: 'Duannie' },
+        { u: 'hejunxian',  p: '116828',   name: 'Hejunxian' },
+        { u: 'gewei',      p: '321870',   name: 'Gewei' },
+        { u: 'admin',      p: '123456',   name: '管理员' }
+    ];
+
+    // 2. 判断是哪种页面 (找 main-content 还是 root)
+    function getContentId() {
+        return document.getElementById('root') ? 'root' : 'main-content';
+    }
+
+    // 3. 页面一加载，先检查有没有“通行证”
+    document.addEventListener('DOMContentLoaded', function() {
+        if (localStorage.getItem('gzjw_logged_in') === 'true') {
+            // 有通行证：隐藏登录框，显示内容
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            const content = document.getElementById(getContentId());
+            if(content) content.classList.remove('hidden-mode');
+            
+            // 如果页面上有显示名字的地方，顺便更新一下
+            const savedName = localStorage.getItem('gzjw_user_name');
+            if(savedName && document.getElementById('display-name')) {
+                document.getElementById('display-name').innerText = savedName;
+            }
+        }
+    });
+
+    // 4. 点击登录按钮时触发
+    function attemptLogin() {
+        const u = document.getElementById('username-input').value;
+        const p = document.getElementById('password-input').value;
+        
+        // 去名单里查
+        const foundUser = userDatabase.find(user => user.u === u && user.p === p);
+
+        if (foundUser) {
+            // 查到了：发通行证，放行
+            localStorage.setItem('gzjw_logged_in', 'true');
+            localStorage.setItem('gzjw_user_name', foundUser.name);
+            
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            const content = document.getElementById(getContentId());
+            if(content) content.classList.remove('hidden-mode');
+            
+            // 更新名字
+            if(document.getElementById('display-name')) {
+                document.getElementById('display-name').innerText = foundUser.name;
+            }
+        } else {
+            // 没查到：报错
+            document.getElementById('login-error').classList.remove('hidden-mode');
+        }
+    }
+    
+    // 支持回车键登录
+    document.getElementById('password-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') attemptLogin();
+    });
+</script>
+</body>
+</html>

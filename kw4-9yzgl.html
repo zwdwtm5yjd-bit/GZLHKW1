@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>印章管理 - 应知应会专题库</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --seal-red: #b91c1c;   /* 印泥红 */
+            --seal-dark: #7f1d1d;  /* 深红 */
+            --seal-gold: #B45309;  /* 权威金 */
+            --bg-paper: #FDFBF7;   /* 宣纸白 */
+            --text-main: #4a0404;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-paper);
+            scroll-behavior: smooth;
+            color: var(--text-main);
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* --- Hero Section: 印章背景 --- */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, rgba(185, 28, 28, 0.9) 0%, rgba(127, 29, 29, 0.8) 100%),
+                        url('https://images.unsplash.com/photo-1595079676339-1534801ad6cf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+            box-shadow: 0 4px 20px -5px rgba(0,0,0,0.3);
+        }
+
+        /* 玻璃质感卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--seal-gold);
+        }
+
+        /* 侧边导航 */
+        .nav-item.active {
+            color: var(--seal-red);
+            border-left: 4px solid var(--seal-red);
+            background-color: #FEF2F2; /* Red-50 */
+            font-weight: 700;
+        }
+
+        /* 印章形状装饰 */
+        .seal-circle {
+            width: 3rem;
+            height: 3rem;
+            border: 2px solid var(--seal-red);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--seal-red);
+            font-weight: bold;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 红色印记边框 */
+        .stamp-border {
+            border: 1px solid #fca5a5;
+            box-shadow: 0 0 0 1px #fecaca inset;
+            position: relative;
+        }
+        .stamp-border::after {
+            content: "机密";
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            background: white;
+            color: var(--seal-red);
+            font-size: 10px;
+            padding: 0 5px;
+            font-weight: bold;
+            display: none; /* 默认隐藏 */
+        }
+        /* === 步骤1：复制这部分到 style 里面 === */
+.login-bg-animate { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); position: relative; }
+.hidden-mode { display: none !important; } /* 这是最关键的：隐藏开关 */
+.fade-in { animation: fadeIn 0.5s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- === 步骤2：登录门禁代码 (放在 body 刚开始的地方) === -->
+<div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center login-bg-animate">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-t-4 border-red-900 z-10 fade-in mx-4">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">内部权限验证</h1>
+            <p class="text-sm text-gray-500 mt-1">请输入内部账号访问</p>
+        </div>
+        <!-- 错误提示 -->
+        <div id="login-error" class="hidden-mode mb-4 p-3 bg-red-50 text-red-700 text-sm rounded border border-red-100 flex items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i> <span>账号或密码错误</span>
+        </div>
+        <div class="space-y-5">
+            <input id="username-input" type="text" class="pl-4 block w-full rounded-lg border-gray-300 border p-2.5 outline-none" placeholder="账号">
+            <input id="password-input" type="password" class="pl-4 block w-full rounded-lg border-gray-300 border p-2.5 outline-none" placeholder="密码">
+            <button onclick="attemptLogin()" class="w-full bg-red-900 text-white py-3 rounded-lg hover:bg-red-800 transition shadow-lg">安全登录</button>
+        </div>
+    </div>
+</div>
+<div id="main-content" class="hidden-mode"></div>
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <div class="w-10 h-10 bg-red-800 rounded-full flex items-center justify-center text-white shadow-md border-2 border-red-200">
+                        <i class="fa-solid fa-stamp text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">印章管理制度</h1>
+                        <p class="text-xs text-gray-500 tracking-wider">应知应会 · 2025版</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="zsksy.html" class="text-gray-600 hover:text-red-900 font-medium transition flex items-center gap-2">
+                        <i class="fa-solid fa-reply"></i> 返回专题库
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+                <div class="w-full lg:w-2/3">
+                    <span class="inline-block py-1 px-3 rounded-full bg-red-900/50 border border-red-400/50 text-xs font-bold mb-4 text-red-100 backdrop-blur-sm">
+                        <i class="fa-solid fa-file-signature mr-1"></i> 权责统一 · 规范用印
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold serif-font mb-6 leading-tight drop-shadow-xl">
+                        管好“印把子”<br>
+                        <span class="text-yellow-400">把好风险关</span>
+                    </h2>
+                    <p class="text-red-100 text-lg mb-10 leading-relaxed font-light max-w-2xl">
+                        印章是公司对外行使权利的标志。实行“分级管理、专人保管、审批用印”原则，严禁违规使用，确保印信安全。
+                    </p>
+                    
+                    <!-- 核心数据看板 -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-layer-group text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">分级管理</div>
+                            <div class="text-xs text-white/60">公章/合同章/财务章</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-laptop-file text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">审批模式</div>
+                            <div class="text-xs text-white/60">OA线上审批</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-user-lock text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">保管红线</div>
+                            <div class="text-xs text-white/60">印章/钥匙分离</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-suitcase text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">外带要求</div>
+                            <div class="text-xs text-white/60">双人同行/随用随还</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- 侧边导航 -->
+            <aside class="w-full lg:w-64 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul text-red-900"></i> 内容导航
+                    </div>
+                    <nav class="flex flex-col text-sm py-2">
+                        <a href="#types" class="nav-item active px-5 py-3 hover:bg-red-50 transition block border-l-4 border-transparent">
+                            1. 印章分类与保管
+                        </a>
+                        <a href="#approval" class="nav-item px-5 py-3 hover:bg-red-50 transition block border-l-4 border-transparent">
+                            2. 审批权限与流程
+                        </a>
+                        <a href="#custody" class="nav-item px-5 py-3 hover:bg-red-50 transition block border-l-4 border-transparent">
+                            3. 保管与使用规范
+                        </a>
+                        <a href="#outside" class="nav-item px-5 py-3 hover:bg-red-50 transition block border-l-4 border-transparent">
+                            4. 外带与特殊用印
+                        </a>
+                        <a href="#responsibility" class="nav-item px-5 py-3 hover:bg-red-50 transition block border-l-4 border-transparent">
+                            5. 责任追究
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- 主要内容区 -->
+            <main class="flex-1 space-y-12">
+
+                <!-- 1. 印章分类与保管 -->
+                <section id="types" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">印章分类与保管职责</h2>
+                        <span class="ml-3 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">分级分类原则</span>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <table class="w-full text-sm text-left">
+                            <thead class="bg-red-50 text-red-900 font-bold">
+                                <tr>
+                                    <th class="px-6 py-4 w-1/4">印章类型</th>
+                                    <th class="px-6 py-4">保管部门/责任人</th>
+                                    <th class="px-6 py-4">适用范围</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-100">
+                                <tr>
+                                    <td class="px-6 py-4 font-bold">公司公章</td>
+                                    <td class="px-6 py-4 text-gray-600">综合办公室</td>
+                                    <td class="px-6 py-4 text-gray-500">以公司名义发文、上报材料、证明文件等。</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-bold">法定代表人名章</td>
+                                    <td class="px-6 py-4 text-gray-600">综合办公室 (行政专用)<br>财务管理部 (财务专用)</td>
+                                    <td class="px-6 py-4 text-gray-500">授权委托书、申报材料、银行票据等。</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-bold">合同专用章</td>
+                                    <td class="px-6 py-4 text-gray-600">综合办公室</td>
+                                    <td class="px-6 py-4 text-gray-500">对外签订合同、协议。</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-bold">财务专用章</td>
+                                    <td class="px-6 py-4 text-gray-600">财务管理部</td>
+                                    <td class="px-6 py-4 text-gray-500">银行结算、税务申报、财务报表等。</td>
+                                </tr>
+                                <tr>
+                                    <td class="px-6 py-4 font-bold">党/纪/工/团印章</td>
+                                    <td class="px-6 py-4 text-gray-600">党群工作部/纪委办</td>
+                                    <td class="px-6 py-4 text-gray-500">党务、纪检、工会、团委相关业务。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="bg-yellow-50 p-3 text-xs text-yellow-800 border-t border-yellow-100">
+                            <i class="fa-solid fa-triangle-exclamation mr-1"></i> 
+                            <strong>红线要求：</strong> 公司公章、合同章的保管人员应与法定代表人名章保管人员<span class="font-bold text-red-600">相分离</span>。
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. 审批权限与流程 -->
+                <section id="approval" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-blue-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">用印审批权限与流程</h2>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
+                        <!-- 流程图 -->
+                        <div class="flex flex-col md:flex-row justify-between items-center gap-4 mb-8">
+                            <div class="flex flex-col items-center">
+                                <div class="seal-circle">申请</div>
+                                <p class="text-xs text-gray-500 mt-2">OA填报《用印审批表》</p>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-gray-300"></i>
+                            <div class="flex flex-col items-center">
+                                <div class="seal-circle border-blue-500 text-blue-600">审核</div>
+                                <p class="text-xs text-gray-500 mt-2">部门负责人/分管领导</p>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-gray-300"></i>
+                            <div class="flex flex-col items-center">
+                                <div class="seal-circle border-blue-500 text-blue-600">审批</div>
+                                <p class="text-xs text-gray-500 mt-2">总经理/董事长(按权限)</p>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-gray-300"></i>
+                            <div class="flex flex-col items-center">
+                                <div class="seal-circle border-green-500 text-green-600">施印</div>
+                                <p class="text-xs text-gray-500 mt-2">保管人核对/登记台账</p>
+                            </div>
+                        </div>
+
+                        <!-- 审批权限细则 -->
+                        <div class="bg-blue-50 rounded-lg p-5 border border-blue-100">
+                            <h4 class="font-bold text-blue-900 mb-3"><i class="fa-solid fa-gavel mr-2"></i>公司公章审批权限 (一事一批)</h4>
+                            <ul class="space-y-2 text-sm text-gray-700">
+                                <li class="flex items-start">
+                                    <span class="font-bold min-w-[4em] text-blue-800">对内事项：</span>
+                                    <span>由部门主要负责人、分管领导审核批准。</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="font-bold min-w-[4em] text-blue-800">对外事项：</span>
+                                    <span>报送政府/集团/银行等资料，由部门负责人、分管领导、<span class="font-bold text-red-600">总经理或董事长</span>审核批准。</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="font-bold min-w-[4em] text-blue-800">紧急用印：</span>
+                                    <span>可讯息请示主要领导同意，事后<span class="font-bold text-red-600">第一时间补齐</span>《用印审批表》。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. 保管与使用规范 -->
+                <section id="custody" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-yellow-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">保管与使用“严禁”清单</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 保管要求 -->
+                        <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-yellow-500 stamp-border">
+                            <h3 class="font-bold text-gray-800 mb-3 flex items-center">
+                                <i class="fa-solid fa-lock text-yellow-600 mr-2"></i> 安全保管“三不准”
+                            </h3>
+                            <ul class="text-sm text-gray-600 space-y-2 list-decimal list-inside">
+                                <li>不准将印章随意放置在办公桌上，须放入保险柜。</li>
+                                <li>不准私自委托他人代管印章。</li>
+                                <li>不准将印章带离办公场所（经批准除外）。</li>
+                            </ul>
+                            <p class="mt-3 text-xs bg-gray-100 p-2 rounded text-gray-500">
+                                <strong>注：</strong>印章保管人离职或调岗，必须办理严格的交接手续，签署移交清单。
+                            </p>
+                        </div>
+
+                        <!-- 使用禁区 -->
+                        <div class="bg-red-50 p-6 rounded-xl shadow-sm border border-red-100">
+                            <h3 class="font-bold text-red-900 mb-3 flex items-center">
+                                <i class="fa-solid fa-ban text-red-600 mr-2"></i> 违规用印“零容忍”
+                            </h3>
+                            <ul class="text-sm text-red-800 space-y-2">
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-xmark mt-1"></i>
+                                    严禁在<strong>空白</strong>纸张、表格、合同、介绍信上预留印鉴。
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-xmark mt-1"></i>
+                                    严禁未经审批擅自用印。
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <i class="fa-solid fa-xmark mt-1"></i>
+                                    严禁超出审批范围或与审批内容不符的材料用印。
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. 外带与特殊用印 -->
+                <section id="outside" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-purple-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">印章外带与特殊管理</h2>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-start gap-4 mb-6">
+                            <div class="shrink-0 bg-purple-100 text-purple-800 w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">
+                                <i class="fa-solid fa-person-walking-luggage"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-gray-900 mb-2">印章外带“双人制”</h3>
+                                <p class="text-sm text-gray-600 mb-2">
+                                    原则上印章不带出公司。确需外带的，必须填写《印章外出使用审批表》，注明用途、时间、地点。
+                                </p>
+                                <div class="bg-purple-50 p-3 rounded text-sm text-purple-900 font-bold border-l-4 border-purple-600">
+                                    由印章管理人员携章，与业务人员共同外出办理，“印不离身，人印同在”。
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="border-t border-gray-100 pt-6">
+                            <h4 class="font-bold text-gray-800 mb-3 text-sm">刻制与销毁</h4>
+                            <div class="grid md:grid-cols-2 gap-4 text-xs text-gray-600">
+                                <div>
+                                    <strong class="block text-gray-900 mb-1">刻制：</strong>
+                                    须填写《印章刻制申请表》，经公司领导批准，在公安部门指定单位刻制。启用时在《印章启用登记表》留模备案。
+                                </div>
+                                <div>
+                                    <strong class="block text-gray-900 mb-1">废止与销毁：</strong>
+                                    废止印章应缴回综合办公室封存。销毁需填报申请，注明原因，由专人监销。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. 责任追究 -->
+                <section id="responsibility" class="scroll-mt-24">
+                    <div class="bg-gray-50 rounded-xl p-6 border border-gray-200">
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fa-solid fa-gavel text-red-700 text-xl"></i>
+                            <h3 class="font-bold text-gray-900">责任追究</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-3">
+                            各部门对印章的使用和管理负责。
+                        </p>
+                        <ul class="list-disc list-inside text-xs text-gray-700 space-y-1">
+                            <li><strong>越权审批：</strong>审批人超越权限造成严重后果的，承担相应责任。</li>
+                            <li><strong>管理不善：</strong>因管理或使用不善造成印章丢失、盗用或损失的，追究部门负责人和管理人员责任。</li>
+                            <li><strong>私刻盗用：</strong>擅自私刻、盗用印章损害公司利益的，视情节依法追究法律责任。</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <div class="text-center text-gray-400 text-sm pt-8 pb-12">
+                    <p>— 资料来源：贵州联合民爆印章管理规定（2025版） —</p>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="bg-slate-900 text-white mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-slate-400">
+                <p class="mb-2">贵州联合纪委工作办公室 · 宣</p>
+                <p>&copy; 2025 All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 250) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            if (current) {
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href').includes(current)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script><!-- === 步骤4：保安脚本 (放在 /body 结束标签之前) === -->
+<script>
+    // 1. 账号名单
+    const userDatabase = [
+        { u: 'yehua',      p: '19891117', name: 'Yehua' },
+        { u: 'duannie',    p: '469273',   name: 'Duannie' },
+        { u: 'hejunxian',  p: '116828',   name: 'Hejunxian' },
+        { u: 'gewei',      p: '321870',   name: 'Gewei' },
+        { u: 'admin',      p: '123456',   name: '管理员' }
+    ];
+
+    // 2. 判断是哪种页面 (找 main-content 还是 root)
+    function getContentId() {
+        return document.getElementById('root') ? 'root' : 'main-content';
+    }
+
+    // 3. 页面一加载，先检查有没有“通行证”
+    document.addEventListener('DOMContentLoaded', function() {
+        if (localStorage.getItem('gzjw_logged_in') === 'true') {
+            // 有通行证：隐藏登录框，显示内容
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            const content = document.getElementById(getContentId());
+            if(content) content.classList.remove('hidden-mode');
+            
+            // 如果页面上有显示名字的地方，顺便更新一下
+            const savedName = localStorage.getItem('gzjw_user_name');
+            if(savedName && document.getElementById('display-name')) {
+                document.getElementById('display-name').innerText = savedName;
+            }
+        }
+    });
+
+    // 4. 点击登录按钮时触发
+    function attemptLogin() {
+        const u = document.getElementById('username-input').value;
+        const p = document.getElementById('password-input').value;
+        
+        // 去名单里查
+        const foundUser = userDatabase.find(user => user.u === u && user.p === p);
+
+        if (foundUser) {
+            // 查到了：发通行证，放行
+            localStorage.setItem('gzjw_logged_in', 'true');
+            localStorage.setItem('gzjw_user_name', foundUser.name);
+            
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            const content = document.getElementById(getContentId());
+            if(content) content.classList.remove('hidden-mode');
+            
+            // 更新名字
+            if(document.getElementById('display-name')) {
+                document.getElementById('display-name').innerText = foundUser.name;
+            }
+        } else {
+            // 没查到：报错
+            document.getElementById('login-error').classList.remove('hidden-mode');
+        }
+    }
+    
+    // 支持回车键登录
+    document.getElementById('password-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') attemptLogin();
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>财务管理 - 应知应会专题库</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --finance-red: #8B1C1C; /* 延续纪委红 */
+            --finance-gold: #D4AF37; /* 庄重金 */
+            --bg-light: #F8FAFC;
+            --text-main: #1f2937;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: var(--bg-light);
+            scroll-behavior: smooth;
+            color: var(--text-main);
+        }
+
+        h1, h2, h3, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* --- Hero Section: 算盘/报表背景 --- */
+        .hero-section {
+            position: relative;
+            background: linear-gradient(135deg, rgba(139, 28, 28, 0.95) 0%, rgba(69, 10, 10, 0.9) 100%),
+                        url('https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+            background-size: cover;
+            background-position: center;
+            background-blend-mode: multiply;
+            box-shadow: 0 4px 20px -5px rgba(0,0,0,0.3);
+        }
+
+        /* 玻璃质感卡片 */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        .glass-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: var(--finance-gold);
+        }
+
+        /* 侧边导航 */
+        .nav-item.active {
+            color: var(--finance-red);
+            border-left: 4px solid var(--finance-red);
+            background-color: #FEF2F2;
+            font-weight: 700;
+        }
+
+        /* 财务凭证风格卡片 */
+        .voucher-card {
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-top: 3px solid var(--finance-red);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        /* 金额数字字体 */
+        .num-font {
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+        }
+
+        /* 标签样式 */
+        .tag-red { @apply bg-red-50 text-red-800 border border-red-100 px-2 py-0.5 rounded text-xs; }
+        .tag-gold { @apply bg-yellow-50 text-yellow-800 border border-yellow-100 px-2 py-0.5 rounded text-xs; }
+        /* === 步骤1：复制这部分到 style 里面 === */
+.login-bg-animate { background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%); position: relative; }
+.hidden-mode { display: none !important; } /* 这是最关键的：隐藏开关 */
+.fade-in { animation: fadeIn 0.5s ease-out forwards; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- === 步骤2：登录门禁代码 (放在 body 刚开始的地方) === -->
+<div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center login-bg-animate">
+    <div class="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-md border-t-4 border-red-900 z-10 fade-in mx-4">
+        <div class="text-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">内部权限验证</h1>
+            <p class="text-sm text-gray-500 mt-1">请输入内部账号访问</p>
+        </div>
+        <!-- 错误提示 -->
+        <div id="login-error" class="hidden-mode mb-4 p-3 bg-red-50 text-red-700 text-sm rounded border border-red-100 flex items-center gap-2">
+            <i class="fa-solid fa-circle-exclamation"></i> <span>账号或密码错误</span>
+        </div>
+        <div class="space-y-5">
+            <input id="username-input" type="text" class="pl-4 block w-full rounded-lg border-gray-300 border p-2.5 outline-none" placeholder="账号">
+            <input id="password-input" type="password" class="pl-4 block w-full rounded-lg border-gray-300 border p-2.5 outline-none" placeholder="密码">
+            <button onclick="attemptLogin()" class="w-full bg-red-900 text-white py-3 rounded-lg hover:bg-red-800 transition shadow-lg">安全登录</button>
+        </div>
+    </div>
+</div>
+<div id="main-content" class="hidden-mode"></div>
+    <!-- 顶部导航栏 -->
+    <header class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+                    <div class="w-10 h-10 bg-red-900 rounded-full flex items-center justify-center text-white shadow-md border-2 border-yellow-500">
+                        <i class="fa-solid fa-calculator text-sm"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-wide text-gray-900 leading-tight">财务管理制度</h1>
+                        <p class="text-xs text-gray-500 tracking-wider">应知应会 · 2025版</p>
+                    </div>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="zsksy.html" class="text-gray-600 hover:text-red-900 font-medium transition flex items-center gap-2">
+                        <i class="fa-solid fa-reply"></i> 返回专题库
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero-section text-white py-16">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-10">
+                <div class="w-full lg:w-2/3">
+                    <span class="inline-block py-1 px-3 rounded-full bg-red-900/50 border border-yellow-500/50 text-xs font-bold mb-4 text-yellow-200 backdrop-blur-sm">
+                        <i class="fa-solid fa-scale-balanced mr-1"></i> 合规 · 真实 · 有效
+                    </span>
+                    <h2 class="text-4xl md:text-5xl font-bold serif-font mb-6 leading-tight drop-shadow-xl">
+                        严肃财经纪律<br>
+                        <span class="text-yellow-400">筑牢财务合规防线</span>
+                    </h2>
+                    <p class="text-red-50 text-lg mb-10 leading-relaxed font-light max-w-2xl">
+                        深入贯彻执行国家会计法规及《制度汇编》第五部分要求，落实全面预算管理，规范资金支出行为，确保每一笔费用真实合规。
+                    </p>
+                    
+                    <!-- 核心模块看板 -->
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-chart-pie text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">全面预算</div>
+                            <div class="text-xs text-white/60">无预算不支出</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-plane-departure text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">差旅管理</div>
+                            <div class="text-xs text-white/60">标准刚性约束</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-file-invoice-dollar text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">发票报销</div>
+                            <div class="text-xs text-white/60">三单一致</div>
+                        </div>
+                        <div class="glass-card rounded-lg p-4 text-center">
+                            <i class="fa-solid fa-coins text-2xl text-yellow-400 mb-2"></i>
+                            <div class="text-sm font-bold text-white">资金安全</div>
+                            <div class="text-xs text-white/60">收支两条线</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div class="flex flex-col lg:flex-row gap-8">
+            
+            <!-- 侧边导航 -->
+            <aside class="w-full lg:w-64 flex-shrink-0">
+                <div class="sticky top-24 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                    <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ul text-red-800"></i> 内容导航
+                    </div>
+                    <nav class="flex flex-col text-sm py-2">
+                        <a href="#budget" class="nav-item active px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            1. 全面预算管理
+                        </a>
+                        <a href="#travel" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            2. 差旅与接待规范
+                        </a>
+                        <a href="#invoice" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            3. 发票与报销要求
+                        </a>
+                        <a href="#fund" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            4. 资金与备用金
+                        </a>
+                        <a href="#risk" class="nav-item px-5 py-3 hover:bg-gray-50 transition block border-l-4 border-transparent">
+                            5. 财务内控红线
+                        </a>
+                    </nav>
+                </div>
+            </aside>
+
+            <!-- 主要内容区 -->
+            <main class="flex-1 space-y-12">
+
+                <!-- 1. 全面预算管理 -->
+                <section id="budget" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-red-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">全面预算管理</h2>
+                        <span class="ml-3 text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">制度编号：贵州联合〔2025〕126号</span>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl p-6 border border-gray-200 shadow-sm">
+                        <div class="flex items-start gap-4">
+                            <div class="shrink-0 bg-red-50 text-red-800 w-12 h-12 rounded-lg flex items-center justify-center text-2xl">
+                                <i class="fa-solid fa-scale-unbalanced-flip"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-bold text-gray-900 mb-2">核心原则：无预算不支出</h3>
+                                <p class="text-sm text-gray-600 mb-4 leading-relaxed">
+                                    公司实行全面预算管理，一切经济活动必须纳入预算。预算一经批准，具有法律效力，各部门必须严格执行。
+                                </p>
+                                <div class="grid md:grid-cols-2 gap-4">
+                                    <div class="bg-gray-50 p-3 rounded text-sm border-l-4 border-red-500">
+                                        <strong class="block text-gray-900 mb-1">刚性约束</strong>
+                                        预算内资金按程序审批支付；<span class="text-red-600 font-bold">超预算或无预算</span>款项，原则上不予支付。
+                                    </div>
+                                    <div class="bg-gray-50 p-3 rounded text-sm border-l-4 border-yellow-500">
+                                        <strong class="block text-gray-900 mb-1">调整程序</strong>
+                                        确需调整预算的，必须履行严格的审批程序，由预算管理委员会审议通过。
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 2. 差旅与接待规范 -->
+                <section id="travel" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-yellow-600 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">差旅与业务接待</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 差旅费 -->
+                        <div class="voucher-card p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-gray-900"><i class="fa-solid fa-suitcase text-yellow-600 mr-2"></i>差旅费管理</h3>
+                                <span class="text-xs text-gray-400">贵州联合〔2024〕163号</span>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li class="flex items-start">
+                                    <span class="text-yellow-600 font-bold mr-2">●</span>
+                                    <span><strong>出差审批：</strong>必须事前填写《出差申请单》，明确事由、地点、天数，经分管领导批准。</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-yellow-600 font-bold mr-2">●</span>
+                                    <span><strong>交通工具：</strong>按职级乘坐相应交通工具。严禁超标准乘坐（如违规乘坐头等舱、高铁商务座）。</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-yellow-600 font-bold mr-2">●</span>
+                                    <span><strong>住宿标准：</strong>严格执行分地区住宿限额标准，超支自理。</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- 业务接待 -->
+                        <div class="voucher-card p-6">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="font-bold text-gray-900"><i class="fa-solid fa-utensils text-red-600 mr-2"></i>业务招待管理</h3>
+                                <span class="text-xs text-gray-400">贵州联合〔2024〕241号</span>
+                            </div>
+                            <ul class="text-sm text-gray-600 space-y-3">
+                                <li class="flex items-start">
+                                    <span class="text-red-600 font-bold mr-2">●</span>
+                                    <span><strong>事前公函：</strong>商务接待必须有来访公函或商务邀请函，无公函不接待。</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-red-600 font-bold mr-2">●</span>
+                                    <span><strong>陪餐人数：</strong>接待对象在10人以内的，陪餐人数不得超过3人；超过10人的，不得超过接待对象人数的1/3。</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="text-red-600 font-bold mr-2">●</span>
+                                    <span><strong>禁酒令：</strong>工作日午间严禁饮酒。</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. 发票与报销要求 -->
+                <section id="invoice" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-blue-800 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">发票报销管理规定</h2>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-6 border-b border-gray-100">
+                            <h3 class="font-bold text-gray-800 mb-4">报销“三单一致”原则</h3>
+                            <div class="flex flex-wrap gap-4 text-sm text-center">
+                                <div class="flex-1 bg-blue-50 p-3 rounded border border-blue-100">
+                                    <i class="fa-solid fa-file-invoice text-blue-600 text-xl mb-1 block"></i>
+                                    <strong class="text-gray-800">发票流</strong>
+                                    <p class="text-xs text-gray-500 mt-1">发票抬头、税号正确，内容真实</p>
+                                </div>
+                                <div class="flex-1 bg-blue-50 p-3 rounded border border-blue-100">
+                                    <i class="fa-solid fa-box-open text-blue-600 text-xl mb-1 block"></i>
+                                    <strong class="text-gray-800">货物流</strong>
+                                    <p class="text-xs text-gray-500 mt-1">入库单、验收单齐备</p>
+                                </div>
+                                <div class="flex-1 bg-blue-50 p-3 rounded border border-blue-100">
+                                    <i class="fa-solid fa-money-bill-transfer text-blue-600 text-xl mb-1 block"></i>
+                                    <strong class="text-gray-800">资金流</strong>
+                                    <p class="text-xs text-gray-500 mt-1">对公打款，收款方与发票方一致</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="p-6 bg-gray-50">
+                            <h4 class="text-sm font-bold text-gray-800 mb-2"><i class="fa-solid fa-circle-exclamation text-red-500 mr-2"></i>报销负面清单</h4>
+                            <ul class="text-xs text-gray-600 grid grid-cols-1 md:grid-cols-2 gap-2">
+                                <li><i class="fa-solid fa-xmark text-red-400 mr-1"></i> 严禁报销此前的年度发票（跨年发票需专门审批）。</li>
+                                <li><i class="fa-solid fa-xmark text-red-400 mr-1"></i> 严禁将个人消费（如家庭用品、个人娱乐）列入报销。</li>
+                                <li><i class="fa-solid fa-xmark text-red-400 mr-1"></i> 严禁化整为零，规避大额资金审批。</li>
+                                <li><i class="fa-solid fa-xmark text-red-400 mr-1"></i> 严禁替票报销（即用A事项的发票报销B事项的费用）。</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 4. 资金与备用金 -->
+                <section id="fund" class="scroll-mt-24">
+                    <div class="flex items-center mb-6">
+                        <div class="w-1.5 h-8 bg-green-700 rounded-full mr-3"></div>
+                        <h2 class="text-2xl font-bold text-gray-900 serif-font">资金与备用金管理</h2>
+                    </div>
+
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <!-- 资金支付 -->
+                        <div class="voucher-card p-6">
+                            <h3 class="font-bold text-gray-900 mb-3">资金支付审批</h3>
+                            <div class="relative pl-4 border-l-2 border-green-200 space-y-4 text-sm">
+                                <div>
+                                    <strong class="text-green-800 block">大额资金联签</strong>
+                                    <p class="text-gray-600 text-xs mt-1">超过规定限额的资金支付，必须实行总经理和董事长（或授权人）联签制度。</p>
+                                </div>
+                                <div>
+                                    <strong class="text-green-800 block">三重一大</strong>
+                                    <p class="text-gray-600 text-xs mt-1">单项超过<span class="font-bold text-red-600">10万元</span>的计划外资金支出，属于大额资金运作，须经党委会前置研究。</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 备用金 -->
+                        <div class="voucher-card p-6">
+                            <h3 class="font-bold text-gray-900 mb-3">备用金管理</h3>
+                            <p class="text-xs text-gray-400 mb-3">贵州联合〔2024〕197号</p>
+                            <div class="bg-green-50 p-3 rounded text-sm text-green-900 space-y-2">
+                                <div class="flex justify-between">
+                                    <span>借款原则</span>
+                                    <span class="font-bold">前账不清，后款不借</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>核销时限</span>
+                                    <span class="font-bold">业务结束后 5 个工作日内</span>
+                                </div>
+                                <p class="text-xs text-gray-600 mt-2 border-t border-green-200 pt-2">
+                                    严禁公款私存，严禁利用备用金发放工资、奖金或福利。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 5. 财务内控红线 -->
+                <section id="risk" class="scroll-mt-24">
+                    <div class="bg-red-50 rounded-xl p-6 border border-red-200">
+                        <div class="flex items-center gap-2 mb-4">
+                            <i class="fa-solid fa-shield-halved text-red-600 text-xl"></i>
+                            <h3 class="font-bold text-red-900 text-lg">财务内控“红线”</h3>
+                        </div>
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <h4 class="font-bold text-gray-800 text-sm mb-2">岗位不相容</h4>
+                                <p class="text-xs text-gray-600">
+                                    出纳人员不得兼任稽核、会计档案保管和收入、支出、费用、债权债务账目的登记工作。
+                                </p>
+                            </div>
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <h4 class="font-bold text-gray-800 text-sm mb-2">应收账款管理</h4>
+                                <p class="text-xs text-gray-600">
+                                    坚持“谁销售、谁收款”原则。建立客户信用档案，定期对账（至少每年一次函证），严防坏账损失。
+                                </p>
+                            </div>
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <h4 class="font-bold text-gray-800 text-sm mb-2">会计档案</h4>
+                                <p class="text-xs text-gray-600">
+                                    会计档案必须妥善保管，严禁私自销毁。工作调动时，必须办理严格的会计交接手续，由监交人签字确认。
+                                </p>
+                            </div>
+                            <div class="bg-white p-4 rounded shadow-sm">
+                                <h4 class="font-bold text-gray-800 text-sm mb-2">严禁“小金库”</h4>
+                                <p class="text-xs text-gray-600">
+                                    严禁任何形式的账外账。所有收入必须入账，不得坐支现金。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="text-center text-gray-400 text-sm pt-8 pb-12">
+                    <p>— 资料来源：贵州联合民爆器材经营有限责任公司制度汇编（2023-2025） —</p>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- 底部 Footer -->
+    <footer class="bg-slate-900 text-white mt-auto py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-sm text-slate-400">
+                <p class="mb-2">贵州联合纪委工作办公室 · 宣</p>
+                <p>&copy; 2025 All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // 滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navItems = document.querySelectorAll('.nav-item');
+            
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 250) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            if (current) {
+                navItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('href').includes(current)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        });
+    </script>
+    <!-- === 步骤4：保安脚本 (放在 /body 结束标签之前) === -->
+<script>
+    // 1. 账号名单
+    const userDatabase = [
+        { u: 'yehua',      p: '19891117', name: 'Yehua' },
+        { u: 'duannie',    p: '469273',   name: 'Duannie' },
+        { u: 'hejunxian',  p: '116828',   name: 'Hejunxian' },
+        { u: 'gewei',      p: '321870',   name: 'Gewei' },
+        { u: 'admin',      p: '123456',   name: '管理员' }
+    ];
+
+    // 2. 判断是哪种页面 (找 main-content 还是 root)
+    function getContentId() {
+        return document.getElementById('root') ? 'root' : 'main-content';
+    }
+
+    // 3. 页面一加载，先检查有没有“通行证”
+    document.addEventListener('DOMContentLoaded', function() {
+        if (localStorage.getItem('gzjw_logged_in') === 'true') {
+            // 有通行证：隐藏登录框，显示内容
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            const content = document.getElementById(getContentId());
+            if(content) content.classList.remove('hidden-mode');
+            
+            // 如果页面上有显示名字的地方，顺便更新一下
+            const savedName = localStorage.getItem('gzjw_user_name');
+            if(savedName && document.getElementById('display-name')) {
+                document.getElementById('display-name').innerText = savedName;
+            }
+        }
+    });
+
+    // 4. 点击登录按钮时触发
+    function attemptLogin() {
+        const u = document.getElementById('username-input').value;
+        const p = document.getElementById('password-input').value;
+        
+        // 去名单里查
+        const foundUser = userDatabase.find(user => user.u === u && user.p === p);
+
+        if (foundUser) {
+            // 查到了：发通行证，放行
+            localStorage.setItem('gzjw_logged_in', 'true');
+            localStorage.setItem('gzjw_user_name', foundUser.name);
+            
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            const content = document.getElementById(getContentId());
+            if(content) content.classList.remove('hidden-mode');
+            
+            // 更新名字
+            if(document.getElementById('display-name')) {
+                document.getElementById('display-name').innerText = foundUser.name;
+            }
+        } else {
+            // 没查到：报错
+            document.getElementById('login-error').classList.remove('hidden-mode');
+        }
+    }
+    
+    // 支持回车键登录
+    document.getElementById('password-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') attemptLogin();
+    });
+</script>
+</body>
+</html>
