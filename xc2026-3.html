@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作动态 - 2026年第3期 - 贵州联合纪委</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C; /* 纪委红 */
+            --paper-bg: #F9F9F7;    /* 护眼米白纸质背景 */
+            --text-ink: #2c2c2c;    /* 墨色字体 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #E5E7EB; /* 外部深灰背景，突出中间纸张感 */
+            color: var(--text-ink);
+        }
+
+        .serif {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 模拟纸张阴影 */
+        .paper-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                        0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* 简报红头线条 */
+        .red-line-double {
+            border-bottom: 1px solid var(--primary-red);
+            border-top: 4px solid var(--primary-red);
+            height: 6px;
+            margin: 20px 0;
+        }
+
+        /* 高级排版样式 */
+        .article-content p {
+            margin-bottom: 1.5rem;
+            line-height: 2; /* 宽松行距 */
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+
+        /* 首字下沉 */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 3.5rem;
+            line-height: 0.8;
+            font-weight: bold;
+            color: var(--primary-red);
+            margin-right: 0.5rem;
+            margin-top: 0.2rem;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 图片说明 */
+        .figcaption-style {
+            font-family: 'Noto Serif SC', serif;
+            font-style: italic;
+            border-left: 3px solid var(--primary-red);
+        }
+
+        /* 侧边栏吸附 */
+        .sticky-sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen py-8">
+
+    <!-- 顶部导航 -->
+    <div class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 h-16 flex items-center justify-between px-6 lg:px-12 transition-all">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='zy.html'">
+            <div class="w-8 h-8 bg-red-900 rounded-full flex items-center justify-center text-white">
+                <i class="fa-solid fa-star text-xs"></i>
+            </div>
+            <span class="font-bold text-gray-800 tracking-wide">贵州联合纪委 · 学习平台</span>
+        </div>
+        <button onclick="window.print()" class="text-sm text-gray-600 hover:text-red-900 flex items-center gap-2 border border-gray-300 px-3 py-1.5 rounded hover:bg-red-50 transition">
+            <i class="fa-solid fa-print"></i> 打印本页
+        </button>
+    </div>
+
+    <!-- 页面主体容器 -->
+    <div class="max-w-6xl mx-auto mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 px-4">
+
+        <!-- 左侧：简报核心内容 (A4纸张质感) -->
+        <main class="lg:col-span-9 bg-[#FDFDFD] paper-shadow min-h-[1200px] px-8 py-12 md:px-16 md:py-20 relative" id="main-content">
+            
+            <!-- 简报刊头 -->
+            <header class="text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-bold text-red-900 serif tracking-widest mb-4">工作动态</h1>
+                <div class="flex justify-between items-end text-sm text-gray-600 font-medium px-2">
+                    <div class="text-left">
+                        <p>贵州联合纪委工作办公室 编</p>
+                        <p>第 <span class="text-red-900 font-bold text-lg">2026-3</span> 期</p>
+                    </div>
+                    <div class="text-right">
+                        <p>2026年1月13日</p>
+                    </div>
+                </div>
+                <div class="red-line-double"></div>
+            </header>
+
+            <!-- 核心头条新闻 -->
+            <article class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 serif mb-6 text-center leading-normal">
+                    坚持严管厚爱 筑牢思想防线<br>
+                    <span class="text-xl font-normal text-gray-600 mt-2 block">——贵州联合开展下级单位“一把手”任前廉洁谈话</span>
+                </h2>
+
+                <!-- 文章内容 -->
+                <div class="article-content text-gray-800" id="article-text">
+                    <p class="drop-cap">
+                        为深入贯彻落实《中国共产党党内监督条例》及关于加强对“一把手”和领导班子监督的有关规定，进一步压实管党治党政治责任，1月13日，贵州联合党委副书记、代纪委书记龙明辉赴毕节联合，与新任总经理朱军开展“一对一”任前廉洁谈话，既送上履新的“贺礼”，也打好廉洁的“预防针”。
+                    </p>
+                    <p>
+                        谈话指出，此次干部调整是贵州联合党委着眼于深化国企改革、优化干部队伍结构作出的重要决定。当前，毕节联合正处于外部市场环境深刻变化、内部经营面临亏损压力的攻坚期，新任“一把手”肩负着扭亏脱困、改革突围的重要使命，必须倍加珍惜组织信任，迅速进入角色，在思想上“到位”、在责任上“在位”。
+                    </p>
+                </div>
+            </article>
+
+            <!-- 视觉聚焦区 (图片墙设计) -->
+            <section class="mb-16 bg-slate-50 p-6 -mx-6 md:-mx-12 rounded-lg border border-slate-100">
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="w-1 h-6 bg-red-800"></div>
+                    <h3 class="text-xl font-bold serif text-gray-800">现场直击 · Visual Focus</h3>
+                </div>
+
+                <!-- 网格布局 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- 主图 -->
+                    <div class="md:col-span-2 relative group overflow-hidden rounded-lg shadow-md">
+                        <!-- 使用谈话/会议场景占位图 -->
+                        <img src="https://free.picui.cn/free/2026/01/14/69670dbeac87b.jpg" alt="廉洁谈话现场" class="w-full h-80 object-cover object-center group-hover:scale-105 transition duration-700">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pt-12">
+                            <p class="text-white text-sm font-medium"><i class="fa-solid fa-camera mr-2"></i>任前谈话现场：开展“一对一”廉洁提醒</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 次图1 -->
+                    <div class="relative group overflow-hidden rounded-lg shadow-sm">
+                        <!-- 使用握手或交流场景占位图 -->
+                        <img src="https://free.picui.cn/free/2026/01/14/69670dbe7aaf5.jpg" alt="深入交流" class="w-full h-48 object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute bottom-0 left-0 w-full bg-white/95 px-3 py-2 border-t-2 border-red-800">
+                            <p class="text-xs text-gray-800 font-serif">深入交流思想，压实主体责任。</p>
+                        </div>
+                    </div>
+
+                    <!-- 次图2 -->
+                    <div class="relative group overflow-hidden rounded-lg shadow-sm">
+                        <!-- 使用签字或文件场景占位图 -->
+                        <img src="https://free.picui.cn/free/2026/01/14/69670dbe2051c.jpg" alt="工作要求" class="w-full h-48 object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute bottom-0 left-0 w-full bg-white/95 px-3 py-2 border-t-2 border-red-800">
+                            <p class="text-xs text-gray-800 font-serif">提出四点具体要求，明确履职方向。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 继续文章内容：四点要求 -->
+            <article class="mb-12">
+                <h3 class="text-2xl font-bold text-gray-900 serif mb-6 border-l-4 border-red-800 pl-4">四点要求</h3>
+                <div class="article-content text-gray-800">
+                    <p>
+                        龙明辉代表公司党委和纪委，结合毕节联合实际及国企改革发展形势，向朱军同志提出四点要求：
+                    </p>
+                    
+                    <p>
+                        <strong>第一，旗帜鲜明讲政治，做信念坚定的“领头雁”。</strong>
+                         要持续锤炼政治判断力、政治领悟力、政治执行力，善于从政治上看业务、从业务中讲政治。要将贯彻落实上级决策部署与推动企业高质量发展紧密结合，严格落实“第一议题”制度，严守政治纪律和政治规矩，确保政令畅通、令行禁止。
+                    </p>
+
+                    <p>
+                        <strong>第二，担当作为抓发展，做实干兴企的“实干家”。</strong>
+                        面对资产负债率偏高、传统业务下滑的挑战，要树立正确政绩观，既要做让职工看得见的“显绩”，也要做利长远的“潜绩”。要聚焦新质生产力，提升履职本领，坚决拒绝“躺平”心态，带头挑最重的担子、啃最硬的骨头，切实改变连续亏损的被动局面。
+                    </p>
+                    
+                    <!-- 引用块：重点强调 -->
+                    <blockquote class="border-l-4 border-gray-300 pl-6 italic text-gray-600 my-8 py-4 bg-gray-50 pr-4 rounded-r">
+                        “要敢抓敢管、善作善成，不当‘老好人’，不搞‘击鼓传花’。要坚持严管厚爱结合，抓好班子带好队伍，凝聚发展合力。”
+                    </blockquote>
+
+                    <p>
+                        <strong>第三，动真碰硬强管理，做敢于担当的“主心骨”。</strong>
+                        要力戒形式主义、官僚主义，时刻保持雷厉风行的工作作风。针对合同管理、印章管理等基础薄弱环节及历史遗留问题，要敢抓敢管、善作善成。
+                    </p>
+
+                    <p>
+                        <strong>第四，严于律己守底线，做清正廉洁的“示范者”。</strong>
+                        要把党纪学习教育作为必修课，推进常态化长效化。要牢记权力姓“公”，严格执行财经纪律和“三重一大”决策制度，自觉净化社交圈、生活圈、朋友圈，管好亲属和身边人，切实做到做人一尘不染、做官一身正气。
+                    </p>
+
+                     <h3 class="text-xl font-bold text-gray-900 serif mt-8 mb-4">表态发言</h3>
+                     <p>
+                        朱军作表态发言。他表示，坚决拥护组织的决定，深感责任重大。在今后的工作中，将以此次谈话为契机，把组织的信任转化为工作的动力：
+                        <strong>一是以区域平台建设为战场，全力做好经营改革工作；二是挑好重担，团结带领团队攻坚克难；三是致力于盘活国有资产，着力补齐短板，妥善解决历史遗留问题，</strong> 为推动毕节联合走出困境、实现高质量发展贡献力量。
+                     </p>
+                </div>
+            </article>
+
+            
+
+        </main>
+
+        <!-- 右侧：侧边栏导航 (悬浮) -->
+        <aside class="hidden lg:block lg:col-span-3">
+            <div class="sticky-sidebar space-y-6">
+                
+                <!-- 目录卡片 -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ol text-red-800"></i> 本期导读
+                    </h3>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <a href="#article-text" class="text-gray-700 hover:text-red-800 flex items-start gap-2 group">
+                                <span class="text-red-200 font-bold group-hover:text-red-800">01</span>
+                                <span>坚持严管厚爱 筑牢思想防线 (头条)</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-700 hover:text-red-800 flex items-start gap-2 group">
+                                <span class="text-red-200 font-bold group-hover:text-red-800">02</span>
+                                <span>四点要求：做信念坚定的“领头雁”</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-700 hover:text-red-800 flex items-start gap-2 group">
+                                <span class="text-red-200 font-bold group-hover:text-red-800">03</span>
+                                <span>表态发言：全力做好经营改革</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 智能关键词 (自动生成) -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-tags text-blue-800"></i> 
+                        智能关键词
+                        <span class="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-normal">Auto</span>
+                    </h3>
+                    <div id="keyword-cloud" class="flex flex-wrap gap-2">
+                        <!-- 关键词将由JS自动填充 -->
+                        <span class="text-xs text-gray-400 animate-pulse">正在分析全文内容...</span>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 底部版权 -->
+    <div class="text-center text-gray-400 text-sm py-8 mt-8">
+        &copy; 2026 贵州联合纪委工作办公室
+    </div>
+
+    <!-- 简单的自动关键词提取脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 针对当前文章内容的关键词提取模拟
+            
+            const potentialKeywords = [
+                { text: "任前廉洁谈话", type: "red" },
+                { text: "一把手监督", type: "red" },
+                { text: "严管厚爱", type: "blue" },
+                { text: "国企改革", type: "blue" },
+                { text: "政治纪律", type: "red" },
+                { text: "实干兴企", type: "gray" },
+                { text: "扭亏脱困", type: "gray" },
+                { text: "三重一大", type: "red" }
+            ];
+
+            const keywordContainer = document.getElementById('keyword-cloud');
+            
+            // 模拟延迟，增加“计算中”的感觉
+            setTimeout(() => {
+                keywordContainer.innerHTML = ''; // 清空加载状态
+                
+                // 只展示前6个
+                potentialKeywords.slice(0, 6).forEach(kw => {
+                    const span = document.createElement('span');
+                    let bgClass = '';
+                    let textClass = '';
+                    
+                    if (kw.type === 'red') {
+                        bgClass = 'bg-red-50';
+                        textClass = 'text-red-800';
+                    } else if (kw.type === 'blue') {
+                        bgClass = 'bg-blue-50';
+                        textClass = 'text-blue-800';
+                    } else {
+                        bgClass = 'bg-gray-100';
+                        textClass = 'text-gray-600';
+                    }
+                    
+                    span.className = `px-2 py-1 ${bgClass} ${textClass} text-xs rounded transition hover:scale-105 cursor-default`;
+                    span.innerText = kw.text;
+                    keywordContainer.appendChild(span);
+                });
+            }, 800);
+        });
+    </script>
+
+</body>
+</html>

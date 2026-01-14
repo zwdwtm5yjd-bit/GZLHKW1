@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>习近平在二十届中央纪委五次全会上发表重要讲话 - 学习资料库</title>
+    
+    <!-- 核心样式库 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C;      /* 主题色：纪委红 */
+            --highlight-yellow: #FEF3C7; /* 搜索高亮背景色 */
+            --highlight-text: #92400E;   /* 搜索高亮文字色 */
+            --speech-bg: #FFFBF0;        /* 讲话背景色 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #F8FAFC;
+            scroll-behavior: smooth;
+        }
+
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 搜索高亮样式 */
+        .highlight {
+            background-color: var(--highlight-yellow);
+            color: var(--highlight-text);
+            padding: 0 2px;
+            border-radius: 2px;
+            font-weight: bold;
+        }
+
+        /* 滚动条美化 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #999; }
+
+        /* 右侧悬浮控制栏动画 */
+        .side-control { transition: all 0.3s ease; }
+        .side-control:hover { transform: translateX(-5px); }
+
+        /* 目录激活状态样式 */
+        .toc-link.active {
+            color: var(--primary-red);
+            font-weight: 700;
+            border-left: 3px solid var(--primary-red);
+            background-color: #FEF2F2;
+        }
+
+        /* 讲话重点卡片 */
+        .key-point-card {
+            background-color: white;
+            border-top: 4px solid var(--primary-red);
+            transition: all 0.3s ease;
+        }
+        .key-point-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 金句引用框 */
+        .quote-box {
+            background-color: var(--speech-bg);
+            border-left: 4px solid #D97706;
+            padding: 1.5rem;
+            position: relative;
+        }
+        .quote-icon {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background-color: var(--speech-bg);
+            padding: 0 10px;
+            color: #D97706;
+            font-size: 1.5rem;
+        }
+
+        /* 打印专用样式 */
+        @media print {
+            header, aside, footer, .no-print { display: none !important; }
+            .prose { max-width: 100% !important; text-align: justify; }
+            body { background: white; }
+            #articleContent { box-shadow: none; border: none; padding: 0; }
+            a { text-decoration: none; color: black; }
+            .key-point-card { break-inside: avoid; border: 1px solid #eee; margin-bottom: 1rem; box-shadow: none; }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 顶部固定导航栏 -->
+    <header class="bg-white shadow-md sticky top-0 z-50 h-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            <div class="flex justify-between items-center h-full gap-4">
+                
+                <!-- 左侧：返回按钮与标题 -->
+                <div class="flex items-center min-w-0 flex-1">
+                    <a href="important_speeches.html" class="flex items-center text-gray-500 hover:text-red-900 transition-colors mr-6 group shrink-0" title="返回上一页">
+                        <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center group-hover:bg-red-50 transition-colors">
+                            <i class="fa-solid fa-arrow-left text-sm"></i>
+                        </div>
+                        <span class="ml-2 font-medium hidden sm:inline">返回</span>
+                    </a>
+                    
+                    <div class="border-l border-gray-200 pl-6 flex flex-col justify-center overflow-hidden">
+                        <h1 class="text-lg md:text-xl font-bold text-gray-900 truncate flex items-center gap-2">
+                            <i class="fa-solid fa-microphone-lines text-red-800"></i> 二十届中央纪委五次全会
+                        </h1>
+                        <p class="text-xs text-gray-500 truncate">习近平总书记重要讲话精神学习专栏</p>
+                    </div>
+                </div>
+
+                <!-- 中间/右侧：搜索功能 -->
+                <div class="relative w-full max-w-md hidden md:block group">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-red-800 transition-colors"></i>
+                    </div>
+                    <input type="text" id="searchInput" 
+                        class="block w-full pl-10 pr-16 py-2 border border-gray-300 rounded-full leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-red-800/20 focus:border-red-800 transition-all sm:text-sm"
+                        placeholder="输入关键字（如：制度笼子、政治监督）..." onkeyup="handleSearch(event)">
+                    <div id="searchCount" class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none text-xs text-gray-400 opacity-0 transition-opacity">0 处匹配</div>
+                    <button onclick="executeSearch()" class="absolute inset-y-0 right-0 px-4 text-gray-500 hover:text-red-800 cursor-pointer rounded-r-full hover:bg-gray-100 transition-colors">搜索</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. 主体内容布局 -->
+    <div class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex flex-col lg:flex-row gap-8 relative">
+            
+            <!-- (A) 左侧：文章正文区 -->
+            <main class="flex-1 bg-white rounded-xl shadow-sm border border-gray-200 p-8 md:p-12 min-h-screen" id="articleContent">
+                
+                <!-- 头部标题区 -->
+                <div class="text-center border-b-2 border-red-800/10 pb-8 mb-10">
+                    <h2 class="text-2xl md:text-3xl font-bold text-red-900 mb-4 serif-font leading-tight">
+                        以更高标准更实举措推进全面从严治党<br>
+                        为实现“十五五”时期目标任务提供坚强保障
+                    </h2>
+                    <div class="text-sm text-gray-500 space-y-2">
+                        <p>——习近平在二十届中央纪委五次全会上的重要讲话</p>
+                        <p class="text-xs">（2025年1月12日）</p>
+                    </div>
+                </div>
+
+                <!-- 正文内容 (Prose) -->
+                <div class="prose prose-slate max-w-none text-justify space-y-12 leading-relaxed text-gray-800">
+                    
+                    <!-- 总基调 -->
+                    <section id="part-tone" class="scroll-mt-32">
+                        <div class="bg-red-50 p-6 rounded-lg border border-red-100 shadow-sm">
+                            <h3 class="text-xl font-bold text-red-900 mb-3 flex items-center gap-2">
+                                <i class="fa-solid fa-bullhorn"></i> 会议总基调
+                            </h3>
+                            <p class="text-gray-800 font-medium text-lg leading-relaxed">
+                                要坚持和加强党的全面领导，以<strong>更高标准、更实举措</strong>推进全面从严治党，更加坚决有力地贯彻落实党中央重大决策部署，更加科学有效地把权力关进制度笼子，更加清醒坚定地推进反腐败斗争。
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- 重点任务一：政治监督 -->
+                    <section id="part-1" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-red-800">
+                            <div class="w-10 h-10 bg-red-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-eye"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">一、 强化政治监督，保障重大决策部署落地</h3>
+                            </div>
+                        </div>
+
+                        <div class="key-point-card p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="font-bold text-gray-900 mb-3">监督重点：</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2 mb-4">
+                                <li>构建全国统一大市场</li>
+                                <li>扩大高水平对外开放</li>
+                                <li>扎实推进全体人民共同富裕</li>
+                                <li>常态化防止返贫致贫</li>
+                                <li>化解地方政府隐性债务</li>
+                                <li>加强生态环境保护</li>
+                                <li>统筹发展和安全</li>
+                            </ul>
+                            
+                            <div class="bg-gray-50 p-4 rounded-lg">
+                                <h5 class="font-bold text-red-800 text-sm mb-2">【工作要求】</h5>
+                                <p class="text-sm text-gray-600">
+                                    加强具体化、精准化、常态化的监督检查，用好巡视成果、强化整改监督，保障党中央重大决策部署落到实处。
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- 重点任务二：制度建设 -->
+                    <section id="part-2" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-blue-800">
+                            <div class="w-10 h-10 bg-blue-800 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-cage"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">二、 科学有效把权力关进制度笼子</h3>
+                            </div>
+                        </div>
+
+                        <div class="key-point-card p-6 rounded-lg shadow-sm border border-gray-100">
+                            <div class="quote-box rounded-lg mb-6">
+                                <i class="fa-solid fa-quote-left quote-icon"></i>
+                                <p class="text-lg font-serif text-gray-800 italic">
+                                    “把权力关进制度笼子，既要不断完善制度规定，使制度密而不繁、有效管用，又要着力提高制度执行力，增强刚性约束。”
+                                </p>
+                            </div>
+
+                            <h4 class="font-bold text-gray-900 mb-3">核心举措：</h4>
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <strong class="text-blue-900 block mb-2">坚持“三个没有”</strong>
+                                    <p class="text-sm text-gray-700">法规制度面前人人平等、遵守法规制度没有特权、执行法规制度没有例外。</p>
+                                </div>
+                                <div class="bg-blue-50 p-4 rounded-lg">
+                                    <strong class="text-blue-900 block mb-2">确保“带电”</strong>
+                                    <p class="text-sm text-gray-700">确保制度规定真正成为带电的高压线。</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 mt-4">
+                                <strong>配套措施：</strong>“一把手”带头执行；加强法规制度宣传教育；提高党务、政务透明度，让权力在阳光下运行。
+                            </p>
+                        </div>
+                    </section>
+
+                    <!-- 重点任务三：反腐败斗争 -->
+                    <section id="part-3" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-red-700">
+                            <div class="w-10 h-10 bg-red-700 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-gavel"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">三、 清醒坚定推进反腐败斗争</h3>
+                            </div>
+                        </div>
+
+                        <div class="key-point-card p-6 rounded-lg shadow-sm border border-gray-100">
+                            <div class="quote-box rounded-lg mb-6">
+                                <i class="fa-solid fa-quote-left quote-icon"></i>
+                                <p class="text-lg font-serif text-gray-800 italic">
+                                    “腐败是党和国家事业发展进程中的拦路虎、绊脚石，反腐败是一场输不起也决不能输的重大斗争。”
+                                </p>
+                            </div>
+
+                            <h4 class="font-bold text-gray-900 mb-3">工作方针：</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                <li><strong>一体推进：</strong>坚持不敢腐、不能腐、不想腐一体推进。</li>
+                                <li><strong>三者贯通：</strong>惩治震慑、制度约束、提高觉悟紧密结合。</li>
+                                <li><strong>高压态势：</strong>保持反腐败高压态势，推进风腐同查同治。</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- 重点任务四：作风建设 -->
+                    <section id="part-4" class="scroll-mt-32">
+                        <div class="flex items-center gap-3 mb-6 pb-2 border-b-2 border-green-700">
+                            <div class="w-10 h-10 bg-green-700 text-white rounded-lg flex items-center justify-center text-xl shadow-md">
+                                <i class="fa-solid fa-wind"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900 m-0">四、 持续深化作风建设</h3>
+                            </div>
+                        </div>
+
+                        <div class="key-point-card p-6 rounded-lg shadow-sm border border-gray-100">
+                            <h4 class="font-bold text-gray-900 mb-3">主要抓手：</h4>
+                            <ul class="list-disc list-inside text-gray-700 space-y-2">
+                                <li>扎实开展<strong>深入贯彻中央八项规定精神学习教育</strong>。</li>
+                                <li>推动全党进一步<strong>改作风、树新风</strong>。</li>
+                                <li>深化整治<strong>群众身边不正之风和腐败问题</strong>。</li>
+                            </ul>
+                        </div>
+                    </section>
+
+                    <!-- 学习自测 -->
+                    <section id="part-quiz" class="scroll-mt-32">
+                        <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-6 mt-10">
+                            <h3 class="text-lg font-bold text-yellow-800 mb-4 flex items-center gap-2">
+                                <i class="fa-solid fa-pen-to-square"></i> 学习自测（点击查看答案）
+                            </h3>
+                            <div class="space-y-4">
+                                <div class="cursor-pointer group" onclick="this.classList.toggle('show-answer')">
+                                    <p class="text-sm text-gray-800 font-bold mb-2">1. 习近平总书记在讲话中指出，反腐败是一场什么样的斗争？</p>
+                                    <div class="hidden group-[.show-answer]:block text-sm text-green-700 bg-green-50 p-2 rounded">
+                                        答案：输不起也决不能输的重大斗争。
+                                    </div>
+                                    <div class="text-xs text-gray-400 group-[.show-answer]:hidden">点击显示答案</div>
+                                </div>
+                                <div class="cursor-pointer group" onclick="this.classList.toggle('show-answer')">
+                                    <p class="text-sm text-gray-800 font-bold mb-2">2. 新时代全面从严治党的一项重要任务是什么？</p>
+                                    <div class="hidden group-[.show-answer]:block text-sm text-green-700 bg-green-50 p-2 rounded">
+                                        答案：把权力关进制度笼子。
+                                    </div>
+                                    <div class="text-xs text-gray-400 group-[.show-answer]:hidden">点击显示答案</div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                </div>
+                
+                <!-- 底部落款 -->
+                <div class="mt-12 pt-8 border-t border-gray-100 text-center text-sm text-gray-400">
+                    <p>内容整理自：习近平在二十届中央纪委五次全会上发表重要讲话</p>
+                    <p>仅供内部学习参考</p>
+                </div>
+            </main>
+
+            <!-- (B) 右侧：悬浮工具栏 -->
+            <aside class="hidden lg:block w-64 flex-shrink-0">
+                <div class="sticky top-28 space-y-4">
+                    
+                    <!-- 目录导航卡片 -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 font-bold text-gray-800 flex items-center gap-2">
+                            <i class="fa-solid fa-list-ul text-red-800"></i> 学习导航
+                        </div>
+                        <nav class="max-h-[60vh] overflow-y-auto text-sm" id="tocNav">
+                            <a href="#part-tone" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">会议总基调</a>
+                            <a href="#part-1" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">一、强化政治监督</a>
+                            <a href="#part-2" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-blue-800 transition-colors">二、制度建设</a>
+                            <a href="#part-3" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-red-800 transition-colors">三、反腐败斗争</a>
+                            <a href="#part-4" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-green-800 transition-colors">四、作风建设</a>
+                            <a href="#part-quiz" class="toc-link block px-4 py-3 text-gray-600 border-l-4 border-transparent hover:bg-gray-50 hover:text-yellow-600 transition-colors">学习自测</a>
+                        </nav>
+                    </div>
+
+                    <!-- 功能按钮组 -->
+                    <div class="flex flex-col gap-2">
+                        <button onclick="scrollToTop()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-red-50 hover:text-red-800 hover:border-red-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-arrow-up"></i> <span class="text-xs font-bold">回到顶部</span>
+                        </button>
+                        <button onclick="window.print()" class="side-control bg-white text-gray-600 p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-blue-50 hover:text-blue-800 hover:border-blue-100 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-print"></i> <span class="text-xs font-bold">打印资料</span>
+                        </button>
+                    </div>
+
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- 移动端悬浮按钮 -->
+    <div class="fixed bottom-6 right-6 lg:hidden flex flex-col gap-3 z-40">
+        <button onclick="scrollToTop()" class="w-12 h-12 bg-red-800 text-white rounded-full shadow-lg flex items-center justify-center opacity-90 hover:opacity-100"><i class="fa-solid fa-arrow-up"></i></button>
+    </div>
+
+    <!-- 底部 -->
+    <footer class="bg-slate-900 text-white py-8 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-sm text-slate-400">
+            <p>&copy; 2025 贵州联合纪委工作办公室</p>
+        </div>
+    </footer>
+
+    <!-- 核心功能脚本 -->
+    <script>
+        function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+        function handleSearch(event) { if (event.key === 'Enter') executeSearch(); }
+
+        function executeSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const proseDiv = document.querySelector('.prose');
+            
+            // 清除上次高亮
+            if (!window.originalContent) window.originalContent = proseDiv.innerHTML;
+            proseDiv.innerHTML = window.originalContent;
+
+            if (!keyword) {
+                document.getElementById('searchCount').style.opacity = '0';
+                return;
+            }
+
+            const regex = new RegExp(`(${keyword})`, 'gi');
+            let matchCount = 0;
+            
+            const walker = document.createTreeWalker(proseDiv, NodeFilter.SHOW_TEXT, null, false);
+            const nodes = [];
+            while(walker.nextNode()) nodes.push(walker.currentNode);
+
+            const newHtml = window.originalContent.replace(regex, (match) => {
+                matchCount++;
+                return `<span class="highlight">${match}</span>`;
+            });
+            
+            proseDiv.innerHTML = newHtml;
+            
+            document.getElementById('searchCount').innerText = `${matchCount} 处匹配`;
+            document.getElementById('searchCount').style.opacity = '1';
+
+            const firstMatch = document.querySelector('.highlight');
+            if (firstMatch) firstMatch.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // 目录滚动监听
+        document.addEventListener('scroll', function() {
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.toc-link');
+            let current = '';
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 180) {
+                    current = '#' + section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

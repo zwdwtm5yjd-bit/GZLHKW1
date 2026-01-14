@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作动态 - 2026年第1期 - 贵州联合纪委</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@500;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary-red: #8B1C1C; /* 纪委红 */
+            --paper-bg: #F9F9F7;    /* 护眼米白纸质背景 */
+            --text-ink: #2c2c2c;    /* 墨色字体 */
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background-color: #E5E7EB; /* 外部深灰背景，突出中间纸张感 */
+            color: var(--text-ink);
+        }
+
+        .serif {
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 模拟纸张阴影 */
+        .paper-shadow {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 
+                        0 2px 4px -1px rgba(0, 0, 0, 0.06),
+                        0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                        0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        /* 简报红头线条 */
+        .red-line-double {
+            border-bottom: 1px solid var(--primary-red);
+            border-top: 4px solid var(--primary-red);
+            height: 6px;
+            margin: 20px 0;
+        }
+
+        /* 高级排版样式 */
+        .article-content p {
+            margin-bottom: 1.5rem;
+            line-height: 2; /* 宽松行距 */
+            text-align: justify;
+            font-size: 1.05rem;
+        }
+
+        /* 首字下沉 */
+        .drop-cap::first-letter {
+            float: left;
+            font-size: 3.5rem;
+            line-height: 0.8;
+            font-weight: bold;
+            color: var(--primary-red);
+            margin-right: 0.5rem;
+            margin-top: 0.2rem;
+            font-family: 'Noto Serif SC', serif;
+        }
+
+        /* 图片说明 */
+        .figcaption-style {
+            font-family: 'Noto Serif SC', serif;
+            font-style: italic;
+            border-left: 3px solid var(--primary-red);
+        }
+
+        /* 侧边栏吸附 */
+        .sticky-sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen py-8">
+
+    <!-- 顶部导航 -->
+    <div class="fixed top-0 left-0 w-full bg-white/90 backdrop-blur-md shadow-sm z-50 h-16 flex items-center justify-between px-6 lg:px-12 transition-all">
+        <div class="flex items-center gap-3 cursor-pointer" onclick="window.location.href='zy.html'">
+            <div class="w-8 h-8 bg-red-900 rounded-full flex items-center justify-center text-white">
+                <i class="fa-solid fa-star text-xs"></i>
+            </div>
+            <span class="font-bold text-gray-800 tracking-wide">贵州联合纪委 · 学习平台</span>
+        </div>
+        <button onclick="window.print()" class="text-sm text-gray-600 hover:text-red-900 flex items-center gap-2 border border-gray-300 px-3 py-1.5 rounded hover:bg-red-50 transition">
+            <i class="fa-solid fa-print"></i> 打印本页
+        </button>
+    </div>
+
+    <!-- 页面主体容器 -->
+    <div class="max-w-6xl mx-auto mt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 px-4">
+
+        <!-- 左侧：简报核心内容 (A4纸张质感) -->
+        <main class="lg:col-span-9 bg-[#FDFDFD] paper-shadow min-h-[1200px] px-8 py-12 md:px-16 md:py-20 relative" id="main-content">
+            
+            <!-- 简报刊头 -->
+            <header class="text-center mb-12">
+                <h1 class="text-5xl md:text-6xl font-bold text-red-900 serif tracking-widest mb-4">工作动态</h1>
+                <div class="flex justify-between items-end text-sm text-gray-600 font-medium px-2">
+                    <div class="text-left">
+                        <p>贵州联合纪委工作办公室 编</p>
+                        <p>第 <span class="text-red-900 font-bold text-lg">2026-1</span> 期</p>
+                    </div>
+                    <div class="text-right">
+                        <p>2026年1月5日</p>
+                    </div>
+                </div>
+                <div class="red-line-double"></div>
+            </header>
+
+            <!-- 核心头条新闻 -->
+            <article class="mb-16">
+                <h2 class="text-3xl font-bold text-gray-900 serif mb-6 text-center leading-normal">
+                    筑牢安全底线 强化保密意识<br>
+                    <span class="text-xl font-normal text-gray-600 mt-2 block">——贵州联合印发《纪委办案安全保密管理办法》</span>
+                </h2>
+
+                <!-- 文章内容 -->
+                <div class="article-content text-gray-800" id="article-text">
+                    <p class="drop-cap">
+                        为深入贯彻落实《中国共产党纪律检查机关监督执纪工作规则》及《中华人民共和国保守国家秘密法》，进一步规范执纪审查工作流程，防范化解安全风险与泄密隐患，1月5日，贵州联合纪委正式印发《贵州联合民爆器材经营有限责任公司纪委办案安全保密管理办法》（以下简称《办法》）。该制度此前已于2025年12月29日经公司第十三次党委（扩大）会审议通过。
+                    </p>
+                    <p>
+                        《办法》的出台，旨在构建全流程安全防控体系，切实保障干部职工合法权益，维护公司生产经营秩序。文件共六章二十一条，涵盖总则、组织机构与职责、办案安全管理、办案保密管理、监督检查与责任追究等核心内容，标志着公司纪检监察工作规范化、法治化建设迈上新台阶。
+                    </p>
+                </div>
+            </article>
+
+            <!-- 视觉聚焦区 (图片墙设计) -->
+            <section class="mb-16 bg-slate-50 p-6 -mx-6 md:-mx-12 rounded-lg border border-slate-100">
+                <div class="flex items-center gap-2 mb-6">
+                    <div class="w-1 h-6 bg-red-800"></div>
+                    <h3 class="text-xl font-bold serif text-gray-800">制度图解 · Policy Interpretation</h3>
+                </div>
+
+                <!-- 网格布局 -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- 主图 -->
+                    <div class="md:col-span-2 relative group overflow-hidden rounded-lg shadow-md">
+                        <!-- 使用档案、保密相关占位图 -->
+                        <img src="https://free.picui.cn/free/2026/01/14/6967439427608.png" alt="档案保密管理" class="w-full h-80 object-cover object-center group-hover:scale-105 transition duration-700">
+                        <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 pt-12">
+                            <p class="text-white text-sm font-medium"><i class="fa-solid fa-lock mr-2"></i>保密刚性原则：谁办案谁负责，谁接触谁负责</p>
+                        </div>
+                    </div>
+                    
+                    <!-- 次图1 -->
+                    <div class="relative group overflow-hidden rounded-lg shadow-sm">
+                        <!-- 监控/录像/设备占位图 -->
+                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80" alt="全程录音录像" class="w-full h-48 object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute bottom-0 left-0 w-full bg-white/95 px-3 py-2 border-t-2 border-red-800">
+                            <p class="text-xs text-gray-800 font-serif">技术保障：全程录音录像，封闭式管理。</p>
+                        </div>
+                    </div>
+
+                    <!-- 次图2 -->
+                    <div class="relative group overflow-hidden rounded-lg shadow-sm">
+                        <!-- 制度学习/会议占位图 -->
+                        <img src="https://free.picui.cn/free/2026/01/14/696743beb5ba3.jpg" alt="学习贯彻" class="w-full h-48 object-cover group-hover:scale-105 transition duration-700">
+                        <div class="absolute bottom-0 left-0 w-full bg-white/95 px-3 py-2 border-t-2 border-red-800">
+                            <p class="text-xs text-gray-800 font-serif">学习贯彻：强化办案全过程安全保密意识。</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 继续文章内容：核心亮点 -->
+            <article class="mb-12">
+                <h3 class="text-2xl font-bold text-gray-900 serif mb-6 border-l-4 border-red-800 pl-4">制度核心亮点</h3>
+                <div class="article-content text-gray-800">
+                    <p>
+                        <strong>一、坚持党管办案，压实主体责任。</strong>
+                         《办法》明确规定，办案安全保密工作纳入党委主体责任清单。公司成立由党委书记任组长、纪委书记任副组长的“办案安全保密工作组”，定期听取汇报、研究重大问题，形成了党委统一领导、纪委牵头抓总、部门协同配合的工作格局。
+                    </p>
+
+                    <p>
+                        <strong>二、强化底线思维，落实“两个安全”。</strong>
+                        坚持“安全第一”原则，将政治安全、人身安全放在首位。规范了办案场所封闭式管理要求，明确了涉案人员身体检查、全程录音录像等保护性措施，严禁体罚或变相体罚，确保依规依纪依法文明办案。
+                    </p>
+                    
+                    <!-- 引用块：重点强调 -->
+                    <blockquote class="border-l-4 border-gray-300 pl-6 italic text-gray-600 my-8 py-4 bg-gray-50 pr-4 rounded-r">
+                        “涉密载体管理实行全周期管控，严禁在公共场所谈论案情，严禁通过非涉密网络传输涉密信息。一旦发生泄密事件，必须在规定时限内上报并启动应急预案。”
+                    </blockquote>
+
+                    <p>
+                        <strong>三、细化保密措施，织密防护网络。</strong>
+                        制度对涉密人员实行岗前审查、离岗脱密管理，签订保密承诺书。对涉密载体的印制、传递、销毁实行登记管理，做到全程可追溯。明确了涉密信息传输的“红线”，严禁通过互联网端处理涉密数据，确保信息绝对安全。
+                    </p>
+
+                    <p>
+                        <strong>四、严肃追责问责，倒逼责任落实。</strong>
+                        《办法》确立了监督检查机制，纪委每年至少开展一次自查自纠。对于违反规定导致安全事故或泄密事件的，实行“一案双查”，既追究直接责任人的责任，也倒查相关领导责任，以严明的纪律倒逼安全保密责任落实落地。
+                    </p>
+
+                </div>
+            </article>
+
+            <!-- 简报尾部 -->
+            <footer class="mt-20 pt-8 border-t border-gray-300 text-sm text-gray-500 flex flex-col md:flex-row justify-between items-center gap-4">
+                <div class="space-y-1">
+                </div>
+                <div class="flex items-center gap-2 w-full justify-end">
+                    <!-- 按钮已移除 -->
+                </div>
+            </footer>
+
+        </main>
+
+        <!-- 右侧：侧边栏导航 (悬浮) -->
+        <aside class="hidden lg:block lg:col-span-3">
+            <div class="sticky-sidebar space-y-6">
+                
+                <!-- 目录卡片 -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ol text-red-800"></i> 本期导读
+                    </h3>
+                    <ul class="space-y-3 text-sm">
+                        <li>
+                            <a href="#article-text" class="text-gray-700 hover:text-red-800 flex items-start gap-2 group">
+                                <span class="text-red-200 font-bold group-hover:text-red-800">01</span>
+                                <span>筑牢安全底线 强化保密意识 (头条)</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-700 hover:text-red-800 flex items-start gap-2 group">
+                                <span class="text-red-200 font-bold group-hover:text-red-800">02</span>
+                                <span>核心亮点：坚持党管办案</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="text-gray-700 hover:text-red-800 flex items-start gap-2 group">
+                                <span class="text-red-200 font-bold group-hover:text-red-800">03</span>
+                                <span>刚性约束：严肃追责问责</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 智能关键词 (自动生成) -->
+                <div class="bg-white rounded-lg shadow-sm p-6 border border-gray-200">
+                    <h3 class="font-bold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fa-solid fa-tags text-blue-800"></i> 
+                        智能关键词
+                        <span class="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded font-normal">Auto</span>
+                    </h3>
+                    <div id="keyword-cloud" class="flex flex-wrap gap-2">
+                        <!-- 关键词将由JS自动填充 -->
+                        <span class="text-xs text-gray-400 animate-pulse">正在分析全文内容...</span>
+                    </div>
+                </div>
+
+            </div>
+        </aside>
+
+    </div>
+
+    <!-- 底部版权 -->
+    <div class="text-center text-gray-400 text-sm py-8 mt-8">
+        &copy; 2026 贵州联合纪委工作办公室
+    </div>
+
+    <!-- 简单的自动关键词提取脚本 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 针对当前文章内容的关键词提取模拟
+            
+            const potentialKeywords = [
+                { text: "办案安全", type: "red" },
+                { text: "保密管理", type: "red" },
+                { text: "党管办案", type: "blue" },
+                { text: "一案双查", type: "red" },
+                { text: "全程录音录像", type: "gray" },
+                { text: "应急处置", type: "gray" },
+                { text: "涉密载体", type: "blue" },
+                { text: "制度建设", type: "red" }
+            ];
+
+            const keywordContainer = document.getElementById('keyword-cloud');
+            
+            // 模拟延迟，增加“计算中”的感觉
+            setTimeout(() => {
+                keywordContainer.innerHTML = ''; // 清空加载状态
+                
+                // 只展示前6个
+                potentialKeywords.slice(0, 6).forEach(kw => {
+                    const span = document.createElement('span');
+                    let bgClass = '';
+                    let textClass = '';
+                    
+                    if (kw.type === 'red') {
+                        bgClass = 'bg-red-50';
+                        textClass = 'text-red-800';
+                    } else if (kw.type === 'blue') {
+                        bgClass = 'bg-blue-50';
+                        textClass = 'text-blue-800';
+                    } else {
+                        bgClass = 'bg-gray-100';
+                        textClass = 'text-gray-600';
+                    }
+                    
+                    span.className = `px-2 py-1 ${bgClass} ${textClass} text-xs rounded transition hover:scale-105 cursor-default`;
+                    span.innerText = kw.text;
+                    keywordContainer.appendChild(span);
+                });
+            }, 800);
+        });
+    </script>
+
+</body>
+</html>
