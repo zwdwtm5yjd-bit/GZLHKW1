@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>贵州联合纪委工作办公室 - 学习交流平台</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Serif+SC:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <style>
+        :root { 
+            --primary-red: #8B1C1C; 
+            --tech-blue: #1E3A8A; 
+            --bg-light: #F8FAFC; 
+        }
+        body { font-family: 'Noto Sans SC', sans-serif; background-color: var(--bg-light); overflow-x: hidden; }
+        h1, h2, h3, .serif-font { font-family: 'Noto Serif SC', serif; }
+        
+        /* 登录墙动态背景 */
+        .login-bg-animate { 
+            background: linear-gradient(125deg, #1a2a6c, #b21f1f, #fdbb2d);
+            background-size: 300% 300%;
+            animation: gradientBG 10s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hidden-mode { display: none !important; }
+        .fade-in { animation: fadeIn 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* 卡片通用交互 */
+        .hover-lift { transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .hover-lift:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.08); }
+        
+        /* 顶部导航卡片 */
+        .nav-card { transition: all 0.3s ease; border: 1px solid transparent; }
+        .nav-card:hover { border-color: rgba(0,0,0,0.05); transform: translateY(-5px); }
+
+        /* 滚动公告栏动画 */
+        .ticker-wrap {
+            width: 100%;
+            overflow: hidden;
+            background: linear-gradient(90deg, #8B1C1C 0%, #7f1d1d 100%);
+            color: white;
+            white-space: nowrap;
+            box-sizing: border-box;
+        }
+        .ticker {
+            display: inline-block;
+            padding-left: 100%;
+            animation: ticker 40s linear infinite;
+        }
+        .ticker:hover { animation-play-state: paused; }
+        @keyframes ticker {
+            0% { transform: translate3d(0, 0, 0); }
+            100% { transform: translate3d(-100%, 0, 0); }
+        }
+
+        /* 工作之窗 - Bento Grid 风格 */
+        .bento-card {
+            border-radius: 1rem;
+            overflow: hidden;
+            position: relative;
+            transition: all 0.4s ease;
+            background: white;
+            border: 1px solid rgba(226, 232, 240, 0.8);
+        }
+        .bento-card:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.01);
+            transform: translateY(-2px);
+            border-color: rgba(203, 213, 225, 1);
+            z-index: 10;
+        }
+        
+        .bg-subtle-blue { background: linear-gradient(to bottom right, #ffffff, #eff6ff); }
+        .bg-subtle-red { background: linear-gradient(to bottom right, #ffffff, #fef2f2); }
+        .bg-subtle-amber { background: linear-gradient(to bottom right, #ffffff, #fffbeb); }
+        .bg-subtle-emerald { background: linear-gradient(to bottom right, #ffffff, #ecfdf5); }
+
+        .biz-icon-box {
+            width: 3rem; height: 3rem;
+            border-radius: 0.75rem;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem;
+            margin-bottom: 0.75rem;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.03);
+            border: 1px solid #f1f5f9;
+            transition: transform 0.3s;
+        }
+        .bento-card:hover .biz-icon-box { transform: scale(1.1); }
+
+        /* Swiper 平滑滚动 */
+        .swiper-wrapper {
+            transition-timing-function: linear !important; 
+        }
+        
+        /* 弹窗样式 */
+        .modal-enter { opacity: 0; transform: scale(0.95); }
+        .modal-enter-active { opacity: 1; transform: scale(1); transition: all 0.3s ease-out; }
+        .modal-exit { opacity: 1; transform: scale(1); }
+        .modal-exit-active { opacity: 0; transform: scale(0.95); transition: all 0.2s ease-in; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen text-slate-800">
+
+    <!-- 1. 登录门禁 -->
+    <div id="login-screen" class="fixed inset-0 z-[100] flex items-center justify-center login-bg-animate">
+        <div class="bg-white/95 backdrop-blur-xl p-8 rounded-2xl shadow-2xl w-full max-w-md border border-white/50 z-10 fade-in mx-4">
+            <div class="text-center mb-8">
+                <div class="w-16 h-16 bg-red-900 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-xl ring-4 ring-red-50">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <h1 class="text-2xl font-bold text-gray-900 serif-font">贵州联合纪委</h1>
+                <div class="mt-3 flex justify-center items-center gap-2">
+                    <span class="h-px w-8 bg-gray-300"></span>
+                    <span class="text-xs font-medium text-gray-500 uppercase tracking-widest">工作办公室</span>
+                    <span class="h-px w-8 bg-gray-300"></span>
+                </div>
+            </div>
+            <div id="login-error" class="hidden-mode mb-4 p-3 bg-red-50 text-red-700 text-sm rounded-lg border border-red-100 flex items-center gap-2 animate-bounce">
+                <i class="fa-solid fa-circle-exclamation"></i> <span>账号或密码错误</span>
+            </div>
+            <div class="space-y-5">
+                <div class="relative group">
+                    <i class="fa-solid fa-user absolute left-4 top-3.5 text-gray-400 group-focus-within:text-red-800 transition"></i>
+                    <input id="username-input" type="text" class="pl-12 block w-full rounded-xl border-gray-200 border bg-gray-50 p-3 focus:ring-2 focus:ring-red-900/20 focus:border-red-900 outline-none transition focus:bg-white" placeholder="请输入内部账号">
+                </div>
+                <div class="relative group">
+                    <i class="fa-solid fa-key absolute left-4 top-3.5 text-gray-400 group-focus-within:text-red-800 transition"></i>
+                    <input id="password-input" type="password" class="pl-12 block w-full rounded-xl border-gray-200 border bg-gray-50 p-3 focus:ring-2 focus:ring-red-900/20 focus:border-red-900 outline-none transition focus:bg-white" placeholder="请输入访问密码">
+                </div>
+                <button onclick="attemptLogin()" class="w-full bg-gradient-to-r from-red-900 to-red-800 text-white py-3.5 rounded-xl hover:shadow-lg hover:shadow-red-900/30 hover:scale-[1.02] transition-all duration-300 font-bold tracking-wide">
+                    立即登录
+                </button>
+            </div>
+            <p class="mt-8 text-center text-xs text-gray-400">Copyright © 2025 内部协作平台</p>
+        </div>
+    </div>
+
+    <!-- 2. 主内容 -->
+    <div id="main-content" class="hidden-mode flex flex-col min-h-screen relative">
+        
+        <!-- --- 新增：通用弹窗模态框 (Modal) --- -->
+        <div id="detail-modal" class="fixed inset-0 z-[100] hidden items-center justify-center">
+            <!-- 遮罩层 -->
+            <div class="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity" onclick="closeModal()"></div>
+            
+            <!-- 弹窗主体 -->
+            <div class="bg-white w-full max-w-4xl h-[85vh] rounded-2xl shadow-2xl z-10 flex flex-col overflow-hidden relative transform transition-all scale-95 opacity-0" id="modal-content-box">
+                
+                <!-- 弹窗头部 -->
+                <div class="px-8 py-5 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                    <h3 id="modal-title" class="text-xl font-bold text-gray-900 flex items-center gap-3">
+                        <!-- JS 动态填充图标和标题 -->
+                    </h3>
+                    <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-gray-100 text-gray-500 hover:bg-red-500 hover:text-white flex items-center justify-center transition focus:outline-none">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+
+                <!-- 弹窗内容区 -->
+                <div id="modal-body" class="flex-1 overflow-y-auto p-8 bg-white text-gray-700">
+                    <!-- 动态内容将在这里渲染 -->
+                    <div class="flex flex-col items-center justify-center h-full text-gray-400">
+                        <i class="fa-solid fa-spinner fa-spin text-3xl mb-4"></i>
+                        <p>正在加载内容...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 滚动通告栏 -->
+        <div class="ticker-wrap h-10 flex items-center shadow-md relative z-50 border-b border-red-900">
+            <div class="bg-red-950 px-6 h-full flex items-center font-bold text-xs text-yellow-400 shrink-0 z-10 shadow-[4px_0_10px_rgba(0,0,0,0.3)]">
+                <i class="fa-solid fa-bullhorn mr-2"></i> 最新通报
+            </div>
+            <div id="ticker-content" class="ticker text-sm py-2 font-medium tracking-wide flex items-center">
+                <!-- JS 会在这里插入内容 -->
+            </div>
+        </div>
+
+        <!-- 顶部导航 -->
+        <header class="bg-white/95 backdrop-blur-md sticky top-0 z-40 border-b border-gray-200 shadow-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-18 py-2">
+                    <div class="flex items-center space-x-3 group cursor-pointer" onclick="window.location.reload()">
+                        <div class="w-10 h-10 bg-gradient-to-br from-red-900 to-red-800 rounded-lg flex items-center justify-center text-white shadow-sm transform group-hover:rotate-3 transition duration-300">
+                            <i class="fa-solid fa-star text-sm"></i>
+                        </div>
+                        <div>
+                            <h1 class="text-lg font-bold tracking-wide text-gray-900 leading-tight">贵州联合纪委</h1>
+                            <p class="text-[10px] text-gray-500 tracking-wider uppercase font-medium">Joint Commission Office</p>
+                        </div>
+                    </div>
+                    <nav class="hidden md:flex space-x-1 items-center text-sm font-medium">
+                        <button onclick="scrollToTop()" class="px-4 py-2 text-red-900 bg-red-50 rounded-lg transition">首页</button>
+                        <button onclick="window.open('zsksy.html', '_blank')" class="px-4 py-2 text-gray-600 hover:text-red-900 hover:bg-gray-50 rounded-lg transition">知识库</button>
+                        <button onclick="document.getElementById('core-area').scrollIntoView({behavior: 'smooth'})" class="px-4 py-2 text-gray-600 hover:text-red-900 hover:bg-gray-50 rounded-lg transition">工作台</button>
+                        <button onclick="document.getElementById('updates').scrollIntoView({behavior: 'smooth'})" class="px-4 py-2 text-gray-600 hover:text-red-900 hover:bg-gray-50 rounded-lg transition">动态展示</button>
+                        
+                        <div class="border-l border-gray-200 pl-4 ml-3 flex items-center gap-3">
+                            <div class="flex items-center gap-2 px-2 py-1 bg-gray-50 rounded border border-gray-100">
+                                <span class="relative flex h-2 w-2">
+                                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                  <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                                </span>
+                                <span id="display-name" class="text-xs font-bold text-gray-700">已登录</span>
+                            </div>
+                            <button onclick="doLogout()" class="text-gray-400 hover:text-red-600 transition p-1" title="退出系统">
+                                <i class="fa-solid fa-power-off"></i>
+                            </button>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主视觉与工具入口 -->
+        <section class="bg-[#F8FAFC] py-12 relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-to-br from-red-50 to-transparent rounded-full blur-3xl opacity-60 pointer-events-none -mr-20 -mt-20"></div>
+            <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-to-tr from-blue-50 to-transparent rounded-full blur-3xl opacity-60 pointer-events-none -ml-20 -mb-20"></div>
+            
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+                <div class="text-center mb-10 fade-in">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm text-xs font-medium text-gray-500 mb-6">
+                        <i class="fa-solid fa-shield-halved text-red-700"></i> 忠诚 · 干净 · 担当
+                    </div>
+                    <h2 class="text-4xl md:text-5xl font-extrabold text-gray-900 mb-4 tracking-tight serif-font">
+                        深化数字赋能 <span class="text-red-900 relative">聚焦主责主业</span>
+                    </h2>
+                </div>
+
+                <!-- 工具入口 -->
+                <div class="grid grid-cols-1 md:grid-cols-4 gap-6 fade-in" style="animation-delay: 0.1s;">
+                    <div onclick="window.open('zsksy.html', '_blank')" class="nav-card bg-white rounded-2xl shadow-sm p-6 flex flex-col items-center text-center cursor-pointer group border border-gray-100">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-red-50 to-red-100 text-red-700 flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-inner text-2xl">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 text-lg">学习知识库</h3>
+                    </div>
+                    <div onclick="showToast('正在初始化AI引擎...')" class="nav-card bg-white rounded-2xl shadow-sm p-6 flex flex-col items-center text-center cursor-pointer group border border-gray-100">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100 text-blue-700 flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-inner text-2xl">
+                            <i class="fa-solid fa-robot"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 text-lg">AI 智能问答</h3>
+                    </div>
+                    <div onclick="window.open('https://lcnb6ywyxip9.feishu.cn/base/EO27bu9Q1a9ufwsmP3BcgKRjncc', '_blank')" class="nav-card bg-white rounded-2xl shadow-sm p-6 flex flex-col items-center text-center cursor-pointer group border border-gray-100">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-50 to-teal-100 text-teal-600 flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-inner text-2xl">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 text-lg">飞书办公台</h3>
+                    </div>
+                    <div onclick="showToast('正在进入品牌文化长廊...')" class="nav-card bg-white rounded-2xl shadow-sm p-6 flex flex-col items-center text-center cursor-pointer group border border-gray-100">
+                        <div class="w-14 h-14 rounded-2xl bg-gradient-to-br from-amber-50 to-amber-100 text-amber-600 flex items-center justify-center mb-4 group-hover:scale-110 transition shadow-inner text-2xl">
+                            <i class="fa-solid fa-award"></i>
+                        </div>
+                        <h3 class="font-bold text-gray-900 text-lg">品牌文化</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 核心区：左侧视频 + 右侧工作之窗 -->
+        <section id="core-area" class="py-12 bg-white border-t border-gray-100">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                    
+                    <!-- 左侧：B站视频播放器 (占7列) -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-2xl font-bold text-gray-900 border-l-4 border-red-800 pl-3">视频·云课堂</h2>
+                            <a href="#" class="text-sm text-gray-500 hover:text-red-800 transition">更多视频 <i class="fa-solid fa-angle-right"></i></a>
+                        </div>
+                        
+                        <!-- 主视频 -->
+                        <div class="video-card bg-black rounded-xl overflow-hidden shadow-lg h-[400px]">
+                            <iframe 
+                                src="https://player.bilibili.com/player.html?isOutside=true&aid=115864393286372&bvid=BV1WwrTB8Eec&cid=35281046525&p=1&autoplay=0&high_quality=1&danmaku=0" 
+                                scrolling="no" 
+                                border="0" 
+                                frameborder="no" 
+                                framespacing="0" 
+                                allowfullscreen="true" 
+                                class="w-full h-full">
+                            </iframe>
+                        </div>
+                    </div>
+
+                    <!-- 右侧：工作之窗 (占5列) - 修改为弹窗触发 -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="flex items-center justify-between mb-2">
+                            <h2 class="text-2xl font-bold text-gray-900 flex items-center gap-3">
+                                <span class="w-1.5 h-6 bg-blue-800 rounded-full"></span>
+                                工作之窗
+                            </h2>
+                        </div>
+                        
+                        <!-- 2x2 Grid 布局 -->
+                        <div class="grid grid-cols-2 gap-4 h-[400px]">
+                            <!-- 1. 监督检查 -->
+                            <div onclick="openModal('supervision')" class="bento-card bg-subtle-blue p-5 flex flex-col justify-between cursor-pointer group hover:border-blue-200">
+                                <div class="flex justify-between items-start">
+                                    <div class="biz-icon-box text-blue-600 border-blue-100">
+                                        <i class="fa-solid fa-magnifying-glass"></i>
+                                    </div>
+                                    <i class="fa-solid fa-arrow-right -rotate-45 text-gray-300 group-hover:text-blue-600 group-hover:rotate-0 transition duration-300"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-lg group-hover:text-blue-700 transition">监督检查</h4>
+                                    <p class="text-xs text-gray-500 mt-1">政治/日常/专项监督</p>
+                                </div>
+                            </div>
+
+                            <!-- 2. 党风政风 -->
+                            <div onclick="openModal('conduct')" class="bento-card bg-subtle-red p-5 flex flex-col justify-between cursor-pointer group hover:border-red-200">
+                                <div class="flex justify-between items-start">
+                                    <div class="biz-icon-box text-red-600 border-red-100">
+                                        <i class="fa-solid fa-wind"></i>
+                                    </div>
+                                    <i class="fa-solid fa-arrow-right -rotate-45 text-gray-300 group-hover:text-red-600 group-hover:rotate-0 transition duration-300"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-lg group-hover:text-red-700 transition">党风政风</h4>
+                                    <p class="text-xs text-gray-500 mt-1">纠治四风/专项治理</p>
+                                </div>
+                            </div>
+
+                            <!-- 3. 巡视巡察 -->
+                            <div onclick="openModal('inspection')" class="bento-card bg-subtle-amber p-5 flex flex-col justify-between cursor-pointer group hover:border-amber-200">
+                                <div class="flex justify-between items-start">
+                                    <div class="biz-icon-box text-amber-600 border-amber-100">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </div>
+                                    <i class="fa-solid fa-arrow-right -rotate-45 text-gray-300 group-hover:text-amber-600 group-hover:rotate-0 transition duration-300"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-lg group-hover:text-amber-700 transition">巡视巡察</h4>
+                                    <p class="text-xs text-gray-500 mt-1">利剑作用/整改落实</p>
+                                </div>
+                            </div>
+
+                            <!-- 4. 组织建设 -->
+                            <div onclick="openModal('organization')" class="bento-card bg-subtle-emerald p-5 flex flex-col justify-between cursor-pointer group hover:border-emerald-200">
+                                <div class="flex justify-between items-start">
+                                    <div class="biz-icon-box text-emerald-600 border-emerald-100">
+                                        <i class="fa-solid fa-users-gear"></i>
+                                    </div>
+                                    <i class="fa-solid fa-arrow-right -rotate-45 text-gray-300 group-hover:text-emerald-600 group-hover:rotate-0 transition duration-300"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900 text-lg group-hover:text-emerald-700 transition">组织建设</h4>
+                                    <p class="text-xs text-gray-500 mt-1">机构设置/教育培训</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部动态滚动 -->
+        <section id="updates" class="py-12 bg-[#F8FAFC] border-t border-gray-200">
+            <div class="max-w-full overflow-hidden">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6">
+                    <h2 class="text-xl font-bold text-gray-900 flex items-center gap-3">
+                        <i class="fa-solid fa-newspaper text-red-700"></i>
+                        动态简报
+                        <span class="text-xs font-normal text-gray-500 bg-white border px-2 py-0.5 rounded-md ml-2">Latest News & Reports</span>
+                    </h2>
+                </div>
+
+                <!-- Swiper Marquee Container -->
+                <div class="swiper myMarquee">
+                    <div class="swiper-wrapper" id="news-wrapper">
+                        <!-- JS 将自动填充这里的卡片 -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 底部 Footer -->
+        <footer class="bg-slate-900 text-white mt-auto py-10 border-t border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="flex items-center gap-4">
+                         <div class="w-12 h-12 bg-slate-800 rounded-full flex items-center justify-center text-slate-500">
+                            <i class="fa-solid fa-shield-cat text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold serif-font text-slate-200">贵州联合纪委工作办公室</h3>
+                            <p class="text-xs text-slate-500">Guizhou Joint Commission for Discipline Inspection Office</p>
+                        </div>
+                    </div>
+                    <div class="text-sm text-slate-400 text-center md:text-right space-y-2">
+                        <p class="mb-1"><span class="w-2 h-2 rounded-full bg-green-500 inline-block mr-2"></span>系统运行正常</p>
+                        <p>内部系统 · 严禁外传 · 仅限工作交流使用</p>
+                        <p class="text-xs text-slate-600">&copy; 2025 All Rights Reserved.</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- 简单的 Toast 提示框 -->
+    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-gray-900/90 backdrop-blur text-white px-6 py-3 rounded-full shadow-2xl opacity-0 transition-opacity duration-300 pointer-events-none z-[60] flex items-center gap-3 border border-gray-700">
+        <i class="fa-solid fa-spinner fa-spin text-red-500"></i>
+        <span id="toast-message" class="font-medium">Loading...</span>
+    </div>
+
+    <!-- 引入 Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- 核心脚本 -->
+    <script>
+        // === 1. 数据源：动态简报数据 (使用外部链接) ===
+        const newsData = [
+            { 
+                id: 1,
+                title: "贵州联合印发《纪委办案安全保密管理办法》", 
+                date: "2026-01-05",
+                tag: "工作动态", 
+                color: "red",
+                img: "https://free.picui.cn/free/2026/01/14/696743beb5ba3.jpg",
+                link: "https://www.ericmm.com/xc2026-1.html" // 示例链接，实际请替换
+            },
+            { 
+                id: 2,
+                title: "贵州联合党委巡察组向水城华建党支部反馈巡察情况", 
+                date: "2026-01-07",
+                tag: "工作动态", 
+                color: "blue",
+                img: "https://free.picui.cn/free/2026/01/14/6967472b2285b.jpg",
+                link: "https://www.ericmm.com/xc2026-2.html"
+            },
+            { 
+                id: 3,
+                title: "思想筑廉：打造“清风贵州”廉洁文化品牌", 
+                date: "2026-01-01",
+                tag: "品牌建设", 
+                color: "amber",
+                img: "https://free.picui.cn/free/2025/12/25/694d02a089d76.png",
+                link: "https://lcnb6ywyxip9.feishu.cn/base/EO27bu9Q1a9ufwsmP3BcgKRjncc"
+            },
+            { 
+                id: 4,
+                title: "贵州联合开展下级单位“一把手”任前廉洁谈话", 
+                date: "2025-02-15",
+                tag: "工作动态", 
+                color: "emerald",
+                img: "https://free.picui.cn/free/2026/01/14/69670dbeac87b.jpg",
+                link: "https://www.ericmm.com/xc2026-3.html"
+            },
+            { 
+                id: 5,
+                title: "习近平在二十届中央纪委五次全会上发表重要讲话", 
+                date: "2026-01-12",
+                tag: "精神学习", 
+                color: "purple",
+                img: "https://www.news.cn/politics/leaders/20260112/a5aeaaba12c146968c0271180756d5ad/kBVZLupjthNnSMUm.jpg",
+                link: "https://www.ericmm.com/xx2026-1.html"
+            },
+            { 
+                id: 6,
+                title: "关于开展违反中央八项规定精神问题专项整治的通知", 
+                date: "2025-02-01",
+                tag: "专项整治", 
+                color: "red",
+                img: "https://free.picui.cn/free/2025/12/25/694d02a089d76.png",
+                link: "https://www.google.com/search?q=中央八项规定"
+            }
+        ];
+
+        // === 2. 模态窗逻辑 (SPA核心) ===
+        const workWindowContent = {
+            'supervision': {
+                title: '监督检查工作平台',
+                icon: 'fa-magnifying-glass text-blue-600',
+                html: `
+                    <div class="space-y-6">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="bg-blue-50 p-4 rounded-xl text-center"><h3 class="font-bold text-2xl text-blue-800">12</h3><p class="text-xs text-blue-600">本月检查</p></div>
+                            <div class="bg-red-50 p-4 rounded-xl text-center"><h3 class="font-bold text-2xl text-red-800">3</h3><p class="text-xs text-red-600">发现问题</p></div>
+                            <div class="bg-green-50 p-4 rounded-xl text-center"><h3 class="font-bold text-2xl text-green-800">98%</h3><p class="text-xs text-green-600">整改率</p></div>
+                        </div>
+                        <h4 class="font-bold text-gray-800 border-l-4 border-blue-600 pl-3">近期任务列表</h4>
+                        <div class="border rounded-lg divide-y">
+                            <div class="p-4 hover:bg-gray-50 flex justify-between items-center cursor-pointer">
+                                <div><span class="font-bold block text-sm">“三重一大”决策制度执行情况检查</span><span class="text-xs text-gray-400">责任部门：党群部</span></div>
+                                <span class="bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">进行中</span>
+                            </div>
+                            <div class="p-4 hover:bg-gray-50 flex justify-between items-center cursor-pointer">
+                                <div><span class="font-bold block text-sm">2025年第一季度纪律作风检查</span><span class="text-xs text-gray-400">责任部门：纪委办</span></div>
+                                <span class="bg-green-100 text-green-800 text-xs px-2 py-1 rounded">已完成</span>
+                            </div>
+                        </div>
+                    </div>
+                `
+            },
+            'conduct': {
+                title: '党风政风监督系统',
+                icon: 'fa-wind text-red-600',
+                html: '<div class="p-10 text-center text-gray-500"><i class="fa-solid fa-wind text-4xl mb-4 text-red-200"></i><p>正在加载党风政风相关数据图表与专项治理任务...</p></div>'
+            },
+            'inspection': {
+                title: '巡视巡察管理系统',
+                icon: 'fa-eye text-amber-600',
+                html: '<div class="p-10 text-center text-gray-500"><i class="fa-solid fa-eye text-4xl mb-4 text-amber-200"></i><p>正在加载巡察组驻点信息、巡察公告及整改台账...</p></div>'
+            },
+            'organization': {
+                title: '组织建设与干部管理',
+                icon: 'fa-users-gear text-emerald-600',
+                html: '<div class="p-10 text-center text-gray-500"><i class="fa-solid fa-users-gear text-4xl mb-4 text-emerald-200"></i><p>正在加载纪检干部队伍结构、培训计划及考核评价...</p></div>'
+            }
+        };
+
+        function openModal(type, id = null) {
+            const modal = document.getElementById('detail-modal');
+            const box = document.getElementById('modal-content-box');
+            const titleEl = document.getElementById('modal-title');
+            const bodyEl = document.getElementById('modal-body');
+
+            // 1. 显示容器
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            
+            // 2. 动画进入
+            setTimeout(() => {
+                box.classList.remove('scale-95', 'opacity-0');
+                box.classList.add('scale-100', 'opacity-100');
+            }, 10);
+
+            // 3. 填充内容
+            if (workWindowContent[type]) {
+                const config = workWindowContent[type];
+                titleEl.innerHTML = `<i class="fa-solid ${config.icon} mr-2"></i> ${config.title}`;
+                bodyEl.innerHTML = config.html;
+            } else {
+                titleEl.innerText = '详情';
+                bodyEl.innerHTML = '<p class="text-center text-gray-400 mt-10">暂无内容</p>';
+            }
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('detail-modal');
+            const box = document.getElementById('modal-content-box');
+
+            box.classList.remove('scale-100', 'opacity-100');
+            box.classList.add('scale-95', 'opacity-0');
+
+            setTimeout(() => {
+                modal.classList.add('hidden');
+                modal.classList.remove('flex');
+            }, 300);
+        }
+
+        // 修改 renderNews：使用 onclick 触发弹窗，不再使用 a 标签跳转
+        function renderNews() {
+            const newsWrapper = document.getElementById('news-wrapper');
+            const tickerContainer = document.getElementById('ticker-content');
+
+            newsData.forEach(news => {
+                // 1. 填充顶部滚动条
+                const tickerItem = document.createElement('span');
+                tickerItem.className = 'mr-20 flex items-center';
+                tickerItem.innerHTML = `<i class="fa-solid fa-angle-right text-yellow-400 text-xs mr-2"></i> ${news.title}`;
+                tickerContainer.appendChild(tickerItem);
+
+                // 2. 填充底部卡片
+                const slideDiv = document.createElement('div');
+                slideDiv.className = 'swiper-slide w-80'; 
+                
+                let visualContent = '';
+                if (news.img) {
+                    visualContent = `<img src="${news.img}" class="w-full h-40 object-cover rounded-t-lg group-hover:opacity-90 transition">`;
+                } else {
+                    visualContent = `
+                        <div class="w-full h-40 bg-slate-100 rounded-t-lg flex items-center justify-center group-hover:bg-slate-200 transition">
+                            <i class="fa-solid ${news.icon} text-4xl text-slate-400"></i>
+                        </div>`;
+                }
+
+                // 核心修改：使用 <a> 标签包裹，target="_blank" 在新标签页打开
+                slideDiv.innerHTML = `
+                    <a href="${news.link}" target="_blank" class="block bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover-lift group h-full flex flex-col cursor-pointer no-underline">
+                        ${visualContent}
+                        <div class="p-4 flex flex-col flex-1">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="bg-${news.color}-50 text-${news.color}-700 text-[10px] px-2 py-0.5 rounded font-medium border border-${news.color}-100">${news.tag}</span>
+                                <span class="text-xs text-gray-400"><i class="fa-regular fa-clock mr-1"></i>${news.date}</span>
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-sm leading-snug line-clamp-2 group-hover:text-red-800 transition">${news.title}</h3>
+                        </div>
+                    </a>
+                `;
+                newsWrapper.appendChild(slideDiv);
+            });
+        }
+
+        // 页面滚动
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        const userDatabase = [
+            { u: 'yehua',      p: '19891117', name: 'Yehua' },
+            { u: 'duannie',    p: '469273',   name: 'Duannie' },
+            { u: 'hejunxian',  p: '116828',   name: 'Hejunxian' },
+            { u: 'gewei',      p: '321870',   name: 'Gewei' },
+            { u: 'admin',      p: '123456',   name: '管理员' }
+        ];
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const isLoggedIn = localStorage.getItem('gzjw_logged_in');
+            const savedName = localStorage.getItem('gzjw_user_name');
+            
+            if (isLoggedIn === 'true') {
+                showMainContent();
+                if(savedName) document.getElementById('display-name').innerText = savedName;
+            } else {
+                showLoginScreen();
+            }
+
+            renderNews();
+            initSwiper();
+        });
+
+        function initSwiper() {
+            new Swiper(".myMarquee", {
+                slidesPerView: 'auto',
+                spaceBetween: 20,
+                centeredSlides: false,
+                loop: true, 
+                speed: 6000, 
+                autoplay: {
+                    delay: 0,
+                    disableOnInteraction: false, 
+                },
+                freeMode: true, 
+                freeModeMomentum: false, 
+            });
+        }
+
+        function showMainContent() {
+            document.getElementById('login-screen').classList.add('hidden-mode');
+            document.getElementById('main-content').classList.remove('hidden-mode');
+        }
+
+        function showLoginScreen() {
+            document.getElementById('login-screen').classList.remove('hidden-mode');
+            document.getElementById('main-content').classList.add('hidden-mode');
+        }
+
+        function attemptLogin() {
+            const uInput = document.getElementById('username-input').value;
+            const pInput = document.getElementById('password-input').value;
+            const errorDiv = document.getElementById('login-error');
+
+            const foundUser = userDatabase.find(user => user.u === uInput && user.p === pInput);
+
+            if (foundUser) {
+                localStorage.setItem('gzjw_logged_in', 'true');
+                localStorage.setItem('gzjw_user_name', foundUser.name);
+                document.getElementById('display-name').innerText = foundUser.name;
+                errorDiv.classList.add('hidden-mode');
+                showMainContent();
+            } else {
+                errorDiv.classList.remove('hidden-mode');
+                document.querySelector('#login-screen > div').classList.add('animate-pulse');
+                setTimeout(() => document.querySelector('#login-screen > div').classList.remove('animate-pulse'), 500);
+            }
+        }
+
+        function doLogout() {
+            if(confirm('确定要退出内部系统吗？')) {
+                localStorage.removeItem('gzjw_logged_in');
+                localStorage.removeItem('gzjw_user_name');
+                showLoginScreen();
+                document.getElementById('username-input').value = '';
+                document.getElementById('password-input').value = '';
+            }
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const msgSpan = document.getElementById('toast-message');
+            
+            msgSpan.innerText = message;
+            toast.classList.remove('opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 2000);
+        }
+
+        document.getElementById('password-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') attemptLogin();
+        });
+    </script>
+</body>
+</html>
